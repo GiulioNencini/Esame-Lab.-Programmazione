@@ -1,0 +1,3 @@
+C:/Users/damia/CLionProjects/C++/Sistema di gioco Not The End/cmake-build-debug/CMakeFiles/Sistema_di_gioco_Not_The_End.dir
+C:/Users/damia/CLionProjects/C++/Sistema di gioco Not The End/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/damia/CLionProjects/C++/Sistema di gioco Not The End/cmake-build-debug/CMakeFiles/rebuild_cache.dir

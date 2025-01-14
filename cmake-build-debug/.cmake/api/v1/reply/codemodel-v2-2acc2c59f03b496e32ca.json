@@ -1,0 +1,60 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"jsonFile" : "directory-.-Debug-d0094a50bb2071803777.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.23"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "Sistema_di_gioco_Not_The_End",
+					"targetIndexes" : 
+					[
+						0
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "Sistema_di_gioco_Not_The_End::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-Sistema_di_gioco_Not_The_End-Debug-b64f038210fe567c2888.json",
+					"name" : "Sistema_di_gioco_Not_The_End",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "C:/Users/damia/CLionProjects/C++/Sistema di gioco Not The End/cmake-build-debug",
+		"source" : "C:/Users/damia/CLionProjects/C++/Sistema di gioco Not The End"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 4
+	}
+}
