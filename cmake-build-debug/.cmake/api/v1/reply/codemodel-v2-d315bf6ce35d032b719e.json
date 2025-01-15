@@ -39,7 +39,7 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "Sistema_di_gioco_Not_The_End::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-Sistema_di_gioco_Not_The_End-Debug-b64f038210fe567c2888.json",
+					"jsonFile" : "target-Sistema_di_gioco_Not_The_End-Debug-1b6be32f6c83e3aec6a9.json",
 					"name" : "Sistema_di_gioco_Not_The_End",
 					"projectIndex" : 0
 				}
@@ -49,12 +49,12 @@
 	"kind" : "codemodel",
 	"paths" : 
 	{
-		"build" : "C:/Users/damia/CLionProjects/C++/Sistema di gioco Not The End/cmake-build-debug",
-		"source" : "C:/Users/damia/CLionProjects/C++/Sistema di gioco Not The End"
+		"build" : "C:/Users/giuli/CLionProjects/Esame-Lab.-Programmazione/cmake-build-debug",
+		"source" : "C:/Users/giuli/CLionProjects/Esame-Lab.-Programmazione"
 	},
 	"version" : 
 	{
 		"major" : 2,
-		"minor" : 4
+		"minor" : 7
 	}
 }
