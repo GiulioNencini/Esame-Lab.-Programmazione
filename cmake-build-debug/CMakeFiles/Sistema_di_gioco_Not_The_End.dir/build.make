@@ -43,19 +43,19 @@ cmake_force:
 SHELL = cmd.exe
 
 # The CMake executable.
-CMAKE_COMMAND = "C:\Program Files\JetBrains\CLion 2024.3.1.1\bin\cmake\win\x64\bin\cmake.exe"
+CMAKE_COMMAND = "B:\CLion\CLion 2022.2.4\bin\cmake\win\x64\bin\cmake.exe"
 
 # The command to remove a file.
-RM = "C:\Program Files\JetBrains\CLion 2024.3.1.1\bin\cmake\win\x64\bin\cmake.exe" -E rm -f
+RM = "B:\CLion\CLion 2022.2.4\bin\cmake\win\x64\bin\cmake.exe" -E rm -f
 
 # Escaping for special characters.
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = C:\Users\giuli\CLionProjects\Esame-Lab.-Programmazione
+CMAKE_SOURCE_DIR = C:\Users\damia\CLionProjects\C++\Esame-Lab.-Programmazione
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = C:\Users\giuli\CLionProjects\Esame-Lab.-Programmazione\cmake-build-debug
+CMAKE_BINARY_DIR = C:\Users\damia\CLionProjects\C++\Esame-Lab.-Programmazione\cmake-build-debug
 
 # Include any dependencies generated for this target.
 include CMakeFiles/Sistema_di_gioco_Not_The_End.dir/depend.make
@@ -69,32 +69,96 @@ include CMakeFiles/Sistema_di_gioco_Not_The_End.dir/progress.make
 include CMakeFiles/Sistema_di_gioco_Not_The_End.dir/flags.make
 
 CMakeFiles/Sistema_di_gioco_Not_The_End.dir/main.cpp.obj: CMakeFiles/Sistema_di_gioco_Not_The_End.dir/flags.make
-CMakeFiles/Sistema_di_gioco_Not_The_End.dir/main.cpp.obj: C:/Users/giuli/CLionProjects/Esame-Lab.-Programmazione/main.cpp
+CMakeFiles/Sistema_di_gioco_Not_The_End.dir/main.cpp.obj: C:/Users/damia/CLionProjects/C++/Esame-Lab.-Programmazione/main.cpp
 CMakeFiles/Sistema_di_gioco_Not_The_End.dir/main.cpp.obj: CMakeFiles/Sistema_di_gioco_Not_The_End.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:\Users\giuli\CLionProjects\Esame-Lab.-Programmazione\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/Sistema_di_gioco_Not_The_End.dir/main.cpp.obj"
-	C:\PROGRA~1\JETBRA~1\CLION2~1.1\bin\mingw\bin\G__~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Sistema_di_gioco_Not_The_End.dir/main.cpp.obj -MF CMakeFiles\Sistema_di_gioco_Not_The_End.dir\main.cpp.obj.d -o CMakeFiles\Sistema_di_gioco_Not_The_End.dir\main.cpp.obj -c C:\Users\giuli\CLionProjects\Esame-Lab.-Programmazione\main.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:\Users\damia\CLionProjects\C++\Esame-Lab.-Programmazione\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/Sistema_di_gioco_Not_The_End.dir/main.cpp.obj"
+	"B:\CLion\CLion 2022.2.4\bin\mingw\bin\g++.exe" $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Sistema_di_gioco_Not_The_End.dir/main.cpp.obj -MF CMakeFiles\Sistema_di_gioco_Not_The_End.dir\main.cpp.obj.d -o CMakeFiles\Sistema_di_gioco_Not_The_End.dir\main.cpp.obj -c C:\Users\damia\CLionProjects\C++\Esame-Lab.-Programmazione\main.cpp
 
 CMakeFiles/Sistema_di_gioco_Not_The_End.dir/main.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/Sistema_di_gioco_Not_The_End.dir/main.cpp.i"
-	C:\PROGRA~1\JETBRA~1\CLION2~1.1\bin\mingw\bin\G__~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\giuli\CLionProjects\Esame-Lab.-Programmazione\main.cpp > CMakeFiles\Sistema_di_gioco_Not_The_End.dir\main.cpp.i
+	"B:\CLion\CLion 2022.2.4\bin\mingw\bin\g++.exe" $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\damia\CLionProjects\C++\Esame-Lab.-Programmazione\main.cpp > CMakeFiles\Sistema_di_gioco_Not_The_End.dir\main.cpp.i
 
 CMakeFiles/Sistema_di_gioco_Not_The_End.dir/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/Sistema_di_gioco_Not_The_End.dir/main.cpp.s"
-	C:\PROGRA~1\JETBRA~1\CLION2~1.1\bin\mingw\bin\G__~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Users\giuli\CLionProjects\Esame-Lab.-Programmazione\main.cpp -o CMakeFiles\Sistema_di_gioco_Not_The_End.dir\main.cpp.s
+	"B:\CLion\CLion 2022.2.4\bin\mingw\bin\g++.exe" $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Users\damia\CLionProjects\C++\Esame-Lab.-Programmazione\main.cpp -o CMakeFiles\Sistema_di_gioco_Not_The_End.dir\main.cpp.s
+
+CMakeFiles/Sistema_di_gioco_Not_The_End.dir/Bag.cpp.obj: CMakeFiles/Sistema_di_gioco_Not_The_End.dir/flags.make
+CMakeFiles/Sistema_di_gioco_Not_The_End.dir/Bag.cpp.obj: C:/Users/damia/CLionProjects/C++/Esame-Lab.-Programmazione/Bag.cpp
+CMakeFiles/Sistema_di_gioco_Not_The_End.dir/Bag.cpp.obj: CMakeFiles/Sistema_di_gioco_Not_The_End.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:\Users\damia\CLionProjects\C++\Esame-Lab.-Programmazione\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/Sistema_di_gioco_Not_The_End.dir/Bag.cpp.obj"
+	"B:\CLion\CLion 2022.2.4\bin\mingw\bin\g++.exe" $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Sistema_di_gioco_Not_The_End.dir/Bag.cpp.obj -MF CMakeFiles\Sistema_di_gioco_Not_The_End.dir\Bag.cpp.obj.d -o CMakeFiles\Sistema_di_gioco_Not_The_End.dir\Bag.cpp.obj -c C:\Users\damia\CLionProjects\C++\Esame-Lab.-Programmazione\Bag.cpp
+
+CMakeFiles/Sistema_di_gioco_Not_The_End.dir/Bag.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/Sistema_di_gioco_Not_The_End.dir/Bag.cpp.i"
+	"B:\CLion\CLion 2022.2.4\bin\mingw\bin\g++.exe" $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\damia\CLionProjects\C++\Esame-Lab.-Programmazione\Bag.cpp > CMakeFiles\Sistema_di_gioco_Not_The_End.dir\Bag.cpp.i
+
+CMakeFiles/Sistema_di_gioco_Not_The_End.dir/Bag.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/Sistema_di_gioco_Not_The_End.dir/Bag.cpp.s"
+	"B:\CLion\CLion 2022.2.4\bin\mingw\bin\g++.exe" $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Users\damia\CLionProjects\C++\Esame-Lab.-Programmazione\Bag.cpp -o CMakeFiles\Sistema_di_gioco_Not_The_End.dir\Bag.cpp.s
+
+CMakeFiles/Sistema_di_gioco_Not_The_End.dir/Player.cpp.obj: CMakeFiles/Sistema_di_gioco_Not_The_End.dir/flags.make
+CMakeFiles/Sistema_di_gioco_Not_The_End.dir/Player.cpp.obj: C:/Users/damia/CLionProjects/C++/Esame-Lab.-Programmazione/Player.cpp
+CMakeFiles/Sistema_di_gioco_Not_The_End.dir/Player.cpp.obj: CMakeFiles/Sistema_di_gioco_Not_The_End.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:\Users\damia\CLionProjects\C++\Esame-Lab.-Programmazione\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/Sistema_di_gioco_Not_The_End.dir/Player.cpp.obj"
+	"B:\CLion\CLion 2022.2.4\bin\mingw\bin\g++.exe" $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Sistema_di_gioco_Not_The_End.dir/Player.cpp.obj -MF CMakeFiles\Sistema_di_gioco_Not_The_End.dir\Player.cpp.obj.d -o CMakeFiles\Sistema_di_gioco_Not_The_End.dir\Player.cpp.obj -c C:\Users\damia\CLionProjects\C++\Esame-Lab.-Programmazione\Player.cpp
+
+CMakeFiles/Sistema_di_gioco_Not_The_End.dir/Player.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/Sistema_di_gioco_Not_The_End.dir/Player.cpp.i"
+	"B:\CLion\CLion 2022.2.4\bin\mingw\bin\g++.exe" $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\damia\CLionProjects\C++\Esame-Lab.-Programmazione\Player.cpp > CMakeFiles\Sistema_di_gioco_Not_The_End.dir\Player.cpp.i
+
+CMakeFiles/Sistema_di_gioco_Not_The_End.dir/Player.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/Sistema_di_gioco_Not_The_End.dir/Player.cpp.s"
+	"B:\CLion\CLion 2022.2.4\bin\mingw\bin\g++.exe" $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Users\damia\CLionProjects\C++\Esame-Lab.-Programmazione\Player.cpp -o CMakeFiles\Sistema_di_gioco_Not_The_End.dir\Player.cpp.s
+
+CMakeFiles/Sistema_di_gioco_Not_The_End.dir/Master.cpp.obj: CMakeFiles/Sistema_di_gioco_Not_The_End.dir/flags.make
+CMakeFiles/Sistema_di_gioco_Not_The_End.dir/Master.cpp.obj: C:/Users/damia/CLionProjects/C++/Esame-Lab.-Programmazione/Master.cpp
+CMakeFiles/Sistema_di_gioco_Not_The_End.dir/Master.cpp.obj: CMakeFiles/Sistema_di_gioco_Not_The_End.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:\Users\damia\CLionProjects\C++\Esame-Lab.-Programmazione\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/Sistema_di_gioco_Not_The_End.dir/Master.cpp.obj"
+	"B:\CLion\CLion 2022.2.4\bin\mingw\bin\g++.exe" $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Sistema_di_gioco_Not_The_End.dir/Master.cpp.obj -MF CMakeFiles\Sistema_di_gioco_Not_The_End.dir\Master.cpp.obj.d -o CMakeFiles\Sistema_di_gioco_Not_The_End.dir\Master.cpp.obj -c C:\Users\damia\CLionProjects\C++\Esame-Lab.-Programmazione\Master.cpp
+
+CMakeFiles/Sistema_di_gioco_Not_The_End.dir/Master.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/Sistema_di_gioco_Not_The_End.dir/Master.cpp.i"
+	"B:\CLion\CLion 2022.2.4\bin\mingw\bin\g++.exe" $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\damia\CLionProjects\C++\Esame-Lab.-Programmazione\Master.cpp > CMakeFiles\Sistema_di_gioco_Not_The_End.dir\Master.cpp.i
+
+CMakeFiles/Sistema_di_gioco_Not_The_End.dir/Master.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/Sistema_di_gioco_Not_The_End.dir/Master.cpp.s"
+	"B:\CLion\CLion 2022.2.4\bin\mingw\bin\g++.exe" $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Users\damia\CLionProjects\C++\Esame-Lab.-Programmazione\Master.cpp -o CMakeFiles\Sistema_di_gioco_Not_The_End.dir\Master.cpp.s
+
+CMakeFiles/Sistema_di_gioco_Not_The_End.dir/Hero.cpp.obj: CMakeFiles/Sistema_di_gioco_Not_The_End.dir/flags.make
+CMakeFiles/Sistema_di_gioco_Not_The_End.dir/Hero.cpp.obj: C:/Users/damia/CLionProjects/C++/Esame-Lab.-Programmazione/Hero.cpp
+CMakeFiles/Sistema_di_gioco_Not_The_End.dir/Hero.cpp.obj: CMakeFiles/Sistema_di_gioco_Not_The_End.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:\Users\damia\CLionProjects\C++\Esame-Lab.-Programmazione\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/Sistema_di_gioco_Not_The_End.dir/Hero.cpp.obj"
+	"B:\CLion\CLion 2022.2.4\bin\mingw\bin\g++.exe" $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Sistema_di_gioco_Not_The_End.dir/Hero.cpp.obj -MF CMakeFiles\Sistema_di_gioco_Not_The_End.dir\Hero.cpp.obj.d -o CMakeFiles\Sistema_di_gioco_Not_The_End.dir\Hero.cpp.obj -c C:\Users\damia\CLionProjects\C++\Esame-Lab.-Programmazione\Hero.cpp
+
+CMakeFiles/Sistema_di_gioco_Not_The_End.dir/Hero.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/Sistema_di_gioco_Not_The_End.dir/Hero.cpp.i"
+	"B:\CLion\CLion 2022.2.4\bin\mingw\bin\g++.exe" $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\damia\CLionProjects\C++\Esame-Lab.-Programmazione\Hero.cpp > CMakeFiles\Sistema_di_gioco_Not_The_End.dir\Hero.cpp.i
+
+CMakeFiles/Sistema_di_gioco_Not_The_End.dir/Hero.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/Sistema_di_gioco_Not_The_End.dir/Hero.cpp.s"
+	"B:\CLion\CLion 2022.2.4\bin\mingw\bin\g++.exe" $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Users\damia\CLionProjects\C++\Esame-Lab.-Programmazione\Hero.cpp -o CMakeFiles\Sistema_di_gioco_Not_The_End.dir\Hero.cpp.s
 
 # Object files for target Sistema_di_gioco_Not_The_End
 Sistema_di_gioco_Not_The_End_OBJECTS = \
-"CMakeFiles/Sistema_di_gioco_Not_The_End.dir/main.cpp.obj"
+"CMakeFiles/Sistema_di_gioco_Not_The_End.dir/main.cpp.obj" \
+"CMakeFiles/Sistema_di_gioco_Not_The_End.dir/Bag.cpp.obj" \
+"CMakeFiles/Sistema_di_gioco_Not_The_End.dir/Player.cpp.obj" \
+"CMakeFiles/Sistema_di_gioco_Not_The_End.dir/Master.cpp.obj" \
+"CMakeFiles/Sistema_di_gioco_Not_The_End.dir/Hero.cpp.obj"
 
 # External object files for target Sistema_di_gioco_Not_The_End
 Sistema_di_gioco_Not_The_End_EXTERNAL_OBJECTS =
 
 Sistema_di_gioco_Not_The_End.exe: CMakeFiles/Sistema_di_gioco_Not_The_End.dir/main.cpp.obj
+Sistema_di_gioco_Not_The_End.exe: CMakeFiles/Sistema_di_gioco_Not_The_End.dir/Bag.cpp.obj
+Sistema_di_gioco_Not_The_End.exe: CMakeFiles/Sistema_di_gioco_Not_The_End.dir/Player.cpp.obj
+Sistema_di_gioco_Not_The_End.exe: CMakeFiles/Sistema_di_gioco_Not_The_End.dir/Master.cpp.obj
+Sistema_di_gioco_Not_The_End.exe: CMakeFiles/Sistema_di_gioco_Not_The_End.dir/Hero.cpp.obj
 Sistema_di_gioco_Not_The_End.exe: CMakeFiles/Sistema_di_gioco_Not_The_End.dir/build.make
 Sistema_di_gioco_Not_The_End.exe: CMakeFiles/Sistema_di_gioco_Not_The_End.dir/linkLibs.rsp
 Sistema_di_gioco_Not_The_End.exe: CMakeFiles/Sistema_di_gioco_Not_The_End.dir/objects1.rsp
 Sistema_di_gioco_Not_The_End.exe: CMakeFiles/Sistema_di_gioco_Not_The_End.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=C:\Users\giuli\CLionProjects\Esame-Lab.-Programmazione\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable Sistema_di_gioco_Not_The_End.exe"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=C:\Users\damia\CLionProjects\C++\Esame-Lab.-Programmazione\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Linking CXX executable Sistema_di_gioco_Not_The_End.exe"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles\Sistema_di_gioco_Not_The_End.dir\link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -106,6 +170,6 @@ CMakeFiles/Sistema_di_gioco_Not_The_End.dir/clean:
 .PHONY : CMakeFiles/Sistema_di_gioco_Not_The_End.dir/clean
 
 CMakeFiles/Sistema_di_gioco_Not_The_End.dir/depend:
-	$(CMAKE_COMMAND) -E cmake_depends "MinGW Makefiles" C:\Users\giuli\CLionProjects\Esame-Lab.-Programmazione C:\Users\giuli\CLionProjects\Esame-Lab.-Programmazione C:\Users\giuli\CLionProjects\Esame-Lab.-Programmazione\cmake-build-debug C:\Users\giuli\CLionProjects\Esame-Lab.-Programmazione\cmake-build-debug C:\Users\giuli\CLionProjects\Esame-Lab.-Programmazione\cmake-build-debug\CMakeFiles\Sistema_di_gioco_Not_The_End.dir\DependInfo.cmake "--color=$(COLOR)"
+	$(CMAKE_COMMAND) -E cmake_depends "MinGW Makefiles" C:\Users\damia\CLionProjects\C++\Esame-Lab.-Programmazione C:\Users\damia\CLionProjects\C++\Esame-Lab.-Programmazione C:\Users\damia\CLionProjects\C++\Esame-Lab.-Programmazione\cmake-build-debug C:\Users\damia\CLionProjects\C++\Esame-Lab.-Programmazione\cmake-build-debug C:\Users\damia\CLionProjects\C++\Esame-Lab.-Programmazione\cmake-build-debug\CMakeFiles\Sistema_di_gioco_Not_The_End.dir\DependInfo.cmake "--color=$(COLOR)"
 .PHONY : CMakeFiles/Sistema_di_gioco_Not_The_End.dir/depend
 

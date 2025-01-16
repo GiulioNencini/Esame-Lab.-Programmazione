@@ -47,19 +47,19 @@ cmake_force:
 SHELL = cmd.exe
 
 # The CMake executable.
-CMAKE_COMMAND = "C:\Program Files\JetBrains\CLion 2024.3.1.1\bin\cmake\win\x64\bin\cmake.exe"
+CMAKE_COMMAND = "B:\CLion\CLion 2022.2.4\bin\cmake\win\x64\bin\cmake.exe"
 
 # The command to remove a file.
-RM = "C:\Program Files\JetBrains\CLion 2024.3.1.1\bin\cmake\win\x64\bin\cmake.exe" -E rm -f
+RM = "B:\CLion\CLion 2022.2.4\bin\cmake\win\x64\bin\cmake.exe" -E rm -f
 
 # Escaping for special characters.
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = C:\Users\giuli\CLionProjects\Esame-Lab.-Programmazione
+CMAKE_SOURCE_DIR = C:\Users\damia\CLionProjects\C++\Esame-Lab.-Programmazione
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = C:\Users\giuli\CLionProjects\Esame-Lab.-Programmazione\cmake-build-debug
+CMAKE_BINARY_DIR = C:\Users\damia\CLionProjects\C++\Esame-Lab.-Programmazione\cmake-build-debug
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -67,7 +67,7 @@ CMAKE_BINARY_DIR = C:\Users\giuli\CLionProjects\Esame-Lab.-Programmazione\cmake-
 # Special rule for the target edit_cache
 edit_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "No interactive CMake dialog available..."
-	"C:\Program Files\JetBrains\CLion 2024.3.1.1\bin\cmake\win\x64\bin\cmake.exe" -E echo "No interactive CMake dialog available."
+	"B:\CLion\CLion 2022.2.4\bin\cmake\win\x64\bin\cmake.exe" -E echo "No interactive CMake dialog available."
 .PHONY : edit_cache
 
 # Special rule for the target edit_cache
@@ -77,7 +77,7 @@ edit_cache/fast: edit_cache
 # Special rule for the target rebuild_cache
 rebuild_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "Running CMake to regenerate build system..."
-	"C:\Program Files\JetBrains\CLion 2024.3.1.1\bin\cmake\win\x64\bin\cmake.exe" --regenerate-during-build -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+	"B:\CLion\CLion 2022.2.4\bin\cmake\win\x64\bin\cmake.exe" --regenerate-during-build -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
 .PHONY : rebuild_cache
 
 # Special rule for the target rebuild_cache
@@ -86,9 +86,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\giuli\CLionProjects\Esame-Lab.-Programmazione\cmake-build-debug\CMakeFiles C:\Users\giuli\CLionProjects\Esame-Lab.-Programmazione\cmake-build-debug\\CMakeFiles\progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\damia\CLionProjects\C++\Esame-Lab.-Programmazione\cmake-build-debug\CMakeFiles C:\Users\damia\CLionProjects\C++\Esame-Lab.-Programmazione\cmake-build-debug\\CMakeFiles\progress.marks
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\giuli\CLionProjects\Esame-Lab.-Programmazione\cmake-build-debug\CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\damia\CLionProjects\C++\Esame-Lab.-Programmazione\cmake-build-debug\CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -128,6 +128,102 @@ Sistema_di_gioco_Not_The_End/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\Sistema_di_gioco_Not_The_End.dir\build.make CMakeFiles/Sistema_di_gioco_Not_The_End.dir/build
 .PHONY : Sistema_di_gioco_Not_The_End/fast
 
+Bag.obj: Bag.cpp.obj
+.PHONY : Bag.obj
+
+# target to build an object file
+Bag.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Sistema_di_gioco_Not_The_End.dir\build.make CMakeFiles/Sistema_di_gioco_Not_The_End.dir/Bag.cpp.obj
+.PHONY : Bag.cpp.obj
+
+Bag.i: Bag.cpp.i
+.PHONY : Bag.i
+
+# target to preprocess a source file
+Bag.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Sistema_di_gioco_Not_The_End.dir\build.make CMakeFiles/Sistema_di_gioco_Not_The_End.dir/Bag.cpp.i
+.PHONY : Bag.cpp.i
+
+Bag.s: Bag.cpp.s
+.PHONY : Bag.s
+
+# target to generate assembly for a file
+Bag.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Sistema_di_gioco_Not_The_End.dir\build.make CMakeFiles/Sistema_di_gioco_Not_The_End.dir/Bag.cpp.s
+.PHONY : Bag.cpp.s
+
+Hero.obj: Hero.cpp.obj
+.PHONY : Hero.obj
+
+# target to build an object file
+Hero.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Sistema_di_gioco_Not_The_End.dir\build.make CMakeFiles/Sistema_di_gioco_Not_The_End.dir/Hero.cpp.obj
+.PHONY : Hero.cpp.obj
+
+Hero.i: Hero.cpp.i
+.PHONY : Hero.i
+
+# target to preprocess a source file
+Hero.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Sistema_di_gioco_Not_The_End.dir\build.make CMakeFiles/Sistema_di_gioco_Not_The_End.dir/Hero.cpp.i
+.PHONY : Hero.cpp.i
+
+Hero.s: Hero.cpp.s
+.PHONY : Hero.s
+
+# target to generate assembly for a file
+Hero.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Sistema_di_gioco_Not_The_End.dir\build.make CMakeFiles/Sistema_di_gioco_Not_The_End.dir/Hero.cpp.s
+.PHONY : Hero.cpp.s
+
+Master.obj: Master.cpp.obj
+.PHONY : Master.obj
+
+# target to build an object file
+Master.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Sistema_di_gioco_Not_The_End.dir\build.make CMakeFiles/Sistema_di_gioco_Not_The_End.dir/Master.cpp.obj
+.PHONY : Master.cpp.obj
+
+Master.i: Master.cpp.i
+.PHONY : Master.i
+
+# target to preprocess a source file
+Master.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Sistema_di_gioco_Not_The_End.dir\build.make CMakeFiles/Sistema_di_gioco_Not_The_End.dir/Master.cpp.i
+.PHONY : Master.cpp.i
+
+Master.s: Master.cpp.s
+.PHONY : Master.s
+
+# target to generate assembly for a file
+Master.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Sistema_di_gioco_Not_The_End.dir\build.make CMakeFiles/Sistema_di_gioco_Not_The_End.dir/Master.cpp.s
+.PHONY : Master.cpp.s
+
+Player.obj: Player.cpp.obj
+.PHONY : Player.obj
+
+# target to build an object file
+Player.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Sistema_di_gioco_Not_The_End.dir\build.make CMakeFiles/Sistema_di_gioco_Not_The_End.dir/Player.cpp.obj
+.PHONY : Player.cpp.obj
+
+Player.i: Player.cpp.i
+.PHONY : Player.i
+
+# target to preprocess a source file
+Player.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Sistema_di_gioco_Not_The_End.dir\build.make CMakeFiles/Sistema_di_gioco_Not_The_End.dir/Player.cpp.i
+.PHONY : Player.cpp.i
+
+Player.s: Player.cpp.s
+.PHONY : Player.s
+
+# target to generate assembly for a file
+Player.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Sistema_di_gioco_Not_The_End.dir\build.make CMakeFiles/Sistema_di_gioco_Not_The_End.dir/Player.cpp.s
+.PHONY : Player.cpp.s
+
 main.obj: main.cpp.obj
 .PHONY : main.obj
 
@@ -161,6 +257,18 @@ help:
 	@echo ... edit_cache
 	@echo ... rebuild_cache
 	@echo ... Sistema_di_gioco_Not_The_End
+	@echo ... Bag.obj
+	@echo ... Bag.i
+	@echo ... Bag.s
+	@echo ... Hero.obj
+	@echo ... Hero.i
+	@echo ... Hero.s
+	@echo ... Master.obj
+	@echo ... Master.i
+	@echo ... Master.s
+	@echo ... Player.obj
+	@echo ... Player.i
+	@echo ... Player.s
 	@echo ... main.obj
 	@echo ... main.i
 	@echo ... main.s
