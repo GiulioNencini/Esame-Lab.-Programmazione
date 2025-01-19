@@ -7,10 +7,11 @@ add_executable(Sistema_di_gioco_Not_The_End main.cpp
         Bag.cpp
         Bag.h
         NumberFunctions.h
-        MainFunction.h
+        MainFunctions.h
         Player.cpp
         Player.h
         Master.cpp
         Master.h
         Hero.cpp
-        Hero.h)
+        Hero.h
+        NumberFunctions.cpp)
