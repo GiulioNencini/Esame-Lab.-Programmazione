@@ -3,8 +3,67 @@
 //
 #include "Hero.h"
 
-Hero::Hero(std::string nameCharacter, std::string namePlayer, std::string myRisk, unsigned int numberPlayer)  : nameCharacter(std::move(nameCharacter)), namePlayer(std::move(namePlayer)), myRisk(std::move(myRisk)), numberPlayer(numberPlayer) {
+Hero::Hero(string nameCharacter, string namePlayer, string myRisk, unsigned int numberPlayer)  : nameCharacter(std::move(nameCharacter)), namePlayer(std::move(namePlayer)), myRisk(std::move(myRisk)), numberPlayer(numberPlayer) {
     cout<<"L'eroe "<<this->nameCharacter<<" si e' unito al party"<<endl;
+}
+
+void Hero::setHeroCharacteristics() {
+    string answer;
+    do{
+        cout<<"NOTA PER LA CREAZIONE: un personaggio all'inizio ha di norma 3 qualita' e 4 abilita'"<<endl;
+        cout << getNameCharacter() << ", qual e' il tuo archetipo?" << endl;
+        cin.ignore();
+        getline(cin, answer);
+        setArchetype(answer);
+
+        int num = 0;
+        do{
+            cout << "Quante sono le tue qualita'? Max 6" << endl;
+            bool e;
+            insertNumber(num, e);
+        } while (num<1 || num>6);
+
+        cout << "Quali sono?" << endl;
+        for (int i = 0; i < num; i++) {//fixme sia qui che sotto c'è un problema per cui il primo carattere, a partire dal secondo elemento del set, non viene considerato
+            cout<<"Qualita' numero "<<i+1<<":";
+            cin.ignore();
+            getline(cin, answer);
+            qualities.insert(answer);
+        }
+        num=0;
+        do{
+            cout << "Quante sono le tue abilita'? Max 12" << endl;
+            bool e;
+            insertNumber(num, e);
+        }while(num<1 || num>12);
+
+        cout << "Quali sono?" << endl;
+        for (int i = 0; i < num; i++) {
+            cout<<"abilita' numero "<<i+1<<":";
+            cin.ignore();
+            getline(cin, answer);
+            abilities.insert(answer);
+        }
+
+        cout<<"ARCHETIPO: "<<getArchetype()<<endl;//fixme capire se lasciare o no
+
+        cout<<"QUALITA':"<<endl;
+        getQualities();
+
+        cout<<"ABILITA':"<<endl;
+        getAbilities();
+
+        do{
+            cout<<"Confermi le tue scelte? y/n"<<endl;
+            cin>>answer;
+        } while (answer!="y" && answer!="n");
+
+        if(answer=="n") {
+            qualities.clear();
+            abilities.clear();
+        }
+    }while (answer!="y");
+
 }
 
 
@@ -12,6 +71,12 @@ void Hero::getIdentity() const {
     cout<<"Personaggio "<<numberPlayer<<"         Impersonato da "<<namePlayer<<endl;
     cout<<nameCharacter<<endl;
     cout<<"Disposto a tutto per: "<<myRisk<<endl;
+    cout<<"ARCHETIPO: "<<getArchetype()<<endl;
+    cout<<"QUALITA':"<<endl;
+    getQualities();
+    cout<<"ABILITA':"<<endl;
+    getAbilities();
+    cout<<"\n\n"<<endl;
 }
 
 void Hero::setBag(int numW, int numB) {

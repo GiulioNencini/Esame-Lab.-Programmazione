@@ -18,11 +18,16 @@ class Hero : public Player {
     bool adrenaline = false;
     bool confusion = false;
     bool outScene = false;
+    string archetype;//ce n'è uno solo
+    set<string> qualities;
+    set<string> abilities;
     multiset<string> item;//fixme item
 
 public:
     explicit Hero(string nameCharacter, string namePlayer, string myRisk,unsigned int numberPlayer);
     ~Hero()=default;
+
+    void setHeroCharacteristics();
 
     void openItem() const{//fixme item
         cout<<"\nL'inventario di "<<nameCharacter<<endl;
@@ -137,6 +142,59 @@ public:
 
     unsigned int getNumberPlayer() const{
         return numberPlayer;
+    }
+
+    //get e set dei tratti
+    const string &getArchetype() const{
+        return archetype;
+    }
+
+    void setArchetype(string &a){
+        archetype=std::move(a);
+    }
+
+    void addQuality(const string &newQuality){
+        qualities.insert(newQuality);
+    }
+
+    void removeQuality(string &deletedQuality){
+        qualities.erase(deletedQuality);
+    }
+
+    void getQualities() const{//fixme problema pe cui taglia le prime lettere
+        int i=0;
+        for(const auto &it : qualities){
+            if(++i<it.size()+1)
+                cout<<it<<", ";
+            else
+                cout<<it<<endl;
+        }
+    }
+
+    void addAbility(const string &newAbility){
+        abilities.insert(newAbility);
+    }
+
+    void removeAbility(string &deletedAbility){
+        abilities.erase(deletedAbility);
+    }
+
+    void getAbilities() const{
+        int i=0;
+        for(const auto &it : abilities){
+            if(++i<it.size()+1)
+                cout<<it<<", ";
+            else
+                cout<<it<<endl;
+        }
+    }
+
+    int getNumQualities() const{
+        return qualities.size();
+    }
+
+    int getNumAbilities() const{
+        return abilities.size();
     }
 };
 

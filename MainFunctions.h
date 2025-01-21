@@ -48,8 +48,11 @@ void setInitialItemAddedCharacter(vector<Hero> &playerVector, unsigned int lastP
                     cin.ignore();
                     getline(cin, item);
                     it.addItem(item);
-                    cout << "Ne ha altri? y/n" << endl;
-                    cin >> answer;
+                    do{
+                        cout << "Ne ha altri? y/n" << endl;
+                        cin >> answer;
+                    }while(answer!="y" && answer!="n");
+
                 } while (answer == "y");
             }
         }
@@ -147,6 +150,7 @@ void setCharacterIdentity(unsigned int i, vector<Hero> &playerVector){//funzione
     getline(cin,risk);
 
     Hero player(nameCharacter,namePlayer,risk,i);
+    player.setHeroCharacteristics();
     playerVector.push_back(player);
     cout<<"\n\n\n"<<endl;
 }
@@ -162,12 +166,77 @@ void setPartyIdentity(Master &theMaster, vector<Hero> &playerVector, unsigned in
     cin.ignore();
 
     for(int i=1;i<=numPlayer;i++){
-        setCharacterIdentity(i, playerVector);//
+        setCharacterIdentity(i, playerVector);
     }
 //fixme item
     if(!loading){
         setInitialItem(playerVector);
         getPartyIdentity(playerVector);
+    }
+}
+
+void removingCharacteristic(Hero &playerModified){
+    string answer;
+    do{
+        cout<<"Vuoi rimuovere una qualita' o un'abilita'? q/a"<<endl;
+        cin>>answer;
+    }while(answer!="q" && answer!="a");
+
+    if(answer=="q"){
+        cout<<"QUALITA' ATTUALI:"<<endl;
+        playerModified.getQualities();
+        cout<<"Quale qualita' vuoi rimuovere?"<<endl;
+        cin.ignore();
+        getline(cin,answer);
+        playerModified.removeQuality(answer);
+    }
+    else if(answer=="a"){
+        cout<<"ABILITA' ATTUALI:"<<endl;
+        playerModified.getAbilities();
+        cout<<"Quale abilita' vuoi rimuovere??"<<endl;
+        cin.ignore();
+        getline(cin,answer);
+        playerModified.removeAbility(answer);
+    }
+}
+
+void addingCharacteristic(Hero &playerModified){
+    string answer;
+    bool numControl;
+    do{
+        if(playerModified.getNumQualities()==6 && playerModified.getNumAbilities()==12){
+            cout<<"Hai gia' il massimo numero possibile di tratti, impossibile averne altri"<<endl;
+            break;
+        }
+
+        numControl=false;
+        cout<<"Vuoi aggiungere una qualita' o un'abilita'? q/a"<<endl;
+        cout<<"ATTENZIONE: ricorda che non puoi avere piu' di 6 qualita' e 12 abilita' (attualmente hai "<<playerModified.getNumQualities()<<" qualita' e "<<playerModified.getNumAbilities()<<" abilita')";
+        cin>>answer;
+        if((answer=="q" && playerModified.getNumQualities()<6) || (answer=="a" && playerModified.getNumAbilities()<12))//controllo per non sforare il numero massimo di abilità e qualità
+            numControl=true;
+        if(answer=="q" && !numControl)
+            cout<<"Hai gia' il massimo numero possibile di qualita'"<<endl;
+        if(answer=="a" && !numControl)
+            cout<<"Hai gia' il massimo numero possibile di abilita'"<<endl;
+
+    }while(!numControl);
+
+    if(answer=="q"){
+        cout<<"QUALITA' ATTUALI:"<<endl;
+        playerModified.getQualities();
+        cout<<"Qual e' la tua nuova qualita'?"<<endl;
+        cin.ignore();
+        getline(cin,answer);
+        playerModified.addQuality(answer);
+    }
+    else if(answer=="a"){
+        cout<<"ABILITA' ATTUALI:"<<endl;
+        playerModified.getAbilities();
+        cout<<"Qual e' la tua nuova abilita'?"<<endl;
+        cin.ignore();
+        getline(cin,answer);
+        playerModified.addAbility(answer);
     }
 }
 
@@ -189,7 +258,10 @@ void game(Master &theMaster, vector<Hero> &playerVector, unsigned int &numPlayer
         if(command=="h"){//GIOCANO GLI EROI
             int playingCharacter;
             do {
-                cout << "A quale giocatore tocca?" << endl;//rivedere la scritta
+                cout << "A quale giocatore tocca?  " << endl;//rivedere la scritta
+                for(const auto &it : playerVector){
+                    cout<<"("<<it.getNumberPlayer()<<") "<<it.getNameCharacter()<<endl;
+                }
                 bool e;
                 insertNumber(playingCharacter, e);
             }while(playingCharacter<1 && playingCharacter>numPlayer);
@@ -210,9 +282,9 @@ void game(Master &theMaster, vector<Hero> &playerVector, unsigned int &numPlayer
 
                         string action;
                         do {
-                            cout<< "Scegli un'azione: superare una prova(t), attendere(w), aprire l'inventario(o)"<< endl;//NOTA: attendere non fa fare niente al personaggio, è un modo per uscire dal turno senza fare nulla di particolare
+                            cout<< "Scegli un'azione: superare una prova(t), attendere(w), aprire l'inventario(o), modificare un tratto(c)"<< endl;//NOTA: attendere non fa fare niente al personaggio, è un modo per uscire dal turno senza fare nulla di particolare
                             cin >> action;
-                        }while(action!="t" && action!="w" && action!="o");
+                        }while(action!="t" && action!="w" && action!="o" && action!="c");
 
 
                         if(action=="t"){
@@ -280,7 +352,27 @@ void game(Master &theMaster, vector<Hero> &playerVector, unsigned int &numPlayer
                             }
                         }
 
-                        else
+                        else if(action=="c"){
+                            string answer;
+                            do{
+                                cout<<"Scrivere new/remove/modify per aggiungere/togliere/togliere e riaggiungere un tratto. cancel per annullare"<<endl;
+                                cin>>answer;
+                            }while(answer!="new" && answer!="remove" && answer!="modify" && answer!="cancel");
+
+                            if(answer=="new")
+                                addingCharacteristic(it);
+
+                            else if(answer=="remove")
+                                removingCharacteristic(it);
+
+                            else if(answer=="modify"){
+                                cout<<"Per modificare un tratto prima scegli quale cancellare e poi, subito dopo, quale aggiungere"<<endl;
+                                removingCharacteristic(it);
+                                addingCharacteristic(it);
+                            }
+                        }
+
+                        else if(action=="w")
                             cout<<it.getNameCharacter()<<" attende"<<endl;
 
                     }

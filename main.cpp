@@ -1,24 +1,23 @@
 // TODO Rifare gli item come oggetti (Con controllo se deve fare un'azione in seguito all'utilizzo), i consumabili hanno la quantità e la funzione che stampa e decrementa il numero. I non invece saranno sempre messi separati. Mettere anche funzione ordinamento
-// TODO Registro Missioni, elenco caratteristiche
+// TODO elenco caratteristiche -> FATTO testarlo
+//todo inserire comando cancel per annullare le cose
 // TODO capire per libreria grafica -> Boost, qt
 
 #include <iostream>
 #include <vector>
 #include "MainFunctions.h"
 #include "Master.h"
-#include "Hero.h"
-using namespace std;
 
 int main() {
 
     string startGame;
     do{
-        cout<<"Iniziare una nuova partita (new-game), o riavviarne una (load-game)"<<endl;
+        cout<<"Iniziare una nuova partita (n), o riavviarne una (l)"<<endl;
         cin>>startGame;
-    }while(startGame != "new-game" && startGame != "load-game");//PRELIMINARE
+    }while(startGame != "n" && startGame != "l");//PRELIMINARE
 
 
-    if(startGame=="new-game"){
+    if(startGame=="n"){
         cout<<"\nCREAZIONE DELLA LOBBY\n"<<endl;
 
         Master theMaster;
@@ -33,7 +32,8 @@ int main() {
             string confirm;
             modified = false;
             do {
-                cout << "Confermi le scelte? y/n" << endl;
+                cout << "Confermi questa configurazione per gli eroi? y/n" << endl;
+                cout<<"Se no, ti verra' chiesto quale eroe vuoi modificare"<<endl;
                 cin >> confirm;
             }while(confirm!="y" && confirm!="n");
 
