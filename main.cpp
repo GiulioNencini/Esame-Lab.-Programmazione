@@ -1,31 +1,32 @@
-// TODO Rifare gli item come oggetti (Con controllo se deve fare un'azione in seguito all'utilizzo), i consumabili hanno la quantità e la funzione che stampa e decrementa il numero. I non invece saranno sempre messi separati. Mettere anche funzione ordinamento
-// TODO elenco caratteristiche -> FATTO testarlo
-//todo inserire comando cancel per annullare le cose
+// todo inserire comando cancel per annullare le cose
 // TODO capire per libreria grafica -> Boost, qt
+// todo fare il metodo y/n, aggiornare insertnumber per inserire solo num +
 
-#include <iostream>
-#include <vector>
 #include "MainFunctions.h"
 #include "Master.h"
 
 int main() {
+   /* string s="eofj";
+   unique_ptr<AbItem> item = make_unique<ConsumableItem>(s,5);
+   item->getInfo();
+    return 0;*/
 
     string startGame;
-    do{
-        cout<<"Iniziare una nuova partita (n), o riavviarne una (l)"<<endl;
-        cin>>startGame;
-    }while(startGame != "n" && startGame != "l");//PRELIMINARE
+    do {
+        cout << "Iniziare una nuova partita (n), o riavviarne una (l)" << endl;
+        cin >> startGame;
+    } while (startGame != "n" && startGame != "l");//PRELIMINARE
 
 
-    if(startGame=="n"){
-        cout<<"\nCREAZIONE DELLA LOBBY\n"<<endl;
+    if (startGame == "n") {
+        cout << "\nCREAZIONE DELLA LOBBY\n" << endl;
 
         Master theMaster;
-        vector<Hero> playerVector;
-        unsigned int numPlayer=0;
-        bool loading=false;
+        vector<unique_ptr<Hero>> playerVector;
+        unsigned int numPlayer = 0;
+        bool loading = false;
 
-        setPartyIdentity(theMaster, playerVector, numPlayer, loading);
+        setPartyIdentity(playerVector, numPlayer, loading);
 
         bool modified;
         do {
@@ -33,112 +34,82 @@ int main() {
             modified = false;
             do {
                 cout << "Confermi questa configurazione per gli eroi? y/n" << endl;
-                cout<<"Se no, ti verra' chiesto quale eroe vuoi modificare"<<endl;
+                cout << "Se no, ti verra' chiesto quale eroe vuoi modificare" << endl;
                 cin >> confirm;
-            }while(confirm!="y" && confirm!="n");
+            } while (confirm != "y" && confirm != "n");
 
-            if(confirm=="n") {
+            if (confirm == "n") {
                 modifyCharacter(playerVector, numPlayer);
-                modified=true;
+                modified = true;
             }
 
-        }while(modified);
+        } while (modified);
 
         game(theMaster, playerVector, numPlayer);
-    }
-
-    else{
-        cout<<"\nRIPRISTINO DELLA LOBBY\n"<<endl;
+    } else {
+        cout << "\nRIPRISTINO DELLA LOBBY\n" << endl;
 
         Master theMaster;
-        vector<Hero> playerVector;
-        unsigned int numPlayer=0;
-        bool loading=true;
+        vector<unique_ptr<Hero>> playerVector;
+        unsigned int numPlayer = 0;
+        bool loading = true;
 
 
-        setPartyIdentity(theMaster, playerVector, numPlayer,loading);
+        setPartyIdentity(playerVector, numPlayer, loading);
 
-        for(auto &it : playerVector){
+        string answer;
+        unsigned int amount=0;
+        bool err;
+        for (auto &it: playerVector) {
 
-            string answer;
+            answer="";
+            amount=0;
 
-            do{
-                cout<<it.getNameCharacter()<<" era uscito di scena? y/n"<<endl;
-                cin>>answer;
-            }while(answer!="y" && answer!="n");
-            if(answer=="y"){
-                it.setOutScene(true);
-                do{//fixme item
-                    cout<<"Aveva oggetti nell'inventario? y/n"<<endl;
-                    cin>>answer;
-                }while(answer != "y" && answer!= "n");
+            do {
+                cout << it->getNameCharacter() << " era uscito di scena? y/n" << endl;
+                cin >> answer;
+            } while (answer != "y" && answer != "n");
 
-                if(answer=="y"){
-                    string item;
-                    do{
-                        cout<<"Inserire l'oggetto"<<endl;
-                        cin.ignore();
-                        getline(cin, item);
-                        it.addItem(item);
-                        cout<<"Ne aveva altri? y/n"<<endl;
-                        cin>>answer;
-                    }while(answer=="y");
-                    //it.openItem();
-                }
-                answer="neutral";
+            if (answer == "y") {
+                it->setOutScene(true);//se è fuori scena basta settare il fuori scena e l'inventario, altrimenti bisogna settare anche tutto il resto
+                insertItem(answer, it, amount, err);
             }
 
 
-            if(!it.isOutScene()){
-                do{
-                    cout<<it.getNameCharacter()<<" era in adrenalina? y/n"<<endl;
-                    cin>>answer;
-                } while (answer!="y" && answer!="n");
+            if (!it->isOutScene()) {
+                do {
+                    cout << it->getNameCharacter() << " era in adrenalina? y/n" << endl;
+                    cin >> answer;
+                } while (answer != "y" && answer != "n");
 
-                if(answer=="y")
-                    it.setAdrenaline(true);
-                answer="neutral";
+                if (answer == "y")
+                    it->setAdrenaline(true);
 
-                do{
-                    cout<<it.getNameCharacter()<<" era in confusione? y/n"<<endl;
-                    cin>>answer;
-                } while (answer!="y" && answer!="n");
+                do {
+                    cout << it->getNameCharacter() << " era in confusione? y/n" << endl;
+                    cin >> answer;
+                } while (answer != "y" && answer != "n");
 
-                if(answer=="y")
-                    it.setConfusion(true);
+                if (answer == "y")
+                    it->setConfusion(true);
 
-                do{//fixme item
-                    cout<<"Aveva oggetti nell'inventario? y/n"<<endl;
-                    cin>>answer;
-                }while(answer != "y" && answer!= "n");
+                insertItem(answer, it, amount, err);
 
-                if(answer=="y"){
-                    string item;
-                    do{
-                        cout<<"Inserire l'oggetto"<<endl;
-                        cin.ignore();
-                        getline(cin, item);
-                        it.addItem(item);
-                        cout<<"Ne aveva altri? y/n"<<endl;
-                        cin>>answer;
-                    }while(answer=="y");
-                    //it.openItem();
-                }
+                cout << "\n\n" << endl;
             }
-            cout<<"\n\n"<<endl;
-        }//ripristino dei parametri dei personaggi
 
-        getPartyIdentity(playerVector);
+            getPartyIdentity(playerVector);
 
-        int ub;//ripristino del master
-        bool e;
-        cout<<"Quanti token aveva il master?"<<endl;
-        insertNumber(ub, e);
-        theMaster.addMultipleBlack(ub);
+            int usableBlack;//ripristino del master
+            bool e;
+            cout << "Quanti token aveva il master?" << endl;
+            insertNumber(usableBlack, e);
+            theMaster.addMultipleBlack(usableBlack);
 
-        game(theMaster, playerVector, numPlayer);
+            game(theMaster, playerVector, numPlayer);
 
-    }//ripristino del gioco
+        }//ripristino del gioco
 
-    return 0;
+        return 0;
+    }
 }

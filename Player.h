@@ -6,12 +6,10 @@
 #define SISTEMA_DI_GIOCO_NOT_THE_END_PLAYER_H
 
 
-#include <iostream>
-#include <vector>
 #include <algorithm>
+#include <memory>
 #include "NumberFunctions.h"
 #include "Bag.h"
-using namespace std;
 
 
 class Player{
@@ -19,15 +17,11 @@ protected:
     Bag bag;
 public:
     Player()=default;
-    ~Player()=default;
+    virtual ~Player()=default;
 
     virtual void extract(int e);
 
     virtual void setBag(int numW,int numB) = 0;
 };
-
-
-
-
 
 #endif //SISTEMA_DI_GIOCO_NOT_THE_END_PLAYER_H

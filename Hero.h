@@ -8,7 +8,12 @@
 
 #include "Player.h"
 #include "Master.h"
+#include "ConsumableItem.h"
+#include "Item.h"
 #include <set>
+
+class AbItem;
+
 
 class Hero : public Player {
     string namePlayer;
@@ -21,50 +26,31 @@ class Hero : public Player {
     string archetype;//ce n'è uno solo
     set<string> qualities;
     set<string> abilities;
-    multiset<string> item;//fixme item
+    vector<unique_ptr<AbItem>> item;
 
 public:
-    explicit Hero(string nameCharacter, string namePlayer, string myRisk,unsigned int numberPlayer);
-    ~Hero()=default;
+    explicit Hero(string nameCharacter, string namePlayer, string myRisk, unsigned int numberPlayer);
+    ~Hero() override{
+        cout<<"L'eroe "<<this->nameCharacter<<" ha lasciato il party"<<endl;
+    };
 
     void setHeroCharacteristics();
 
-    void openItem() const{//fixme item
-        cout<<"\nL'inventario di "<<nameCharacter<<endl;
-        for(auto const &it : item){
-            cout<<it<<endl;
-        }
-    };
+    void openItem() const;
 
-    void addItem(string &newItem){//fixme item
-        item.insert(newItem);
-        cout<<"Il nuovo oggetto "<<newItem<<" e' stato inserito nell'inventario"<<endl;
-    }
+    void addItem(unique_ptr<AbItem> newItem);
 
-    void removeItem(string &deleteItem){//fixme item
-        item.erase(deleteItem);
-        cout<<"L'oggetto "<<deleteItem<<" e' stato rimosso dall'inventario"<<endl;
-        openItem();
-    }
+    void destroyAllItem();
 
-    void destroyItem(){//fixme item
-        item.clear();
-    }
+    bool isThereSearchedItem(string &used);
 
-    auto getEndItem() const{//fixme item
-        return item.end();
-    }
+    static void useItem(unique_ptr<Hero> &it);
 
-    auto getFindItem(string &used){//fixme item
-        return item.find(used);
-    }
+    bool itemIsEmpty();
 
-    bool itemIsEmpty(){//fixme item
-        if(item.empty())
-            return true;
-        else
-            return false;
-    }
+    bool isThereThisConsumableItem(string &inputItem, unsigned int amount);
+
+    void sortItem();
 
     void setBag(int numW, int numB) override;//settaggio della difficoltà, viene fatta a parte prima di qualsiasi altra estrazione/controllo
 
@@ -164,7 +150,7 @@ public:
     void getQualities() const{//fixme problema pe cui taglia le prime lettere
         int i=0;
         for(const auto &it : qualities){
-            if(++i<it.size()+1)
+            if(++i<getNumQualities())
                 cout<<it<<", ";
             else
                 cout<<it<<endl;
@@ -182,7 +168,7 @@ public:
     void getAbilities() const{
         int i=0;
         for(const auto &it : abilities){
-            if(++i<it.size()+1)
+            if(++i<getNumAbilities())
                 cout<<it<<", ";
             else
                 cout<<it<<endl;

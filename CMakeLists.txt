@@ -14,4 +14,10 @@ add_executable(Sistema_di_gioco_Not_The_End main.cpp
         Master.h
         Hero.cpp
         Hero.h
-        NumberFunctions.cpp)
+        NumberFunctions.cpp
+        Item.cpp
+        Item.h
+        ConsumableItem.cpp
+        ConsumableItem.h
+        AbItem.h
+)

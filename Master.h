@@ -12,7 +12,7 @@ class Master : public Player{
 
 public:
     Master()=default;
-    ~Master()=default;
+    ~Master() override =default;
 
     //il master per l'estrazione utilizza la funzione della classe player
 

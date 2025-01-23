@@ -45,7 +45,7 @@ void Hero::setHeroCharacteristics() {
             abilities.insert(answer);
         }
 
-        cout<<"ARCHETIPO: "<<getArchetype()<<endl;//fixme capire se lasciare o no
+        cout<<"ARCHETIPO: "<<getArchetype()<<endl;
 
         cout<<"QUALITA':"<<endl;
         getQualities();
@@ -67,6 +67,125 @@ void Hero::setHeroCharacteristics() {
 }
 
 
+//METODI PER ITEM
+void Hero::openItem() const {
+    cout<<"\nL'inventario di "<<nameCharacter<<endl;
+    for(auto const &it : item){
+        it->getInfo();
+    }
+}
+
+void Hero::addItem(unique_ptr<AbItem> newItem){
+    item.push_back(std::move(newItem));
+    openItem();
+}
+
+void Hero::destroyAllItem(){
+    item.clear();
+}
+
+bool Hero::isThereSearchedItem(string &used) {
+    for(const auto &it : item){
+        if(it->getName()==used){
+            return true;
+        }
+    }
+    return false;
+}
+
+void Hero::useItem(unique_ptr<Hero> &it) {
+    string used;
+    bool exitFlag = false;
+
+    do {
+        it->openItem();
+        cin.ignore();
+        cout << "Quale oggetto vuoi usare? Scrivi close per chiudere lo zaino" << endl;
+        getline(cin, used);
+
+        if (it->isThereSearchedItem(used) && used != "close") {
+            // Usa un ciclo tradizionale con indice per evitare problemi di invalidazione
+            for (int i = 0; i < it->item.size(); ++i) {
+                auto &iteItem = it->item[i]; // Riferimento all'elemento corrente
+
+                if (iteItem->getName() == used) {
+                    // NON CONSUMABILI
+                    if (auto *tempItem = dynamic_cast<Item *>(iteItem.get())) {
+                        unique_ptr<Item> target = make_unique<Item>(*tempItem);
+                        cout << "OGGETTO SELEZIONATO: ";
+                        target->getInfo();
+                        cout << endl;
+
+                        string again;
+                        do {
+                            cout << target->getName() << " puo' essere ancora usato? y/n" << endl;
+                            cin >> again;
+                        } while (again != "y" && again != "n");
+
+                        if (again == "n") {
+                            cout << target->getName() << " e' stato rimosso dall'inventario" << endl;
+                            it->item.erase(it->item.begin() + i); // Rimuovi l'oggetto
+                            --i;
+                        }
+                        exitFlag = true;
+                        break; // Esci dal ciclo dopo aver trovato e gestito l'oggetto
+                    }
+                        // CONSUMABILI
+                    else if (auto *tempCItem = dynamic_cast<ConsumableItem *>(iteItem.get())) {
+                        unique_ptr<ConsumableItem> target = make_unique<ConsumableItem>(*tempCItem);
+                        cout << "OGGETTO SELEZIONATO: ";
+                        target->getInfo();
+                        cout << endl;
+
+                        int numUsed = 0;
+                        bool e = false;
+                        do {
+                            cout << "Quanti " << target->getName() << " vuoi usare?" << endl;
+                            insertNumber(numUsed, e);
+                        } while (numUsed > target->getAmount());
+
+                        target->setAmount(target->getAmount() - numUsed);
+
+                        if (target->getAmount() == 0) {
+                            cout << target->getName() << " e' stato rimosso dall'inventario" << endl;
+                            it->item.erase(it->item.begin() + i); // Rimuovi se la quantità residua è zero
+                            --i;
+                        } else {
+                            cout << "Ti sono rimasti " << target->getAmount() << " " << target->getName() << endl;
+                            it->item[i] = std::move(target); // Sovrascriviamo l'oggetto in questione
+                        }
+
+                        exitFlag = true;
+                        break; // Esci dal ciclo dopo aver trovato e gestito l'oggetto
+                    }
+                }
+            }
+        }
+    } while (!exitFlag);
+}
+
+bool Hero::isThereThisConsumableItem(string &inputItem, unsigned int amount){
+    ConsumableItem* tempCItem;
+    for(auto const &it: item){
+        if( (tempCItem = dynamic_cast<ConsumableItem*>(it.get()))&& (tempCItem->getName()==inputItem)){//tempCItem o it
+            tempCItem->setAmount(tempCItem->getAmount()+amount);
+            return true;
+        }
+    }
+    return false;
+}
+
+void Hero::sortItem(){
+    std::sort(item.begin(),item.end());
+}
+
+bool Hero::itemIsEmpty(){
+    if(item.empty())
+        return true;
+    else
+        return false;
+}
+
 void Hero::getIdentity() const {
     cout<<"Personaggio "<<numberPlayer<<"         Impersonato da "<<namePlayer<<endl;
     cout<<nameCharacter<<endl;
@@ -76,7 +195,6 @@ void Hero::getIdentity() const {
     getQualities();
     cout<<"ABILITA':"<<endl;
     getAbilities();
-    cout<<"\n\n"<<endl;
 }
 
 void Hero::setBag(int numW, int numB) {
