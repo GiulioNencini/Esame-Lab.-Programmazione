@@ -8,24 +8,20 @@
 #include <iostream>
 using namespace std;
 
-class AbItem{
+class AbItem {
 
 protected:
     string name;
 public:
-    explicit AbItem(string &name) : name(name){};
-    virtual ~AbItem()=default;
+    explicit AbItem(string &name) : name(name) {};
 
-    virtual const string &getName() const{
+    virtual ~AbItem() = default;
+
+    virtual const string &getName() const {
         return name;
     };
 
-    virtual void getInfo() const =0;
-
-    /*virtual unsigned int getAmount() const =0;
-
-    virtual void setAmount(unsigned int a)=0;*/
-
+    virtual void getInfo() const = 0;
 };
 
 #endif //SISTEMA_DI_GIOCO_NOT_THE_END_ABITEM_H

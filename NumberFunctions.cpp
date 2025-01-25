@@ -1,8 +1,8 @@
-//NOTA: In seguito ad un errore di definizione multipla ho provato a trasferire le definizioni qui
+//NOTA: In seguito a un errore di definizione multipla ho provato a trasferire le definizioni qui
 
 #include "NumberFunctions.h"
 
-void verifyNumber(bool &error){//funzione per l'inserimento sicuro di un numero in generale, usata nella successiva insertNumber
+void verifyNumber(bool &error) {//funzione per l'inserimento sicuro di un numero positivo, usata nella successiva insertNumber.
 
     if (cin.fail()) // Se l'inserimento fallisce (non è un numero), resetta il flag di errore
     {
@@ -15,7 +15,18 @@ void verifyNumber(bool &error){//funzione per l'inserimento sicuro di un numero 
         error=false;
 }
 
+int howExtract() {
+    int ex;
+    do {
+        cout << "Quanto vuoi estrarre?" << endl;
+        bool e;
+        insertNumber(ex, e);
+        if (ex < 1 || ex > 4)
+            cout << "Valore non valido (dev'essere tra 1 e 4)" << endl;
 
+    } while (ex < 1 || ex > 4);
+    return ex;
+}
 
 int getRandomPos(int max){
 
@@ -44,18 +55,4 @@ int getRandom(int maxValue){
     std::uniform_int_distribution<> distribuzione(0, maxValue-1);
 
     return distribuzione(gen);
-}
-
-
-int howExtract() {
-    int ex;
-    do {
-        cout << "Quanto vuoi estrarre?" << endl;
-        bool e;
-        insertNumber(ex, e);
-        if (ex < 1 || ex > 4)
-            cout << "Valore non valido (dev'essere tra 1 e 4)" << endl;
-
-    } while (ex < 1 || ex > 4);
-    return ex;
 }

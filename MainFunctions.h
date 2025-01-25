@@ -7,13 +7,17 @@
 
 #include "Hero.h"
 
+void yesOrNot(string &answer){
+    do{
+        cin>>answer;
+    } while (answer!="y" && answer!="n");
+}
 
+//FUNZIONI ITEM
 void insertItem(string &answer, unique_ptr<Hero> &it, unsigned int &amount, bool &err, bool isAddingItemDuringGame=false) {//Questa è la funzione che genera gli oggetti. Già distinguendoli come consumabili o meno
     if(!isAddingItemDuringGame){
-            do {
-                cout << "Ha oggetti nell'inventario? y/n" << endl;
-                cin >> answer;
-            } while (answer != "y" && answer != "n");
+        cout << "Ha oggetti nell'inventario? y/n" << endl;
+        yesOrNot(answer);
     }
     else
         answer="y";
@@ -22,10 +26,8 @@ void insertItem(string &answer, unique_ptr<Hero> &it, unsigned int &amount, bool
         string inputItem;
         unique_ptr<AbItem> item;
         do {
-            do {
-                cout << "E' un consumabile? y/n" << endl;
-                cin >> answer;
-            } while (answer != "y" && answer != "n");
+            cout << "E' un consumabile? y/n" << endl;
+            yesOrNot(answer);
 
             if (answer == "n") {
                 cout << "Inserire il nome dell'oggetto" << endl;
@@ -54,23 +56,16 @@ void insertItem(string &answer, unique_ptr<Hero> &it, unsigned int &amount, bool
             it->sortItem();
 
             if(!isAddingItemDuringGame){//la distinzione qui invece è una pura questione di senso del testo
-                do {
-                    cout << "Ne ha altri? y/n" << endl;
-                    cin >> answer;
-                } while (answer != "y" && answer != "n");
+                cout << "Ne ha altri? y/n" << endl;
+                yesOrNot(answer);
             }
             else{
-                do {
-                    cout << "Vuoi aggiungerne altri? y/n" << endl;
-                    cin >> answer;
-                } while (answer != "y" && answer != "n");
+                cout << "Vuoi aggiungerne altri? y/n" << endl;
+                yesOrNot(answer);
             }
-
-
         } while (answer == "y");
     }
 }//NOTA: è necessario per la creazione e il caricamento fare questa piccola distinzione di funzioni per via della gestione del ciclo for iniziale
-
 
 void setInitialItem(vector<unique_ptr<Hero>> &playerVector) {
     for (auto &it: playerVector) {
@@ -86,7 +81,7 @@ void setInitialItemAddedCharacter(vector<unique_ptr<Hero>> &playerVector, unsign
     unsigned int amount;
     string answer;
     bool err;
-     for (auto &it: playerVector) {
+    for (auto &it: playerVector) {
         if(it->getNumberPlayer()==lastPlayer){
             answer="";
             amount=0;
@@ -94,6 +89,28 @@ void setInitialItemAddedCharacter(vector<unique_ptr<Hero>> &playerVector, unsign
             insertItem(answer, it, amount, err);
         }
     }
+}
+
+
+//GESTIONE DEI PERSONAGGI
+void setCharacterIdentity(unsigned int i, vector<unique_ptr<Hero>> &playerVector, bool initialSetting=true){//funzione usata all'inizio per dare identità agli eroi, vedi funzione setPartyIdentity
+
+    cout<<"Creazione del personaggio "<<i<<endl;//C'era un problema per cui dal secondo personaggio in poi saltava la richiesta del nome del giocatore, risolto con cin.ignore(), ma bisogna premer invio quando si imposta per la prima volta, che sia il primo giocatore o che sia la funzione di aggiunta di un personaggio. !initialSetting serve per far comparire la scritta quando si aggiunge un personaggio
+    if(i==1 || !initialSetting)
+        cout<<"(Premere invio)"<<endl;
+    cin.ignore();
+    string nameCharacter, namePlayer, risk;
+    cout<<"Come si chiama il giocatore?"<<endl;
+    getline(cin,namePlayer);
+    cout<<"Come si chiama il personaggio?"<<endl;
+    getline(cin,nameCharacter);
+    cout<<"Per cosa sei disposto a rischiare "<<nameCharacter<<"?"<<endl;
+    getline(cin,risk);
+
+    auto player = make_unique<Hero>(nameCharacter, namePlayer, risk, i);
+    player->setHeroCharacteristics();
+    playerVector.push_back(std::move(player));
+    cout<<"\n\n\n"<<endl;
 }
 
 void getPartyIdentity(vector<unique_ptr<Hero>> &playerVector){
@@ -104,6 +121,27 @@ void getPartyIdentity(vector<unique_ptr<Hero>> &playerVector){
         cout<<"\n\n"<<endl;
     }
 }
+
+void setPartyIdentity(vector<unique_ptr<Hero>> &playerVector, unsigned int &numPlayer, bool loading){
+
+    do {
+        cout << "Inserire il numero dei giocatori, massimo 5" << endl;
+        bool e;
+        insertNumber(numPlayer, e);
+
+    }while (numPlayer < 1 || numPlayer>5);
+    cin.ignore();
+
+    for(int i=1;i<=numPlayer;i++){
+        setCharacterIdentity(i, playerVector);
+    }
+
+    if(!loading){
+        setInitialItem(playerVector);
+        getPartyIdentity(playerVector);
+    }
+}
+
 
 void getFinalPartyIdentity(vector<unique_ptr<Hero>> &playerVector){
     for(const auto &it : playerVector){
@@ -128,28 +166,41 @@ void modifyCharacter(vector<unique_ptr<Hero>> &playerVector, unsigned int numPla
         insertNumber(num, e);
     }while(num<1 || num>numPlayer);
 
-    for(auto &it : playerVector){//this
+    for(auto &it : playerVector){//ricerca del personaggio da modificare mediante il suo numero
         if(it->getNumberPlayer()==num){
-            cin.ignore();
-            it->getIdentity();
-            string newCred;
-            cout<<"Reinserire il nome del giocatore:"<<" ";
-            getline(cin,newCred);
-            it->setNamePlayer(newCred);
-            cout<<"\nReinserire il nome del personaggio:"<<" ";
-            getline(cin,newCred);
-            it->setNameCharacter(newCred);
-            cout<<"\nPer cosa sei disposto a rischiare "<<it->getNameCharacter()<<"?"<<endl;
-            getline(cin,newCred);
-            it->setRisk(newCred);
-
             string answer;
+            cout<<"Vuoi reimpostare le generalita'? y/n"<<endl;
+            yesOrNot(answer);
+            if(answer=="y"){
+                cin.ignore();
+                it->getIdentity();
+                string newCred;
+                cout<<"Reinserire il nome del giocatore:"<<" ";
+                getline(cin,newCred);
+                it->setNamePlayer(newCred);
+                cout<<"\nReinserire il nome del personaggio:"<<" ";
+                getline(cin,newCred);
+                it->setNameCharacter(newCred);
+                cout<<"\nPer cosa sei disposto a rischiare "<<it->getNameCharacter()<<"?"<<endl;
+                getline(cin,newCred);
+                it->setRisk(newCred);
+                answer="";
+            }
+
             unsigned int amount=0;
             bool err=false;
-            do{
-                cout<<"Vuoi modificare anche l'inventario? y/n ATTENZIONE:Sara' completamente cancellato e dovra' essere rifatto da capo."<<endl;
-                getline(cin,answer);
-            }while(answer!="y" && answer!="n");
+
+            cout<<"Vuoi modificare i tratti? ATTENZIONE:Saranno completamente cancellati e dovranno essere riscritti da capo. y/n"<<endl;
+            yesOrNot(answer);
+
+            if(answer=="y"){
+                it->setHeroCharacteristics();
+            }
+
+            answer="";
+            it->openItem();
+            cout<<"Vuoi modificare l'inventario? ATTENZIONE:Sara' completamente cancellato e dovra' essere rifatto da capo. y/n"<<endl;
+            yesOrNot(answer);
 
             if(answer=="y"){
                 it->destroyAllItem();//capire se è possibile incapsulare
@@ -157,54 +208,16 @@ void modifyCharacter(vector<unique_ptr<Hero>> &playerVector, unsigned int numPla
                 insertItem(answer, it, amount, err);
             }
         }
-
         getPartyIdentity(playerVector);
     }
 }
 
-void setCharacterIdentity(unsigned int i, vector<unique_ptr<Hero>> &playerVector){//funzione usata all'inizio per dare identità agli eroi, vedi funzione setPartyIdentity
-
-    cout<<"Creazione del personaggio "<<i<<endl;
-    string nameCharacter, namePlayer, risk;
-    cout<<"Come si chiama il giocatore?"<<endl;
-    getline(cin,namePlayer);
-    cout<<"Come si chiama il personaggio?"<<endl;
-    getline(cin,nameCharacter);
-    cout<<"Per cosa sei disposto a rischiare "<<nameCharacter<<"?"<<endl;
-    getline(cin,risk);
-
-    auto player = make_unique<Hero>(nameCharacter, namePlayer, risk, i);
-    player->setHeroCharacteristics();
-    playerVector.push_back(std::move(player));
-    cout<<"\n\n\n"<<endl;
-}
-
-void setPartyIdentity(vector<unique_ptr<Hero>> &playerVector, unsigned int &numPlayer, bool loading){
-
-    do {
-        cout << "Inserire il numero dei giocatori, massimo 5" << endl;
-        bool e;
-        insertNumber(numPlayer, e);
-
-    }while (numPlayer < 1 || numPlayer>5);
-    cin.ignore();
-
-    for(int i=1;i<=numPlayer;i++){
-        setCharacterIdentity(i, playerVector);
-    }
-
-    if(!loading){
-        setInitialItem(playerVector);
-        getPartyIdentity(playerVector);
-    }
-}
-
-void removingCharacteristic(unique_ptr<Hero> &playerModified){
+void removingCharacteristic(unique_ptr<Hero> &playerModified, bool &stopped){
     string answer;
     do{
-        cout<<"Vuoi rimuovere una qualita' o un'abilita'? q/a"<<endl;
+        cout<<"Vuoi rimuovere una qualita' o un'abilita'? q/a   Scrivere cancel per annullare"<<endl;
         cin>>answer;
-    }while(answer!="q" && answer!="a");
+    }while(answer!="q" && answer!="a" && answer!="cancel");
 
     if(answer=="q"){
         cout<<"QUALITA' ATTUALI:"<<endl;
@@ -222,47 +235,56 @@ void removingCharacteristic(unique_ptr<Hero> &playerModified){
         getline(cin,answer);
         playerModified->removeAbility(answer);
     }
+    else{
+        stopped=true;
+        cout<<"Operazione annullata"<<endl;
+    }
 }
 
-void addingCharacteristic(unique_ptr<Hero> &playerModified){
-    string answer;
-    bool numControl;
-    do{
-        if(playerModified->getNumQualities()==6 && playerModified->getNumAbilities()==12){
-            cout<<"Hai gia' il massimo numero possibile di tratti, impossibile averne altri"<<endl;
-            break;
+void addingCharacteristic(unique_ptr<Hero> &playerModified, bool stopped= false){
+    if(!stopped){//utile quando si annulla l'operazione di modifica
+        string answer;
+        bool numControl;
+        do{
+            if(playerModified->getNumQualities()==6 && playerModified->getNumAbilities()==12){
+                cout<<"Hai gia' il massimo numero possibile di tratti, impossibile averne altri"<<endl;
+                break;
+            }
+
+            numControl=false;
+            cout<<"Vuoi aggiungere una qualita' o un'abilita'? q/a      Scrivere cancel per annullare"<<endl;
+            cout<<"ATTENZIONE: ricorda che non puoi avere piu' di 6 qualita' e 12 abilita' (attualmente hai "<<playerModified->getNumQualities()<<" qualita' e "<<playerModified->getNumAbilities()<<" abilita')"<<endl;
+            cin>>answer;
+            if((answer=="q" && playerModified->getNumQualities()<6) || (answer=="a" && playerModified->getNumAbilities()<12))//controllo per non sforare il numero massimo di abilità e qualità
+                numControl=true;
+            if(answer=="q" && !numControl)
+                cout<<"Hai gia' il massimo numero possibile di qualita'"<<endl;
+            if(answer=="a" && !numControl)
+                cout<<"Hai gia' il massimo numero possibile di abilita'"<<endl;
+
+        }while(!numControl && answer!="cancel");
+
+        if(answer=="q"){
+            cout<<"QUALITA' ATTUALI:"<<endl;
+            playerModified->getQualities();
+            cout<<"Qual e' la tua nuova qualita'?"<<endl;
+            cin.ignore();
+            getline(cin,answer);
+            playerModified->addQuality(answer);
         }
-
-        numControl=false;
-        cout<<"Vuoi aggiungere una qualita' o un'abilita'? q/a"<<endl;
-        cout<<"ATTENZIONE: ricorda che non puoi avere piu' di 6 qualita' e 12 abilita' (attualmente hai "<<playerModified->getNumQualities()<<" qualita' e "<<playerModified->getNumAbilities()<<" abilita')";
-        cin>>answer;
-        if((answer=="q" && playerModified->getNumQualities()<6) || (answer=="a" && playerModified->getNumAbilities()<12))//controllo per non sforare il numero massimo di abilità e qualità
-            numControl=true;
-        if(answer=="q" && !numControl)
-            cout<<"Hai gia' il massimo numero possibile di qualita'"<<endl;
-        if(answer=="a" && !numControl)
-            cout<<"Hai gia' il massimo numero possibile di abilita'"<<endl;
-
-    }while(!numControl);
-
-    if(answer=="q"){
-        cout<<"QUALITA' ATTUALI:"<<endl;
-        playerModified->getQualities();
-        cout<<"Qual e' la tua nuova qualita'?"<<endl;
-        cin.ignore();
-        getline(cin,answer);
-        playerModified->addQuality(answer);
-    }
-    else if(answer=="a"){
-        cout<<"ABILITA' ATTUALI:"<<endl;
-        playerModified->getAbilities();
-        cout<<"Qual e' la tua nuova abilita'?"<<endl;
-        cin.ignore();
-        getline(cin,answer);
-        playerModified->addAbility(answer);
+        else if(answer=="a"){
+            cout<<"ABILITA' ATTUALI:"<<endl;
+            playerModified->getAbilities();
+            cout<<"Qual e' la tua nuova abilita'?"<<endl;
+            cin.ignore();
+            getline(cin,answer);
+            playerModified->addAbility(answer);
+        }
+        else
+            cout<<"Operazione annullata"<<endl;
     }
 }
+
 
 
 void game(Master &theMaster, vector<unique_ptr<Hero>> &playerVector, unsigned int &numPlayer){//gioco effettivo
@@ -274,9 +296,9 @@ void game(Master &theMaster, vector<unique_ptr<Hero>> &playerVector, unsigned in
         do {
             command="";
             cout << "\n\n\nScegliere un comando:" << endl;
-            cout<<"h/m per far giocare gli eroi/il master"<<endl;
-            cout<<"modify/add/remove per modificare/aggiungere/rimuovere un personaggio"<<endl;
-            cout<<"endgame per terminare la sessione di gioco"<<endl;
+            cout<<"- h/m per far giocare gli eroi/il master"<<endl;
+            cout<<"- modify/add/remove per modificare/aggiungere/rimuovere un personaggio"<<endl;
+            cout<<"- endgame per terminare la sessione di gioco"<<endl;
             cin >> command;
         }while(command!="m" && command!="h" && command!="modify" && command!="endgame" && command!="add" && command!="remove");
 
@@ -308,9 +330,9 @@ void game(Master &theMaster, vector<unique_ptr<Hero>> &playerVector, unsigned in
 
                         string action;
                         do {
-                            cout<< "Scegli un'azione: superare una prova(t), attendere(w), aprire l'inventario(o), modificare un tratto(c)"<< endl;//NOTA: attendere non fa fare niente al personaggio, è un modo per uscire dal turno senza fare nulla di particolare
+                            cout<< "Scegli un'azione: superare una prova(t), aprire l'inventario(o), modificare un tratto(c), attendere(w)"<< endl;//NOTA: attendere non fa fare niente al personaggio, è un modo per uscire dal turno senza fare nulla di particolare
                             cin >> action;
-                        }while(action!="t" && action!="w" && action!="o" && action!="c");
+                        }while(action!="t" && action!="o" && action!="c" && action!="w");
 
 
                         if(action=="t"){
@@ -333,10 +355,8 @@ void game(Master &theMaster, vector<unique_ptr<Hero>> &playerVector, unsigned in
 
                             if(it->itemIsEmpty()){//se è vuoto non si possono usare oggetti
                                 cout<<"NON HAI OGGETTI NELL'INVENTARIO"<<endl;
-                                do{
-                                    cout<<"vuoi inserirne? y/n"<<endl;
-                                    cin>>answer;
-                                }while(answer!="y" && answer!="n");
+                                cout<<"vuoi inserirne? y/n"<<endl;
+                                yesOrNot(answer);
                                 if(answer=="y")
                                     insertItem(answer, it, amount, err, true);//l'utilizzo di true qui fa sì che venga saltata la domanda iniziale della funzione
                             }
@@ -350,7 +370,7 @@ void game(Master &theMaster, vector<unique_ptr<Hero>> &playerVector, unsigned in
 
 
                             if(answer=="u"){
-                                it->useItem(it);
+                                it->useItem(it);//fixme funzionare funziona lo stesso. Non ho mai avuto errori
                             }
 
                             else if(answer=="a"){
@@ -363,8 +383,9 @@ void game(Master &theMaster, vector<unique_ptr<Hero>> &playerVector, unsigned in
 
                         else if(action=="c"){
                             string answer;
+                            bool stopped=false;
                             do{
-                                cout<<"Scrivere new/remove/modify per aggiungere/togliere/togliere e reinserire un tratto. cancel per annullare"<<endl;
+                                cout<<"Scrivere new/remove/modify per aggiungere/togliere/togliere e reinserire un tratto. Scrivi cancel per annullare"<<endl;
                                 cin>>answer;
                             }while(answer!="new" && answer!="remove" && answer!="modify" && answer!="cancel");
 
@@ -372,13 +393,15 @@ void game(Master &theMaster, vector<unique_ptr<Hero>> &playerVector, unsigned in
                                 addingCharacteristic(it);
 
                             else if(answer=="remove")
-                                removingCharacteristic(it);
+                                removingCharacteristic(it, stopped);
 
                             else if(answer=="modify"){
                                 cout<<"Per modificare un tratto prima scegli quale cancellare e poi, subito dopo, quale aggiungere"<<endl;
-                                removingCharacteristic(it);
-                                addingCharacteristic(it);
+                                removingCharacteristic(it, stopped);
+                                addingCharacteristic(it, stopped);
                             }
+                            else
+                                cout<<"Operazione annullata"<<endl;
                         }
 
                         else if(action=="w")
@@ -389,10 +412,9 @@ void game(Master &theMaster, vector<unique_ptr<Hero>> &playerVector, unsigned in
                     else{//se è fuori scena
                         cout<<it->getNameCharacter()<<" e' fuori scena!"<<endl;
                         string answer;
-                        do{
-                            cout<<it->getNameCharacter()<<" puo' essere immediatamente soccorso? y/n"<<endl;
-                            cin>>answer;
-                        } while (answer!="y" && answer!="n");
+                        cout<<it->getNameCharacter()<<" puo' essere immediatamente soccorso? y/n"<<endl;
+                        yesOrNot(answer);
+
                         if(answer=="y")
                             it->setOutScene(false);
                         else{
@@ -418,7 +440,7 @@ void game(Master &theMaster, vector<unique_ptr<Hero>> &playerVector, unsigned in
 
             string action,exitAnswer;
             do{
-                cout<<"Attualmente ho "<<theMaster.getUsableBlack()<<" token neri"<<endl;
+                cout<<"Attualmente il master ha in suo possesso "<<theMaster.getUsableBlack()<<" token neri"<<endl;
                 do{
                     cout<<"Complichiamo un po' le cose (t), facciamo un'estrazione (e)"<<endl;
                     cin>>action;
@@ -450,10 +472,8 @@ void game(Master &theMaster, vector<unique_ptr<Hero>> &playerVector, unsigned in
                     theMaster.reset();
                 }
 
-                do{
-                    cout<<"Ho altro da fare? y/n"<<endl;
-                    cin>>exitAnswer;
-                }while(exitAnswer!="y" && exitAnswer!="n");
+                cout<<"Il master vuole fare qualcos'altro? y/n"<<endl;
+                yesOrNot(exitAnswer);
 
             }while(exitAnswer=="y");
         }
@@ -465,7 +485,7 @@ void game(Master &theMaster, vector<unique_ptr<Hero>> &playerVector, unsigned in
         else if(command=="add"){//segue l'effettiva creazione di un personaggio
             if(numPlayer<5){
                 cin.ignore();
-                setCharacterIdentity(numPlayer+1, playerVector);
+                setCharacterIdentity(numPlayer+1, playerVector, false);//il false è utile per risolvere il problema segnato alla definizione della funzione
                 numPlayer++;
                 setInitialItemAddedCharacter(playerVector, numPlayer);
                 getPartyIdentity(playerVector);
@@ -476,32 +496,36 @@ void game(Master &theMaster, vector<unique_ptr<Hero>> &playerVector, unsigned in
         }
 
         else if(command=="remove"){
+            string confirm;
             int leaving=0;
-            do{
-                cout<<"Quale personaggio lascia il party?"<<endl;
-                bool e;
-                do{
-                    cin>>leaving;
-                    verifyNumber(e);
-                }while(e);
-            }while(leaving<1 || leaving>numPlayer);
-
-            for(auto &it : playerVector){//ricerca dell'uscente
-                if(leaving==it->getNumberPlayer())
-                    cout<<it->getNameCharacter()<<"\n ha lasciato il party\n"<<endl;
-            }
-
-            playerVector.erase(playerVector.begin()+leaving-1);//aggiornamento del vettore
-            numPlayer--;
-
-            int x=1;//riassegnazione dei numeri dei giocatori
-            for(auto &it : playerVector){
-                it->setNumberPlayer(x++);
-            }
             getPartyIdentity(playerVector);
+                do{
+                    cout<<"Quale personaggio lascia il party? (Inserire il suo numero)"<<endl;
+                    bool e;
+                    insertNumber(leaving, e);
+                }while(leaving<1 || leaving>numPlayer);
 
+                cout<<"Confermi di voler definitivamente eliminare il personaggio "<<leaving<< " dal party? y/n"<<endl;
+                yesOrNot(confirm);
+
+                if(confirm=="y") {
+                    for (auto &it: playerVector) {//ricerca dell'uscente
+                        if (leaving == it->getNumberPlayer())
+                            cout << it->getNameCharacter() << "\n ha lasciato il party\n" << endl;
+                    }
+
+                    playerVector.erase(playerVector.begin() + leaving - 1);//aggiornamento del vettore
+                    numPlayer--;
+
+                    int x = 1;//riassegnazione dei numeri dei giocatori
+                    for (auto &it: playerVector) {
+                        it->setNumberPlayer(x++);
+                    }
+                    getPartyIdentity(playerVector);
+                }
+                else
+                    cout<<"Operazione annullata"<<endl;
         }
-
     }while(command!="endgame");
 
     cout<<"Sessione terminata, ecco il resoconto finale:"<<endl;

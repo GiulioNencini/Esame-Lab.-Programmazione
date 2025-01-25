@@ -23,10 +23,6 @@ public:
         amount=a;
     }
 
-    /*const string &getName() const override{
-        return name;
-    };*/
-
     void getInfo() const override{
         cout<<getName()<<" x"<<getAmount()<<endl;
     }

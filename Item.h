@@ -13,14 +13,6 @@ public:
     explicit Item(string &name);
     ~Item() override =default;
 
-    /*unsigned int getAmount() const override{
-        return 1;
-    }*/
-
-    /*const string &getName() const override{
-        return name;
-    };*/
-
     void getInfo() const override{
         cout<<getName()<<endl;
     }

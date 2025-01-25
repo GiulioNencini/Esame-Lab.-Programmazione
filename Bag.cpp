@@ -11,9 +11,5 @@ void Bag::reset() {
     whiteExtracted=0;
     blackExtracted=0;
     extractionVector.clear();
-
-    /*for(int i=extractionVector.size()-1;i>=0;i--){
-        extractionVector.erase(extractionVector.begin()+i);
-    }*/
     cout<<"Il sacchetto e' stato resettato"<<endl;
 }

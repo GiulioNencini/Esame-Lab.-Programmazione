@@ -7,8 +7,11 @@ Hero::Hero(string nameCharacter, string namePlayer, string myRisk, unsigned int 
     cout<<"L'eroe "<<this->nameCharacter<<" si e' unito al party"<<endl;
 }
 
+//GESTIONE CARATTERISTICHE EROI
 void Hero::setHeroCharacteristics() {
     string answer;
+    qualities.clear();
+    abilities.clear();//sono necessari perché questa funzione può essere chiamata anche all'inizio per rieseguire la configurazione degli eroi
     do{
         cout<<"NOTA PER LA CREAZIONE: un personaggio all'inizio ha di norma 3 qualita' e 4 abilita'"<<endl;
         cout << getNameCharacter() << ", qual e' il tuo archetipo?" << endl;
@@ -25,7 +28,7 @@ void Hero::setHeroCharacteristics() {
 
         cout << "Quali sono?" << endl;
         for (int i = 0; i < num; i++) {//fixme sia qui che sotto c'è un problema per cui il primo carattere, a partire dal secondo elemento del set, non viene considerato
-            cout<<"Qualita' numero "<<i+1<<":";
+            cout<<"Qualita' numero "<<i+1<<": ";
             cin.ignore();
             getline(cin, answer);
             qualities.insert(answer);
@@ -39,7 +42,7 @@ void Hero::setHeroCharacteristics() {
 
         cout << "Quali sono?" << endl;
         for (int i = 0; i < num; i++) {
-            cout<<"abilita' numero "<<i+1<<":";
+            cout<<"abilita' numero "<<i+1<<": ";
             cin.ignore();
             getline(cin, answer);
             abilities.insert(answer);
@@ -53,10 +56,8 @@ void Hero::setHeroCharacteristics() {
         cout<<"ABILITA':"<<endl;
         getAbilities();
 
-        do{
-            cout<<"Confermi le tue scelte? y/n"<<endl;
-            cin>>answer;
-        } while (answer!="y" && answer!="n");
+        cout<<"Confermi le tue scelte? y/n"<<endl;
+        yesOrNot(answer);
 
         if(answer=="n") {
             qualities.clear();
@@ -64,6 +65,16 @@ void Hero::setHeroCharacteristics() {
         }
     }while (answer!="y");
 
+}
+
+void Hero::getIdentity() const {
+    cout<<"("<<numberPlayer<<") "<<nameCharacter<<"        Impersonato da "<<namePlayer<<endl;
+    cout<<"Disposto a tutto per: "<<myRisk<<endl;
+    cout<<"ARCHETIPO: "<<getArchetype()<<endl;
+    cout<<"QUALITA':"<<endl;
+    getQualities();
+    cout<<"ABILITA':"<<endl;
+    getAbilities();
 }
 
 
@@ -117,10 +128,8 @@ void Hero::useItem(unique_ptr<Hero> &it) {
                         cout << endl;
 
                         string again;
-                        do {
-                            cout << target->getName() << " puo' essere ancora usato? y/n" << endl;
-                            cin >> again;
-                        } while (again != "y" && again != "n");
+                        cout << target->getName() << " puo' essere ancora usato? y/n" << endl;
+                        yesOrNot(again);
 
                         if (again == "n") {
                             cout << target->getName() << " e' stato rimosso dall'inventario" << endl;
@@ -186,17 +195,9 @@ bool Hero::itemIsEmpty(){
         return false;
 }
 
-void Hero::getIdentity() const {
-    cout<<"Personaggio "<<numberPlayer<<"         Impersonato da "<<namePlayer<<endl;
-    cout<<nameCharacter<<endl;
-    cout<<"Disposto a tutto per: "<<myRisk<<endl;
-    cout<<"ARCHETIPO: "<<getArchetype()<<endl;
-    cout<<"QUALITA':"<<endl;
-    getQualities();
-    cout<<"ABILITA':"<<endl;
-    getAbilities();
-}
 
+
+//OPERAZIONI E MECCANICHE PER LE ESTRAZIONI
 void Hero::setBag(int numW, int numB) {
     if(!confusion){//differentemente a quello del master, il settaggio del sacchetto di un eroe può essere condizionato dell'attributo confusion
         bag.setWhite(numW);
@@ -235,9 +236,9 @@ void Hero::extract(Master &theMaster) {
         int exVal=howExtract();
         Player::extract(exVal);//differentemente al master, l'eroe deve passare tutti questi altri controlli quando estrae
         if(isDangerous)
-            goOffScene(danger, bag.getBlackExtracted());//verifica del fuori-scena. Vedi la seconda funzione dopo questa
+            goOffScene(danger, bag.getBlackExtracted());//Verifica del fuori-scena. Vedi la seconda funzione dopo questa
         if(!outScene) {
-            risk(5 - exVal);//rischio, il valore è pari ai token rimanenti. Vedi la terza funzione dopo questa
+            risk(5 - exVal);//Rischio, il valore è pari ai token rimanenti. Vedi la terza funzione dopo questa
             if(isDangerous)
                 goOffScene(danger,bag.getBlackExtracted());//verifica del fuori-scena post rischio
         }
@@ -275,11 +276,11 @@ void Hero::extract(Master &theMaster) {
 }
 
 void Hero::setDanger(int &danger, bool &isDangerous) {
+
     string answer;
-    do {
-        cout << "E' pericoloso? y/n"<<endl;
-        cin >> answer;
-    } while (answer!="y" && answer!="n");
+    cout << "E' pericoloso? y/n"<<endl;
+    yesOrNot(answer);
+
     if(answer=="y"){
         isDangerous=true;
         do {
@@ -310,10 +311,8 @@ void Hero::goOffScene(int danger, int eb) {
 
 void Hero::risk(int remain) {
     string answer;
-    do {
-        cout << "Vuoi rischiare? y/n" << endl;
-        cin >> answer;
-    } while (answer!="y" && answer!="n");
+    cout << "Vuoi rischiare? y/n" << endl;
+    yesOrNot(answer);
     if(answer=="y")
         Player::extract(remain);
 }
@@ -368,7 +367,7 @@ void Hero::blackTokenPartition(Master &theMaster, bool isOutScene) {
 
 void Hero::returnBack(int numW, int numB, int numEx, Master &theMaster) {
 
-    setBag(numW, numB);//settaggio del sacchetto con conseguente estrazione per provare a tornare in scena. Non sono presenti tutti i normali controlli per l'eroe
+    setBag(numW, numB);//Settaggio del sacchetto con conseguente estrazione per provare a tornare in scena. Non sono presenti tutti i normali controlli per l'eroe
     Player::extract(numEx);
     if(bag.getWhiteExtracted()){//questo perché basta un solo bianco per tornare in scena
         setOutScene(false);

@@ -11,7 +11,6 @@
 #include "NumberFunctions.h"
 #include "Bag.h"
 
-
 class Player{
 protected:
     Bag bag;
@@ -22,6 +21,14 @@ public:
     virtual void extract(int e);
 
     virtual void setBag(int numW,int numB) = 0;
+
+
+    static void yesOrNot(string &answer){
+        do{
+            cin>>answer;
+        } while (answer!="y" && answer!="n");
+    }
+
 };
 
 #endif //SISTEMA_DI_GIOCO_NOT_THE_END_PLAYER_H
