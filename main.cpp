@@ -3,6 +3,7 @@
 
 #include "MainFunctions.h"
 #include "Master.h"
+
 int main() {
     string startGame;
     do {
