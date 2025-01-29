@@ -26,8 +26,6 @@ void insertNumber(T &value, bool &error){//Per l'inserimento di un numero è que
     }while(error);//fin quando il flag error non è dichiarato negativo da verifyNumber, sarà richiesto nuovamente di inserire un numero
 }
 
-int getRandomPos(int max);
-
 int getRandomWB();
 
 int getRandom(int maxValue);

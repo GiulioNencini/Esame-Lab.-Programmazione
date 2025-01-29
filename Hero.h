@@ -56,7 +56,7 @@ public:
 
     void extract(Master &theMaster);//sovraccaricato
 
-    void static setDanger(int &danger, bool &isDangerous);
+    void static setDanger(int &danger, bool &isDangerous, string &answer);
 
     void goOffScene(int danger, int eb);
 
@@ -181,6 +181,44 @@ public:
 
     int getNumAbilities() const{
         return abilities.size();
+    }
+
+    //utili solo e soltanto nello unit testing
+    const string& getNamePlayer() const{
+        return namePlayer;
+    }
+
+    void insertQuality(string &quality){
+        qualities.insert(quality);
+    }
+
+    void insertAbility(string &ability){
+        abilities.insert(ability);
+    }
+
+    bool isThereThisQuality(string &q){
+        auto it = qualities.find(q);
+        if(it != qualities.end())
+            return true;
+        else return false;
+    }
+    bool isThereThisAbility(string &a){
+        auto it = abilities.find(a);
+        if(it != abilities.end())
+            return true;
+        else return false;
+    }
+
+    int getItemSize(){
+        return item.size();
+    }
+
+    int getUnknownToken(){
+        return bag.getUnknown();
+    }
+
+    void setBlackExtracted(int n){
+        bag.setBlackExtracted(n);
     }
 };
 

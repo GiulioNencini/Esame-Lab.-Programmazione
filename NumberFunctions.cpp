@@ -28,16 +28,6 @@ int howExtract() {
     return ex;
 }
 
-int getRandomPos(int max){
-
-    std::random_device rd;
-    std::mt19937 gen(rd());
-
-    std::uniform_int_distribution<> distribuzione(0, max-1);
-
-    return distribuzione(gen);
-}
-
 int getRandomWB(){
 
     std::random_device rd;

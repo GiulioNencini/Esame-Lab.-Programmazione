@@ -1,6 +1,3 @@
-// TODO capire per libreria grafica -> Boost, qt
-// todo codice unit testing
-
 #include "MainFunctions.h"
 #include "Master.h"
 

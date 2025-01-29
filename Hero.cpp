@@ -208,7 +208,7 @@ void Hero::setBag(int numW, int numB) {
         int nW=0, nB=0;
         bag.setUnknown(numW);
         for(int i=0;i<bag.getUnknown();i++){
-            int x = getRandomWB();
+            int x = getRandomWB();//tanti random quanti sono gli sconosciuti
             if(x)
                 nW++;
             else
@@ -225,7 +225,11 @@ void Hero::extract(Master &theMaster) {
 
     bool isDangerous=false;
     int danger=6;//impossibile da raggiungere
-    setDanger(danger,isDangerous);//vedi funzione sotto
+
+    string answer;
+    cout << "E' pericoloso? y/n"<<endl;
+    yesOrNot(answer);
+    setDanger(danger,isDangerous,answer);//vedi funzione sotto
 
 
     if(!adrenaline){ //Meccanica dell'adrenalina
@@ -275,11 +279,7 @@ void Hero::extract(Master &theMaster) {
     bag.reset();//una volta completata la spartizione dei neri il sacchetto può essere resettato
 }
 
-void Hero::setDanger(int &danger, bool &isDangerous) {
-
-    string answer;
-    cout << "E' pericoloso? y/n"<<endl;
-    yesOrNot(answer);
+void Hero::setDanger(int &danger, bool &isDangerous, string &answer) {
 
     if(answer=="y"){
         isDangerous=true;

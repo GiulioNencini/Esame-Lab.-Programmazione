@@ -4,7 +4,5 @@
 
 #include "Item.h"
 
-Item::Item(string &name) : AbItem(name){
-
-}
+Item::Item(string &name) : AbItem(name){}
 

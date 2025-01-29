@@ -23,7 +23,7 @@ void Player::extract(int e) {
             break;
         }
 
-        int x = getRandomPos(bag.extractionVector.size());
+        int x = getRandom(bag.extractionVector.size());
         int temp = bag.extractionVector[x];
         bag.extractionVector.erase(bag.extractionVector.begin() + x);
 

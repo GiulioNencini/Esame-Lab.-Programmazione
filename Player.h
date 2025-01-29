@@ -29,6 +29,26 @@ public:
         } while (answer!="y" && answer!="n");
     }
 
+    //utili nello unit testing
+    int getSizeExVec() const{
+        return bag.extractionVector.size();
+    }
+
+    int getWhiteFromBag() const{
+        return bag.getWhite();
+    }
+
+    int getBlackFromBag() const{
+        return bag.getBlack();
+    }
+
+    int getWhiteExtractedFromBag(){
+        return bag.getWhiteExtracted();
+    }
+
+    int getBlackExtractedFromBag(){
+        return bag.getBlackExtracted();
+    }
 };
 
 #endif //SISTEMA_DI_GIOCO_NOT_THE_END_PLAYER_H

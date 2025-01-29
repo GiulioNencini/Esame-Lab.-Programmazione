@@ -212,12 +212,7 @@ void modifyCharacter(vector<unique_ptr<Hero>> &playerVector, unsigned int numPla
     }
 }
 
-void removingCharacteristic(unique_ptr<Hero> &playerModified, bool &stopped){
-    string answer;
-    do{
-        cout<<"Vuoi rimuovere una qualita' o un'abilita'? q/a   Scrivere cancel per annullare"<<endl;
-        cin>>answer;
-    }while(answer!="q" && answer!="a" && answer!="cancel");
+void removingCharacteristic(unique_ptr<Hero> &playerModified, string &answer, bool &stopped){
 
     if(answer=="q"){
         cout<<"QUALITA' ATTUALI:"<<endl;
@@ -241,9 +236,8 @@ void removingCharacteristic(unique_ptr<Hero> &playerModified, bool &stopped){
     }
 }
 
-void addingCharacteristic(unique_ptr<Hero> &playerModified, bool stopped= false){
+void addingCharacteristic(unique_ptr<Hero> &playerModified, string &answer, bool stopped= false){
     if(!stopped){//utile quando si annulla l'operazione di modifica
-        string answer;
         bool numControl;
         do{
             if(playerModified->getNumQualities()==6 && playerModified->getNumAbilities()==12){
@@ -252,9 +246,7 @@ void addingCharacteristic(unique_ptr<Hero> &playerModified, bool stopped= false)
             }
 
             numControl=false;
-            cout<<"Vuoi aggiungere una qualita' o un'abilita'? q/a      Scrivere cancel per annullare"<<endl;
-            cout<<"ATTENZIONE: ricorda che non puoi avere piu' di 6 qualita' e 12 abilita' (attualmente hai "<<playerModified->getNumQualities()<<" qualita' e "<<playerModified->getNumAbilities()<<" abilita')"<<endl;
-            cin>>answer;
+
             if((answer=="q" && playerModified->getNumQualities()<6) || (answer=="a" && playerModified->getNumAbilities()<12))//controllo per non sforare il numero massimo di abilità e qualità
                 numControl=true;
             if(answer=="q" && !numControl)
@@ -389,16 +381,37 @@ void game(Master &theMaster, vector<unique_ptr<Hero>> &playerVector, unsigned in
                                 cin>>answer;
                             }while(answer!="new" && answer!="remove" && answer!="modify" && answer!="cancel");
 
-                            if(answer=="new")
-                                addingCharacteristic(it);
+                            if(answer=="new"){
+                                cout<<"Vuoi aggiungere una qualita' o un'abilita'? q/a      Scrivere cancel per annullare"<<endl;
+                                cout<<"ATTENZIONE: ricorda che non puoi avere piu' di 6 qualita' e 12 abilita' (attualmente hai "<<it->getNumQualities()<<" qualita' e "<<it->getNumAbilities()<<" abilita')"<<endl;
+                                do{
+                                    cin>>answer;
+                                } while (answer!="q" && answer!="a" && answer!="cancel");
+                                addingCharacteristic(it, answer);
+                            }
 
-                            else if(answer=="remove")
-                                removingCharacteristic(it, stopped);
+                            else if(answer=="remove"){
+                                cout<<"Vuoi rimuovere una qualita' o un'abilita'? q/a   Scrivere cancel per annullare"<<endl;
+                                do{
+                                    cin>>answer;
+                                }while(answer!="q" && answer!="a" && answer!="cancel");
+                                removingCharacteristic(it, answer, stopped);
+                            }
+
 
                             else if(answer=="modify"){
                                 cout<<"Per modificare un tratto prima scegli quale cancellare e poi, subito dopo, quale aggiungere"<<endl;
-                                removingCharacteristic(it, stopped);
-                                addingCharacteristic(it, stopped);
+                                cout<<"Vuoi rimuovere una qualita' o un'abilita'? q/a   Scrivere cancel per annullare"<<endl;
+                                do{
+                                    cin>>answer;
+                                }while(answer!="q" && answer!="a" && answer!="cancel");
+                                removingCharacteristic(it, answer, stopped);
+                                cout<<"Vuoi aggiungere una qualita' o un'abilita'? q/a      Scrivere cancel per annullare"<<endl;
+                                cout<<"ATTENZIONE: ricorda che non puoi avere piu' di 6 qualita' e 12 abilita' (attualmente hai "<<it->getNumQualities()<<" qualita' e "<<it->getNumAbilities()<<" abilita')"<<endl;
+                                do{
+                                    cin>>answer;
+                                } while (answer!="q" && answer!="a" && answer!="cancel");
+                                addingCharacteristic(it, answer, stopped);
                             }
                             else
                                 cout<<"Operazione annullata"<<endl;
