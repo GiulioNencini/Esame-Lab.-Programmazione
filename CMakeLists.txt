@@ -15,5 +15,3 @@ add_executable(Sistema_di_gioco_Not_The_End main.cpp
         Item.cpp
         ConsumableItem.cpp
 )
-
-add_executable(RunTest Test.cpp)

@@ -29,7 +29,7 @@ void Hero::setHeroCharacteristics() {
         cout << "Quali sono?" << endl;
         for (int i = 0; i < num; i++) {//fixme sia qui che sotto c'è un problema per cui il primo carattere, a partire dal secondo elemento del set, non viene considerato
             cout<<"Qualita' numero "<<i+1<<": ";
-            cin.ignore();
+            cin.ignore();//fixme il problema forse sta qui?
             getline(cin, answer);
             qualities.insert(answer);
         }

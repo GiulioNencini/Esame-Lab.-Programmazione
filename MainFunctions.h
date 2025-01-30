@@ -454,10 +454,20 @@ void game(Master &theMaster, vector<unique_ptr<Hero>> &playerVector, unsigned in
             string action,exitAnswer;
             do{
                 cout<<"Attualmente il master ha in suo possesso "<<theMaster.getUsableBlack()<<" token neri"<<endl;
-                do{
-                    cout<<"Complichiamo un po' le cose (t), facciamo un'estrazione (e)"<<endl;
-                    cin>>action;
-                }while(action!="t" && action!="e");
+                if(theMaster.getUsableBlack()){
+                    do{
+                        cout<<"Complichiamo un po' le cose (t), facciamo un'estrazione (e). Scrivi cancel per annullare"<<endl;
+                        cin>>action;
+                    }while(action!="t" && action!="e" && action!="cancel");
+                }
+                else{
+                    do{
+                        cout<<"Facciamo un'estrazione (e). Scrivi cancel per annullare"<<endl;
+                        cin>>action;
+                    }while(action!="e" && action!="cancel");
+                }
+
+
 
                 if(action=="t"){
                     if(theMaster.getUsableBlack()){
@@ -471,7 +481,7 @@ void game(Master &theMaster, vector<unique_ptr<Hero>> &playerVector, unsigned in
                         theMaster.useBlack(used);
                     }
                 }
-                else{
+                else if(action=="e"){
                     int w=0,b=0;
                     cout<<"Bianchi:"<<endl;
                     bool e;
@@ -484,9 +494,16 @@ void game(Master &theMaster, vector<unique_ptr<Hero>> &playerVector, unsigned in
                     theMaster.extract(howExtract());
                     theMaster.reset();
                 }
+                else
+                    cout<<"Il master ha deciso di non fare nulla"<<endl;
 
-                cout<<"Il master vuole fare qualcos'altro? y/n"<<endl;
-                yesOrNot(exitAnswer);
+                if(action!="cancel"){
+                    cout<<"Il master vuole fare qualcos'altro? y/n"<<endl;
+                    yesOrNot(exitAnswer);
+                }
+                else
+                    break;
+
 
             }while(exitAnswer=="y");
         }
@@ -494,7 +511,6 @@ void game(Master &theMaster, vector<unique_ptr<Hero>> &playerVector, unsigned in
         else if(command=="modify"){
             modifyCharacter(playerVector, numPlayer);
         }
-
         else if(command=="add"){//segue l'effettiva creazione di un personaggio
             if(numPlayer<5){
                 cin.ignore();
