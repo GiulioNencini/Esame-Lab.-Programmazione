@@ -1,6 +1,7 @@
 #include "MainFunctions.h"
 #include "Master.h"
-
+//todo rivedere classe bag, item(capire quali parti tenere) e metodo statico. Togliere i cout dalle funzioni e e le domande dalle funzioni. Rivedere inoltre le invarianti dei setter e il corretto assegnamento di const
+//todo una volta rivista anche l'interfaccia di interazione rivedere lo ut, non prima di aver corretto il codice cmake
 int main() {
     string startGame;
     do {
@@ -69,28 +70,34 @@ int main() {
                 cout << it->getNameCharacter() << " era in adrenalina? y/n" << endl;
                 yesOrNot(answer);
 
-                if (answer == "y")
+                if (answer == "y"){
                     it->setAdrenaline(true);
+                    cout<<it->getNameCharacter()<<" e' in adrenalina"<<endl;
+                }
                 answer="";
 
                 cout << it->getNameCharacter() << " era in confusione? y/n" << endl;
                 yesOrNot(answer);
 
-                if (answer == "y")
+                if (answer == "y"){
                     it->setConfusion(true);
+                    cout<<it->getNameCharacter()<<" e' confuso"<<endl;
+                }
+
 
                 insertItem(answer, it, amount, err);
 
                 cout << "\n\n" << endl;
             }
 
-            getPartyIdentity(playerVector);
+            printPartyIdentity(playerVector);
 
-            int usableBlack;//ripristino del master
+            unsigned int usableBlack;//ripristino del master
             bool e;
             cout << "Quanti token aveva il master?" << endl;
             insertNumber(usableBlack, e);
-            theMaster.addMultipleBlack(usableBlack);
+            theMaster.addUsableBlack(usableBlack);
+            cout<<"Il master ha ricevuto "<<usableBlack<<" token"<<endl;
 
             game(theMaster, playerVector, numPlayer);
         }

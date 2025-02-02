@@ -8,85 +8,35 @@ Hero::Hero(string nameCharacter, string namePlayer, string myRisk, unsigned int 
 }
 
 //GESTIONE CARATTERISTICHE EROI
-void Hero::setHeroCharacteristics() {
-    string answer;
+void Hero::setHeroCharacteristics(const string & arc, const set<string> &sQ, const set<string> &sA) {//Tutte le domande sono state messe in mainFunction. Qui si tratta solo di reinserirle. Più semplice eseguire o ut
     qualities.clear();
     abilities.clear();//sono necessari perché questa funzione può essere chiamata anche all'inizio per rieseguire la configurazione degli eroi
-    do{
-        cout<<"NOTA PER LA CREAZIONE: un personaggio all'inizio ha di norma 3 qualita' e 4 abilita'"<<endl;
-        cout << getNameCharacter() << ", qual e' il tuo archetipo?" << endl;
-        cin.ignore();
-        getline(cin, answer);
-        setArchetype(answer);
 
-        int num = 0;
-        do{
-            cout << "Quante sono le tue qualita'? Max 6" << endl;
-            bool e;
-            insertNumber(num, e);
-        } while (num<1 || num>6);
-
-        cout << "Quali sono?" << endl;
-        for (int i = 0; i < num; i++) {//fixme sia qui che sotto c'è un problema per cui il primo carattere, a partire dal secondo elemento del set, non viene considerato
-            cout<<"Qualita' numero "<<i+1<<": ";
-            cin.ignore();//fixme il problema forse sta qui?
-            getline(cin, answer);
-            qualities.insert(answer);
-        }
-        num=0;
-        do{
-            cout << "Quante sono le tue abilita'? Max 12" << endl;
-            bool e;
-            insertNumber(num, e);
-        }while(num<1 || num>12);
-
-        cout << "Quali sono?" << endl;
-        for (int i = 0; i < num; i++) {
-            cout<<"abilita' numero "<<i+1<<": ";
-            cin.ignore();
-            getline(cin, answer);
-            abilities.insert(answer);
-        }
-
-        cout<<"ARCHETIPO: "<<getArchetype()<<endl;
-
-        cout<<"QUALITA':"<<endl;
-        getQualities();
-
-        cout<<"ABILITA':"<<endl;
-        getAbilities();
-
-        cout<<"Confermi le tue scelte? y/n"<<endl;
-        yesOrNot(answer);
-
-        if(answer=="n") {
-            qualities.clear();
-            abilities.clear();
-        }
-    }while (answer!="y");
-
+    string s=arc;
+    setArchetype(s);
+    qualities=sQ;
+    abilities=sA;
 }
 
-void Hero::getIdentity() const {
+void Hero::printIdentity() const {
     cout<<"("<<numberPlayer<<") "<<nameCharacter<<"        Impersonato da "<<namePlayer<<endl;
     cout<<"Disposto a tutto per: "<<myRisk<<endl;
     cout<<"ARCHETIPO: "<<getArchetype()<<endl;
     cout<<"QUALITA':"<<endl;
-    getQualities();
+    printQualities();
     cout<<"ABILITA':"<<endl;
-    getAbilities();
+    printAbilities();
 }
 
 
 //METODI PER ITEM
 void Hero::openItem() const {
-    cout<<"\nL'inventario di "<<nameCharacter<<endl;
     for(auto const &it : item){
-        it->getInfo();
+        it->printInfo();
     }
 }
 
-void Hero::addItem(unique_ptr<AbItem> newItem){
+void Hero::addItem(unique_ptr<NormItem> newItem){
     item.push_back(std::move(newItem));
     openItem();
 }
@@ -95,7 +45,7 @@ void Hero::destroyAllItem(){
     item.clear();
 }
 
-bool Hero::isThereSearchedItem(string &used) {
+bool Hero::isThereSearchedItem(const string &used) {//utile nello unit testing
     for(const auto &it : item){
         if(it->getName()==used){
             return true;
@@ -104,64 +54,64 @@ bool Hero::isThereSearchedItem(string &used) {
     return false;
 }
 
-void Hero::useItem(unique_ptr<Hero> &it) {
+void Hero::useItem() {
     string used;
     bool exitFlag = false;
 
     do {
-        it->openItem();
+        openItem();
         cin.ignore();
         cout << "Quale oggetto vuoi usare? Scrivi close per chiudere lo zaino" << endl;
         getline(cin, used);
 
-        if (it->isThereSearchedItem(used) && used != "close") {
+        if (used != "close") {
             // Usa un ciclo tradizionale con indice per evitare problemi di invalidazione
-            for (int i = 0; i < it->item.size(); ++i) {
-                auto &iteItem = it->item[i]; // Riferimento all'elemento corrente
+            for (int i = 0; i < item.size(); ++i) {
+                auto &iteItem = item[i]; // Riferimento all'elemento corrente
 
                 if (iteItem->getName() == used) {
-                    // NON CONSUMABILI
-                    if (auto *tempItem = dynamic_cast<Item *>(iteItem.get())) {
-                        unique_ptr<Item> target = make_unique<Item>(*tempItem);
+                    // Controllo per NormItem
+
+                    //iteItem->usingThis() //todo-> deve restituire una stringa o un numero
+
+                    if (!iteItem->isConsumable()) {
                         cout << "OGGETTO SELEZIONATO: ";
-                        target->getInfo();
+                        iteItem->printInfo();
                         cout << endl;
 
                         string again;
-                        cout << target->getName() << " puo' essere ancora usato? y/n" << endl;
+                        cout << iteItem->getName() << " puo' essere ancora usato? y/n" << endl;
                         yesOrNot(again);
 
                         if (again == "n") {
-                            cout << target->getName() << " e' stato rimosso dall'inventario" << endl;
-                            it->item.erase(it->item.begin() + i); // Rimuovi l'oggetto
-                            --i;
+                            cout << iteItem->getName() << " e' stato rimosso dall'inventario" << endl;
+                            item.erase(item.begin() + i); // Rimuovi l'oggetto
+                            --i; // Decrementa l'indice per evitare problemi di invalidazione
                         }
                         exitFlag = true;
                         break; // Esci dal ciclo dopo aver trovato e gestito l'oggetto
                     }
-                        // CONSUMABILI
-                    else if (auto *tempCItem = dynamic_cast<ConsumableItem *>(iteItem.get())) {
-                        unique_ptr<ConsumableItem> target = make_unique<ConsumableItem>(*tempCItem);
+                        // Controllo per ConsumableItem
+                    else if (iteItem->isConsumable()) {
                         cout << "OGGETTO SELEZIONATO: ";
-                        target->getInfo();
+                        iteItem->printInfo();
                         cout << endl;
 
-                        int numUsed = 0;
+                        unsigned int numUsed = 0;
                         bool e = false;
                         do {
-                            cout << "Quanti " << target->getName() << " vuoi usare?" << endl;
+                            cout << "Quanti " << iteItem->getName() << " vuoi usare?" << endl;
                             insertNumber(numUsed, e);
-                        } while (numUsed > target->getAmount());
+                        } while (numUsed > iteItem->getAmount());
 
-                        target->setAmount(target->getAmount() - numUsed);
+                        iteItem->setAmount(iteItem->getAmount() - numUsed);
 
-                        if (target->getAmount() == 0) {
-                            cout << target->getName() << " e' stato rimosso dall'inventario" << endl;
-                            it->item.erase(it->item.begin() + i); // Rimuovi se la quantità residua è zero
-                            --i;
+                        if (iteItem->getAmount() == 0) {
+                            cout << iteItem->getName() << " e' stato rimosso dall'inventario" << endl;
+                            item.erase(item.begin() + i); // Rimuovi se la quantità residua è zero
+                            --i; // Decrementa l'indice per evitare problemi di invalidazione
                         } else {
-                            cout << "Ti sono rimasti " << target->getAmount() << " " << target->getName() << endl;
-                            it->item[i] = std::move(target); // Sovrascriviamo l'oggetto in questione
+                            cout << "Ti sono rimasti " << iteItem->getAmount() << " " << iteItem->getName() << endl;
                         }
 
                         exitFlag = true;
@@ -171,9 +121,10 @@ void Hero::useItem(unique_ptr<Hero> &it) {
             }
         }
     } while (!exitFlag);
-}
+}//fixme output, anche questa inappropriata?. Idem, passare tutte le risposte
 
-bool Hero::isThereThisConsumableItem(string &inputItem, unsigned int amount){
+
+bool Hero::isThereThisConsumableItem(const string &inputItem, unsigned int amount){
     ConsumableItem* tempCItem;
     for(auto const &it: item){
         if( (tempCItem = dynamic_cast<ConsumableItem*>(it.get()))&& (tempCItem->getName()==inputItem)){//tempCItem o it
@@ -198,126 +149,62 @@ bool Hero::itemIsEmpty(){
 
 
 //OPERAZIONI E MECCANICHE PER LE ESTRAZIONI
-void Hero::setBag(int numW, int numB) {
+void Hero::setBag(unsigned const int numW, unsigned const int numB) {
     if(!confusion){//differentemente a quello del master, il settaggio del sacchetto di un eroe può essere condizionato dell'attributo confusion
-        bag.setWhite(numW);
-        bag.setBlack(numB);
-        cout<<"Ci sono "<<bag.getWhite()<<" token bianchi e " <<bag.getBlack()<<" token neri"<<endl;
+        setWhite(numW);
+        setBlack(numB);
     }
     else{
-        int nW=0, nB=0;
-        bag.setUnknown(numW);
-        for(int i=0;i<bag.getUnknown();i++){
-            int x = getRandomWB();//tanti random quanti sono gli sconosciuti
+        unsigned int nW=0, nB=0;
+        setUnknown(numW);
+        for(int i=0;i<getUnknownFromBag();i++){
+            int x = getRandomWB();//Tanti random quanti sono gli sconosciuti. Questa funzione genera 0 e 1
             if(x)
                 nW++;
             else
                 nB++;
         }
 
-        bag.setWhite(nW);
-        bag.setBlack(numB+nB);
-        cout<<"Ci sono "<<numB<<" token neri e " <<bag.getUnknown()<<" token sconosciuti"<<endl;
+        setWhite(nW);
+        setBlack(numB+nB);
     }
 }
 
-void Hero::extract(Master &theMaster) {
-
-    bool isDangerous=false;
-    int danger=6;//impossibile da raggiungere
-
-    string answer;
-    cout << "E' pericoloso? y/n"<<endl;
-    yesOrNot(answer);
-    setDanger(danger,isDangerous,answer);//vedi funzione sotto
-
-
-    if(!adrenaline){ //Meccanica dell'adrenalina
-        cout<<"Adrenalina non e' attivo"<<endl;
-        if(isDangerous) {
-            cout << "Il pericolo e' " << danger << endl;
-        }
-        int exVal=howExtract();
+void Hero::extract(unsigned int const exVal, unsigned int const danger, const bool &isDangerous) {
+    //Meccanica dell'adrenalina
+    if (!adrenaline) {
         Player::extract(exVal);//differentemente al master, l'eroe deve passare tutti questi altri controlli quando estrae
-        if(isDangerous)
-            goOffScene(danger, bag.getBlackExtracted());//Verifica del fuori-scena. Vedi la seconda funzione dopo questa
-        if(!outScene) {
-            risk(5 - exVal);//Rischio, il valore è pari ai token rimanenti. Vedi la terza funzione dopo questa
-            if(isDangerous)
-                goOffScene(danger,bag.getBlackExtracted());//verifica del fuori-scena post rischio
-        }
+        if (isDangerous)
+            goOffScene(danger, getBlackExtractedFromBag());//Verifica del fuori-scena. Vedi la seconda funzione dopo questa
+
     }
-    else{//se c'è adrenalina
-        cout<<"Adrenalina e' attivo"<<endl;
-        if(isDangerous) {
-            cout << "Il pericolo e' " << danger << endl;
-        }
+    else {//se c'è adrenalina deve estrarre 4 token
         Player::extract(4);
-        if(isDangerous)
-            goOffScene(danger,bag.getBlackExtracted());
-        if(!outScene) {
-            risk(1);
-            if(isDangerous)
-                goOffScene(danger,bag.getBlackExtracted());
-        }
-    }
-
-    adrenaline = false;
-    confusion = false;//dopo l'estrazione tornano automaticamente a falso
-
-    if(!outScene) {//spartizione neri, nel caso non vada fuori scena
-
-
-        if (bag.getBlackExtracted() != 0) {
-            cout << "Hai " << bag.getBlackExtracted() << " token neri da smaltire" << endl;
-            blackTokenPartition(theMaster,false);//Vedi la quarta funzione dopo questa. Il flag si riferisce all'essere o meno andato fuori scena
-            cout << "Spartizione completata" << endl;
-        }
-    }
-    else
-        blackTokenPartition(theMaster,true);
-    bag.reset();//una volta completata la spartizione dei neri il sacchetto può essere resettato
-}
-
-void Hero::setDanger(int &danger, bool &isDangerous, string &answer) {
-
-    if(answer=="y"){
-        isDangerous=true;
-        do {
-            cout << "Quanto e' pericoloso?"<<endl;
-            bool e;
-            insertNumber(danger, e);
-        }while(danger>5 || danger<1);//Meccanica del pericolo
-    }
-    else
-        isDangerous=false;
-}
-
-void Hero::goOffScene(int danger, int eb) {
-    if(eb>=danger) {
-        setOutScene(true);
-        cout<<getNameCharacter()<<" e' uscito di scena! I suoi token neri andranno tutti al master..."<<endl;
-    }
-    else{
-        int x= getRandom(3);
-        if(x==1)
-            cout<<getNameCharacter()<<" ha scampato il pericolo..."<<endl;
-        else if(x==2)
-            cout<<getNameCharacter()<<" ha avuto fortuna..."<<endl;
-        else if(x==3)
-            cout<<"Ti e' andata bene "<<getNameCharacter()<<endl;
+        if (isDangerous)
+            goOffScene(danger, getBlackExtractedFromBag());
     }
 }
 
-void Hero::risk(int remain) {
-    string answer;
-    cout << "Vuoi rischiare? y/n" << endl;
-    yesOrNot(answer);
-    if(answer=="y")
+void Hero::risk(unsigned const int remain) {
         Player::extract(remain);
 }
 
-void Hero::blackTokenPartition(Master &theMaster, bool isOutScene) {
+void Hero::goOffScene(unsigned const int danger, unsigned const int eb) {
+    if(eb>=danger)
+        setOutScene(true);
+}
+/*else{
+int x= getRandom(3);
+if(x==1)
+    cout<<getNameCharacter()<<" ha scampato il pericolo..."<<endl;
+else if(x==2)
+    cout<<getNameCharacter()<<" ha avuto fortuna..."<<endl;
+else if(x==3)
+    cout<<"Ti e' andata bene "<<getNameCharacter()<<endl;
+}*/
+
+
+void Hero::blackTokenPartition(Master &theMaster, bool isOutScene) {//fixme output
     if(!isOutScene) {
         string answer;//scegliere a chi dare il token
         bool exitFlag=false;
@@ -341,44 +228,49 @@ void Hero::blackTokenPartition(Master &theMaster, bool isOutScene) {
             } else{//per evitare di ripetere più volte il singolo processo di cedimento di un token nero al master
                 cout<<"Adrenalina e confusione sono gia' attivi, i restanti token neri estratti andranno al master"<<endl;
                 answer="";
-                theMaster.addMultipleBlack(bag.getBlackExtracted());
-                bag.setBlackExtracted(0);
+                theMaster.addUsableBlack(getBlackExtractedFromBag());
+                cout<<"Il master ha ricevuto "<<getBlackExtractedFromBag()<<" token"<<endl;
+                setBlackExtracted(0);
                 exitFlag=true;//così salta direttamente alla fine del processo e bag.getBlackExtracted() = 0
             }
 
             if(!exitFlag){
-                if (answer == "m")//assegnazione del token nero
-                    theMaster.addBlack();
+                if (answer == "m"){
+                    theMaster.addUsableBlack(1);
+                    cout<<"Il master ha ricevuto un token"<<endl;
+                }//assegnazione del token nero
+
                 else if (answer == "a")
                     adrenaline = true;
                 else if (answer == "c")
                     confusion = true;
 
-                bag.setBlackExtracted(bag.getBlackExtracted() - 1);
-                cout << "Ti restano " << bag.getBlackExtracted() << " token neri da smaltire" << endl;
+                setBlackExtracted(getBlackExtractedFromBag() - 1);
+                cout << "Ti restano " << getBlackExtractedFromBag() << " token neri da smaltire" << endl;
             }
 
-        } while (bag.getBlackExtracted() != 0);
+        } while (getBlackExtractedFromBag() != 0);
     }
 
-    else//se l'eroe è andato fuori scena tutti i token neri vanno automaticamente al master
-        theMaster.addMultipleBlack(bag.getBlackExtracted());
+    else{
+        theMaster.addUsableBlack(getBlackExtractedFromBag());
+        cout<<"Il master ha ricevuto "<<getBlackExtractedFromBag()<<" token"<<endl;
+    }//se l'eroe è andato fuori scena tutti i token neri vanno automaticamente al master
+
 }
 
-void Hero::returnBack(int numW, int numB, int numEx, Master &theMaster) {
+void Hero::returnBack(unsigned const int numW,  const unsigned int numB,  const unsigned int numEx, Master &theMaster) {
 
     setBag(numW, numB);//Settaggio del sacchetto con conseguente estrazione per provare a tornare in scena. Non sono presenti tutti i normali controlli per l'eroe
     Player::extract(numEx);
-    if(bag.getWhiteExtracted()){//questo perché basta un solo bianco per tornare in scena
+
+    if(getWhiteExtractedFromBag()){//questo perché basta un solo bianco per tornare in scena
         setOutScene(false);
         setAdrenaline(false);
         setConfusion(false);
     }
 
-    else
-        cout<<nameCharacter<<" non e' riuscito a tornare in scena!"<<endl;
-
     blackTokenPartition(theMaster, true);//che riesca o no a tornare in scena i token neri estratti vanno comunque al master, tutti.
 
-    bag.reset();
+    resetBag();
 }

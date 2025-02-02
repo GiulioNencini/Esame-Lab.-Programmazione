@@ -9,11 +9,7 @@
 #include "Player.h"
 #include "Master.h"
 #include "ConsumableItem.h"
-#include "Item.h"
 #include <set>
-
-class AbItem;
-
 
 class Hero : public Player {
     string namePlayer;
@@ -23,10 +19,10 @@ class Hero : public Player {
     bool adrenaline = false;
     bool confusion = false;
     bool outScene = false;
-    string archetype;//ce n'è uno solo
+    string archetype;
     set<string> qualities;
     set<string> abilities;
-    vector<unique_ptr<AbItem>> item;
+    vector<unique_ptr<NormItem>> item;
 
 public:
     explicit Hero(string nameCharacter, string namePlayer, string myRisk, unsigned int numberPlayer);
@@ -34,39 +30,38 @@ public:
         cout<<"L'eroe "<<this->nameCharacter<<" ha lasciato il party"<<endl;
     };
 
-    void setHeroCharacteristics();
+    void setHeroCharacteristics(const string & arc, const set<string> &sQ, const set<string> &sA);
 
     void openItem() const;
 
-    void addItem(unique_ptr<AbItem> newItem);
+    void addItem(unique_ptr<NormItem> newItem);
 
     void destroyAllItem();
 
-    bool isThereSearchedItem(string &used);
+    bool isThereSearchedItem(const string &used);
 
-    static void useItem(unique_ptr<Hero> &it);
+    //static void useItem(unique_ptr<Hero> &it);
+    void useItem();
 
     bool itemIsEmpty();
 
-    bool isThereThisConsumableItem(string &inputItem, unsigned int amount);
+    bool isThereThisConsumableItem(const string &inputItem, unsigned int amount);
 
     void sortItem();
 
-    void setBag(int numW, int numB) override;//settaggio della difficoltà, viene fatta a parte prima di qualsiasi altra estrazione/controllo
+    void setBag(unsigned int numW, unsigned int numB) override;//settaggio della difficoltà, viene fatta a parte prima di qualsiasi altra estrazione/controllo
 
-    void extract(Master &theMaster);//sovraccaricato
+    void extract(unsigned int exVal, unsigned int danger, const bool &isDangerous);//sovraccaricato
 
-    void static setDanger(int &danger, bool &isDangerous, string &answer);
+    void goOffScene(unsigned int danger, unsigned int eb);
 
-    void goOffScene(int danger, int eb);
-
-    void risk(int remain);
+    void risk(unsigned int remain);
 
     void blackTokenPartition(Master &theMaster, bool isOutScene);
 
-    void returnBack(int numW, int numB, int numEx, Master &theMaster);
+    void returnBack(unsigned int numW, unsigned int numB, unsigned int numEx, Master &theMaster);
 
-    void getIdentity() const;
+    void printIdentity() const;
 
     const string &getNameCharacter() const{
         return nameCharacter;
@@ -94,10 +89,6 @@ public:
 
     void setAdrenaline(bool a) {
         adrenaline = a;
-        if(adrenaline)
-            cout<<nameCharacter<<" e' in adrenalina"<<endl;
-        else
-            cout<<nameCharacter<<" si e' calmato"<<endl;
     }
 
     bool isConfusion() const {
@@ -106,10 +97,6 @@ public:
 
     void setConfusion(bool c) {
         confusion = c;
-        if(confusion)
-            cout<<nameCharacter<<" e' confuso"<<endl;
-        else
-            cout<<nameCharacter<<" si e' riconcentrato"<<endl;
     }
 
     bool isOutScene() const {
@@ -118,8 +105,6 @@ public:
 
     void setOutScene(bool o) {
         outScene = o;
-        if(!outScene)
-            cout<<nameCharacter<<" e' tornato in scena!"<<endl;
     }
 
     void setNumberPlayer(int num){
@@ -147,7 +132,7 @@ public:
         qualities.erase(deletedQuality);
     }
 
-    void getQualities() const{//fixme problema pe cui taglia le prime lettere
+    void printQualities() const{//fixme problema per cui taglia le prime lettere
         int i=0;
         for(const auto &it : qualities){
             if(++i<getNumQualities())
@@ -165,7 +150,7 @@ public:
         abilities.erase(deletedAbility);
     }
 
-    void getAbilities() const{
+    void printAbilities() const{
         int i=0;
         for(const auto &it : abilities){
             if(++i<getNumAbilities())
@@ -188,21 +173,21 @@ public:
         return namePlayer;
     }
 
-    void insertQuality(string &quality){
+    void insertQuality(const string &quality){
         qualities.insert(quality);
     }
 
-    void insertAbility(string &ability){
+    void insertAbility(const string &ability){
         abilities.insert(ability);
     }
 
-    bool isThereThisQuality(string &q){
+    bool isThereThisQuality(const string &q){
         auto it = qualities.find(q);
         if(it != qualities.end())
             return true;
         else return false;
     }
-    bool isThereThisAbility(string &a){
+    bool isThereThisAbility(const string &a){
         auto it = abilities.find(a);
         if(it != abilities.end())
             return true;
@@ -211,14 +196,6 @@ public:
 
     int getItemSize(){
         return item.size();
-    }
-
-    int getUnknownToken(){
-        return bag.getUnknown();
-    }
-
-    void setBlackExtracted(int n){
-        bag.setBlackExtracted(n);
     }
 };
 

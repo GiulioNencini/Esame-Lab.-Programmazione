@@ -5,11 +5,18 @@
 #ifndef SISTEMA_DI_GIOCO_NOT_THE_END_PLAYER_H
 #define SISTEMA_DI_GIOCO_NOT_THE_END_PLAYER_H
 
-
 #include <algorithm>
 #include <memory>
-#include "NumberFunctions.h"
-#include "Bag.h"
+#include "NumberAnswerFunctions.h"
+
+struct Bag{
+    unsigned int nWhite=0;
+    unsigned int nBlack=0;
+    unsigned int nUnknown=0;
+    unsigned int blackExtracted=0;
+    unsigned int whiteExtracted=0;
+    vector<unsigned int> extractionVector;
+};
 
 class Player{
 protected:
@@ -18,36 +25,55 @@ public:
     Player()=default;
     virtual ~Player()=default;
 
-    virtual void extract(int e);
+    virtual void extract(unsigned int e);
 
-    virtual void setBag(int numW,int numB) = 0;
+    void resetBag();
+
+    virtual void setBag( unsigned int numW, unsigned int numB) = 0;
+
+    void setWhite(const unsigned int nw){
+        bag.nWhite=nw;
+    };
+
+    void setBlack(const unsigned int nb){
+        bag.nBlack=nb;
+    };
+
+    void setUnknown(const unsigned int nu){
+        bag.nUnknown=nu;
+    };
+
+    void setWhiteExtracted(const unsigned int nwe){
+        bag.whiteExtracted=nwe;
+    };
+
+    void setBlackExtracted(const unsigned int nbe){
+        bag.blackExtracted=nbe;
+    };
 
 
-    static void yesOrNot(string &answer){
-        do{
-            cin>>answer;
-        } while (answer!="y" && answer!="n");
-    }
-
-    //utili nello unit testing
     int getSizeExVec() const{
         return bag.extractionVector.size();
     }
 
-    int getWhiteFromBag() const{
-        return bag.getWhite();
+    unsigned int getWhiteFromBag() const{
+        return bag.nWhite;
     }
 
-    int getBlackFromBag() const{
-        return bag.getBlack();
+    unsigned int getBlackFromBag() const{
+        return bag.nBlack;
     }
 
-    int getWhiteExtractedFromBag(){
-        return bag.getWhiteExtracted();
+    unsigned int getUnknownFromBag() const{
+        return bag.nUnknown;
     }
 
-    int getBlackExtractedFromBag(){
-        return bag.getBlackExtracted();
+    unsigned int getWhiteExtractedFromBag() const{
+        return bag.whiteExtracted;
+    }
+
+    unsigned int getBlackExtractedFromBag() const{
+        return bag.blackExtracted;
     }
 };
 

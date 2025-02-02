@@ -4,10 +4,10 @@
 
 #include "Player.h"
 
-void Player::extract(int e) {
+void Player::extract(unsigned const int e) {
 
-    int w=bag.getWhite();
-    int b=bag.getBlack();
+    unsigned int w=getWhiteFromBag();
+    unsigned int b=getBlackFromBag();
     bag.extractionVector.clear();
 
     bag.extractionVector.insert(bag.extractionVector.end(), w, 1);//per w volte inserisce 1
@@ -19,22 +19,30 @@ void Player::extract(int e) {
 
     for (int i = 0; i < e; ++i) {
         if (bag.extractionVector.empty()) {
-            std::cerr << "Non ci sono abbastanza token per estrarre.\n"<<endl;
+            std::cerr << "Estrazione terminata: non ci sono abbastanza token per estrarre.\n"<<endl;
             break;
         }
 
-        int x = getRandom(bag.extractionVector.size());
-        int temp = bag.extractionVector[x];
+        unsigned int x = getRandom(bag.extractionVector.size());
+        unsigned int temp = bag.extractionVector[x];
         bag.extractionVector.erase(bag.extractionVector.begin() + x);
 
         if (temp == 1) {//tener traccia degli estratti è utile per funzioni future
-            bag.setWhite(bag.getWhite() - 1);
-            bag.setWhiteExtracted(bag.getWhiteExtracted() + 1);
+            setWhite(getWhiteFromBag() - 1);
+            setWhiteExtracted(getWhiteExtractedFromBag() + 1);
         } else {
-            bag.setBlack(bag.getBlack() - 1);
-            bag.setBlackExtracted(bag.getBlackExtracted() + 1);
+            setBlack(getBlackFromBag() - 1);
+            setBlackExtracted(getBlackExtractedFromBag() + 1);
         }
     }
+    cout<<"Estratti: \n"<<getWhiteExtractedFromBag()<<" bianchi\n"<<getBlackExtractedFromBag()<<" neri\n"<<endl;
+}
 
-    cout<<"Estratti: \n"<<bag.getWhiteExtracted()<<" bianchi\n"<<bag.getBlackExtracted()<<" neri\n"<<endl;
+void Player::resetBag(){
+    bag.nWhite=0;
+    bag.nBlack=0;
+    bag.nUnknown=0;
+    bag.whiteExtracted=0;
+    bag.blackExtracted=0;
+    bag.extractionVector.clear();
 }

@@ -10,9 +10,9 @@ include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
 set(TEST_SOURCE_FILES
         mainRunTest.cpp
         BagTest.cpp
-        ItemTest.cpp
+        NormItemTest.cpp
         MasterTest.cpp
-        NumberFunctionsTest.cpp
+        NumberAnswerFunctionsTest.cpp
         PlayerTest.cpp
         MainFunctionsTest.cpp
         HeroTest.cpp

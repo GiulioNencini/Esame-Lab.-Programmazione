@@ -1,7 +1,9 @@
-//NOTA: In seguito a un errore di definizione multipla ho provato a trasferire le definizioni qui
+//
+// Created by Giulio Nencini on 01/02/2025.
+//
 
-#include "NumberFunctions.h"
-
+#include "NumberAnswerFunctions.h"
+//todo togliere le domande se possibile
 void verifyNumber(bool &error) {//funzione per l'inserimento sicuro di un numero positivo, usata nella successiva insertNumber.
 
     if (cin.fail()) // Se l'inserimento fallisce (non è un numero), resetta il flag di errore
@@ -15,8 +17,19 @@ void verifyNumber(bool &error) {//funzione per l'inserimento sicuro di un numero
         error=false;
 }
 
-int howExtract() {
-    int ex;
+void insertNumber(unsigned int &value, bool &error){//Per l'inserimento di un numero è questa che viene chiamata. Così risparmia la riscrittura continua del ciclo in essa contenuto. Basta solo dichiarare un flag fuori dalla funzione
+    do{
+        cin>>value;
+        verifyNumber(error);
+        if(!error && value<0){
+            cerr<<"Il numero dev'essere positivo"<<endl;
+            error=true;
+        }
+    }while(error);//fin quando il flag error non è dichiarato negativo da verifyNumber, sarà richiesto nuovamente di inserire un numero
+}
+
+unsigned int howExtract() {
+    unsigned int ex;
     do {
         cout << "Quanto vuoi estrarre?" << endl;
         bool e;
@@ -38,11 +51,17 @@ int getRandomWB(){
     return distribuzione(gen);
 }
 
-int getRandom(int maxValue){
+int getRandom(const int maxValue){
     std::random_device rd;
     std::mt19937 gen(rd());
 
     std::uniform_int_distribution<> distribuzione(0, maxValue-1);
 
     return distribuzione(gen);
+}
+
+void yesOrNot(string &answer){
+    do{
+        cin>>answer;
+    } while (answer!="y" && answer!="n");
 }

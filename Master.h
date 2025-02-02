@@ -8,7 +8,7 @@
 #include "Player.h"
 
 class Master : public Player{
-    int usableBlack=0;
+    unsigned int usableBlack=0;
 
 public:
     Master()=default;
@@ -16,19 +16,13 @@ public:
 
     //il master per l'estrazione utilizza la funzione della classe player
 
-    void setBag(int numW, int numB) override;
+    void setBag( unsigned int numW, unsigned int numB) override;
 
-    void useBlack(int n);
+    void useBlack(unsigned int n);
 
-    void addBlack();
+    void addUsableBlack(unsigned int value);
 
-    void addMultipleBlack(int value);
-
-    void reset(){
-        bag.reset();
-    }
-
-    int getUsableBlack() const{
+    unsigned int getUsableBlack() const{
         return usableBlack;
     }
 };
