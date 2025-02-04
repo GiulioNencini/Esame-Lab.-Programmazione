@@ -1,9 +1,5 @@
-//
-// Created by Giulio Nencini on 01/02/2025.
-//
-
 #include "NumberAnswerFunctions.h"
-//todo togliere le domande se possibile
+
 void verifyNumber(bool &error) {//funzione per l'inserimento sicuro di un numero positivo, usata nella successiva insertNumber.
 
     if (cin.fail()) // Se l'inserimento fallisce (non è un numero), resetta il flag di errore

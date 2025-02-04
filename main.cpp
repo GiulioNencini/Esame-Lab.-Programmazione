@@ -1,7 +1,7 @@
 #include "MainFunctions.h"
 #include "Master.h"
-//todo rivedere classe bag, item(capire quali parti tenere) e metodo statico. Togliere i cout dalle funzioni e e le domande dalle funzioni. Rivedere inoltre le invarianti dei setter e il corretto assegnamento di const
-//todo una volta rivista anche l'interfaccia di interazione rivedere lo ut, non prima di aver corretto il codice cmake
+//todo Rivedere inoltre le invarianti dei setter e il corretto assegnamento di const. Capire come impostare un eventuale blocco try per la preservazione delle invarianze
+//todo una volta rivista anche l'interfaccia di interazione rivedere lo ut
 int main() {
     string startGame;
     do {
@@ -50,19 +50,14 @@ int main() {
         setPartyIdentity(playerVector, numPlayer, loading);
 
         string answer;
-        unsigned int amount=0;
-        bool err;
         for (auto &it: playerVector) {
-
             answer="";
-            amount=0;
-
             cout << it->getNameCharacter() << " era uscito di scena? y/n" << endl;
             yesOrNot(answer);
 
             if (answer == "y") {
                 it->setOutScene(true);//se è fuori scena basta settare il fuori scena e l'inventario, altrimenti bisogna settare anche tutto il resto
-                insertItem(answer, it, amount, err);
+                insertItem(it);
             }
 
 
@@ -84,8 +79,7 @@ int main() {
                     cout<<it->getNameCharacter()<<" e' confuso"<<endl;
                 }
 
-
-                insertItem(answer, it, amount, err);
+                insertItem(it);
 
                 cout << "\n\n" << endl;
             }

@@ -1,7 +1,3 @@
-//
-// Created by Giulio Nencini on 16/01/2025.
-//
-
 #include "Player.h"
 
 void Player::extract(unsigned const int e) {
@@ -35,6 +31,10 @@ void Player::extract(unsigned const int e) {
             setBlackExtracted(getBlackExtractedFromBag() + 1);
         }
     }
+    //printExtracted();
+}
+
+void Player::printExtracted() const{
     cout<<"Estratti: \n"<<getWhiteExtractedFromBag()<<" bianchi\n"<<getBlackExtractedFromBag()<<" neri\n"<<endl;
 }
 

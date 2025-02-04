@@ -1,7 +1,3 @@
-//
-// Created by Giulio Nencini on 16/01/2025.
-//
-
 #ifndef SISTEMA_DI_GIOCO_NOT_THE_END_HERO_H
 #define SISTEMA_DI_GIOCO_NOT_THE_END_HERO_H
 
@@ -30,8 +26,6 @@ public:
         cout<<"L'eroe "<<this->nameCharacter<<" ha lasciato il party"<<endl;
     };
 
-    void setHeroCharacteristics(const string & arc, const set<string> &sQ, const set<string> &sA);
-
     void openItem() const;
 
     void addItem(unique_ptr<NormItem> newItem);
@@ -40,12 +34,9 @@ public:
 
     bool isThereSearchedItem(const string &used);
 
-    //static void useItem(unique_ptr<Hero> &it);
-    void useItem();
-
     bool itemIsEmpty();
 
-    bool isThereThisConsumableItem(const string &inputItem, unsigned int amount);
+    void accumulateThisConsumableItem(const string &inputItem, unsigned int amount);
 
     void sortItem();
 
@@ -57,9 +48,9 @@ public:
 
     void risk(unsigned int remain);
 
-    void blackTokenPartition(Master &theMaster, bool isOutScene);
+    void blackTokenPartition(Master &theMaster, const string& choice);
 
-    void returnBack(unsigned int numW, unsigned int numB, unsigned int numEx, Master &theMaster);
+    void returnBack(unsigned int numW, unsigned int numB, unsigned int numEx);
 
     void printIdentity() const;
 
@@ -115,6 +106,7 @@ public:
         return numberPlayer;
     }
 
+
     //get e set dei tratti
     const string &getArchetype() const{
         return archetype;
@@ -122,10 +114,6 @@ public:
 
     void setArchetype(string &a){
         archetype=std::move(a);
-    }
-
-    void addQuality(const string &newQuality){
-        qualities.insert(newQuality);
     }
 
     void removeQuality(string &deletedQuality){
@@ -142,10 +130,6 @@ public:
         }
     }
 
-    void addAbility(const string &newAbility){
-        abilities.insert(newAbility);
-    }
-
     void removeAbility(string &deletedAbility){
         abilities.erase(deletedAbility);
     }
@@ -160,15 +144,26 @@ public:
         }
     }
 
-    int getNumQualities() const{
+    unsigned int getNumQualities() const{
         return qualities.size();
     }
 
-    int getNumAbilities() const{
+    unsigned int getNumAbilities() const{
         return abilities.size();
     }
 
-    //utili solo e soltanto nello unit testing
+    unsigned int getItemSize(){
+        return item.size();
+    }
+
+    auto const &getItemFromThisPosition(unsigned int const pos) const{
+        return item[pos];
+    }
+
+    void deleteItemFromThisPosition(const unsigned int pos){
+        item.erase(item.begin() + pos);
+    }
+
     const string& getNamePlayer() const{
         return namePlayer;
     }
@@ -187,6 +182,7 @@ public:
             return true;
         else return false;
     }
+
     bool isThereThisAbility(const string &a){
         auto it = abilities.find(a);
         if(it != abilities.end())
@@ -194,9 +190,6 @@ public:
         else return false;
     }
 
-    int getItemSize(){
-        return item.size();
-    }
 };
 
 

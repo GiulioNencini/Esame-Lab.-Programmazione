@@ -1,7 +1,3 @@
-//
-// Created by Giulio Nencini on 21/01/2025.
-//
-
 #ifndef SISTEMA_DI_GIOCO_NOT_THE_END_NORMITEM_H
 #define SISTEMA_DI_GIOCO_NOT_THE_END_NORMITEM_H
 
@@ -29,10 +25,11 @@ public:
     }
 
     virtual unsigned int getAmount() const{//NOTA: questi metodi qui non si usano per questa classe. Sono utili solo in Consumable. Tuttavia non posso farli virtuali perché questa non è una classe astratta
-        return 1;
+        return 1;//todo capire se è è possibile fare diversamente
     }
 
     virtual void setAmount(unsigned int const a){}
+    //Altrimenti nella sezione di utilizzo oggetti mi dà problemi con il riferimento iteItem
 };
 
 #endif //SISTEMA_DI_GIOCO_NOT_THE_END_NORMITEM_H

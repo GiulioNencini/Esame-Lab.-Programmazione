@@ -2,114 +2,246 @@
 // Created by Giulio Nencini on 28/01/2025.
 //
 #include <gtest/gtest.h>
-#include "Hero.h"
+#include "../Hero.h"
 
 class HeroTest : public ::testing::Test {
 protected:
-    Hero *h = new Hero("eroe", "giulio", "risk", 1);
+    Hero *myHero = new Hero("eroe", "giulio", "risk", 1);
     Master m;
     void SetUp() override {
+        myHero->setBag(6, 8);
     }
 
     void TearDown() override {
-        delete h;
+        delete myHero;
     }
 };
 
-TEST_F(HeroTest, Constructor){
-    EXPECT_EQ("eroe", h->getNameCharacter());
-    EXPECT_EQ("giulio", h->getNamePlayer());
-    EXPECT_EQ("risk", h->getRisk());
-    EXPECT_EQ(1, h->getNumberPlayer());
+TEST_F(HeroTest, TestConstructor){
+    EXPECT_EQ("eroe", myHero->getNameCharacter());
+    EXPECT_EQ("giulio", myHero->getNamePlayer());
+    EXPECT_EQ("risk", myHero->getRisk());
+    EXPECT_EQ(1, myHero->getNumberPlayer());
 }
 
-TEST_F(HeroTest, TestSetHeroCharacteristics) {//la rimozione e aggiunzione è testata in MainFunctionsTest
-    string archetype = "Guerriero";
-    h->setArchetype(archetype);
-    string q1="Forza", q2="Agilità";
-    h->insertQuality(q1);
-    h->insertQuality(q2);
-    string a1="Schivata",a2="Colpo Poderoso";
-    h->insertAbility(a1);
-    h->insertAbility(a2);
-
-    EXPECT_EQ("Guerriero", h->getArchetype());
-    ASSERT_EQ(h->getNumQualities(), 2);
-    ASSERT_EQ(h->getNumAbilities(), 2);
-    EXPECT_TRUE(h->isThereThisQuality(q1));
-    EXPECT_TRUE(h->isThereThisQuality(q2));
-    EXPECT_TRUE(h->isThereThisAbility(a1));
-    EXPECT_TRUE(h->isThereThisAbility(a2));
-}
-
-TEST_F(HeroTest, TestAddingAndDeletingItem){//Sia normale che consumable. Dovrebbero verificare, anche se "a pezzi" anche la funzione insertItem, dalle main function
-    string n="item";
-    unique_ptr<AbItem> item = make_unique<Item>(n);
-    int initSize=h->getItemSize();
-    h->addItem(std::move(item));
-    EXPECT_EQ(h->getItemSize(), initSize+1);//controlla che sia effettivamente inserito, quindi che la dimensione del vettore item sia incrementata di 1
-    EXPECT_TRUE(h->isThereSearchedItem(n));
-    EXPECT_FALSE(h->itemIsEmpty());
-
-    h->destroyAllItem();
-    EXPECT_EQ(h->getItemSize(),0);
-    EXPECT_TRUE(h->itemIsEmpty());
-
-    /*string nc="consumable";
-    int amount=3;
-    unique_ptr<AbItem> consItem = make_unique<ConsumableItem>(nc, 4);
-    initSize=h->getItemSize();
-    h->addItem(std::move(consItem));
-    EXPECT_TRUE(h->isThereThisConsumableItem((string&)"consumable", amount));//verifica che fosse già presente (perché effettivamente inserito alla riga 56), quindi che la dimensione del vettore rimanga uguale
-    EXPECT_EQ(initSize, h->getItemSize());*/
+TEST_F(HeroTest, TestSetter){
+    string nP = "NamePlayer", nC="NameCharacter", r="Risk";
+    myHero->setNamePlayer(nP);
+    myHero->setNameCharacter(nC);
+    myHero->setRisk(r);
+    myHero->setNumberPlayer(4);
+    myHero->setConfusion(true);
+    myHero->setAdrenaline(true);
+    myHero->setOutScene(true);
+    EXPECT_EQ("NamePlayer", myHero->getNamePlayer());
+    EXPECT_EQ("NameCharacter", myHero->getNameCharacter());
+    EXPECT_EQ("Risk", myHero->getRisk());
+    EXPECT_EQ(4, myHero->getNumberPlayer());
+    EXPECT_TRUE(myHero->isConfusion());
+    EXPECT_TRUE(myHero->isAdrenaline());
+    EXPECT_TRUE(myHero->isOutScene());
 }
 
 TEST_F(HeroTest, TestSetBag){//Il normale setBag è già testato. Qui si testa quello specifico dell'eroe, particolare, quando confusione è attivo. Se non lo è funziona come quello del master
-    h->setConfusion(false);
-    h->setBag(6, 8);
-    EXPECT_EQ(h->getWhiteFromBag(),6);
-    EXPECT_EQ(h->getBlackFromBag(),8);
+    EXPECT_FALSE(myHero->isConfusion());//di default è falso
+    EXPECT_EQ(myHero->getWhiteFromBag(), 6);
+    EXPECT_EQ(myHero->getBlackFromBag(), 8);
+    EXPECT_EQ(myHero->getUnknownFromBag(), 0);
 
-    h->setConfusion(true);
-    h->setBag(6, 8);
-    EXPECT_EQ(h->getUnknownToken(), 6);
+    myHero->setConfusion(true);
+    myHero->setBag(9, 8);
+    EXPECT_EQ(myHero->getUnknownFromBag(), 9);
+    //Mentre sul numero esatto dei bianchi e neri non possiamo dire nulla. Perché entrambi i valori potrebbero variare come no
 
 }
 
-TEST_F(HeroTest, TestSetDanger) {
-    int danger = 6;//come nel codice
-    bool isDangerous = false;
-    string yes="y", no="n";
-    Hero::setDanger(danger, isDangerous, yes);//NOTA IMPORTANTE: Per questa piccola modifica apportata qui (ricevimento in ingresso dalla risposta) e a causa del problema momentaneo che sto avendo con l'eseguibile non posso ricompilare, quindi qui non posso testare
-    EXPECT_TRUE(isDangerous);
-    EXPECT_LT(danger, 6);
-    EXPECT_LT(1, danger);
-    danger = 6;
-    Hero::setDanger(danger, isDangerous, no);
-    EXPECT_FALSE(isDangerous);
-    EXPECT_EQ(danger, 6);
+TEST_F(HeroTest, TestResetBag) {//Qui si testa la questione dei token sconosciuti. Il normale settaggio è già testato in MaterTest
+    myHero->setConfusion(true);
+    myHero->setBag(500, 1);//È assai probabile che non siano tutti neri. Mettendo confusione testo anche il reset del contatore dei token sconosciuti
+    myHero->resetBag();
+    EXPECT_EQ(myHero->getWhiteFromBag(), 0);
+    EXPECT_EQ(myHero->getBlackFromBag(), 0);
+    EXPECT_EQ(myHero->getUnknownFromBag(), 0);
+    EXPECT_EQ(myHero->getWhiteExtractedFromBag(), 0);
+    EXPECT_EQ(myHero->getBlackExtractedFromBag(), 0);
+    EXPECT_EQ(myHero->getSizeExVec(), 0);
+}
+
+TEST_F(HeroTest, TestRemoveAndAddHeroCharacteristics) {
+    //inserimento
+    string archetype = "Guerriero";
+    myHero->setArchetype(archetype);
+    string q1="Forza", q2="Agilità";
+    myHero->insertQuality(q1);
+    myHero->insertQuality(q2);
+    string a1="Schivata",a2="Finta";
+    myHero->insertAbility(a1);
+    myHero->insertAbility(a2);
+
+    EXPECT_EQ("Guerriero", myHero->getArchetype());
+    ASSERT_EQ(myHero->getNumQualities(), 2);
+    ASSERT_EQ(myHero->getNumAbilities(), 2);
+    EXPECT_TRUE(myHero->isThereThisQuality(q1));
+    EXPECT_TRUE(myHero->isThereThisQuality(q2));
+    EXPECT_TRUE(myHero->isThereThisAbility(a1));
+    EXPECT_TRUE(myHero->isThereThisAbility(a2));
+
+    //Rimozione
+    unsigned int initNumQ=myHero->getNumQualities();
+    unsigned int initNumAb=myHero->getNumAbilities();
+
+    string removingQ="Forza";
+    string otherQuality="Agilità";
+    string removingA="Schivata";
+    string otherAbility="Finta";
+    myHero->removeQuality(removingQ);
+    EXPECT_EQ(myHero->getNumQualities(), initNumQ - 1);
+    EXPECT_TRUE(myHero->isThereThisQuality(otherQuality));
+    EXPECT_FALSE(myHero->isThereThisQuality(removingQ));
+    myHero->removeAbility(removingA);
+    EXPECT_EQ(myHero->getNumAbilities(), initNumAb - 1);
+    EXPECT_TRUE(myHero->isThereThisAbility(otherAbility));
+    EXPECT_FALSE(myHero->isThereThisAbility(removingA));
+}
+
+TEST_F(HeroTest, TestAddingAndDeletingItem){//Sia normale che consumable. Dovrebbero verificare, anche se "a pezzi" anche la funzione insertItem, dalle main function
+    unsigned int initSize=myHero->getItemSize();
+    EXPECT_EQ(initSize, 0);
+    string name="item";
+    unique_ptr<NormItem> item = make_unique<NormItem>(name);
+    EXPECT_EQ("item", item->getName());
+    EXPECT_FALSE(myHero->isThereSearchedItem(item->getName()));
+    myHero->addItem(std::move(item));
+    EXPECT_EQ(myHero->getItemSize(), initSize + 1);//controlla che sia effettivamente inserito, quindi che la dimensione del vettore item sia incrementata di 1
+    EXPECT_TRUE(myHero->isThereSearchedItem("item"));
+    EXPECT_FALSE(myHero->itemIsEmpty());
+
+
+    string nc="consumable";
+    int amount=3;
+    unique_ptr<NormItem> consItem = make_unique<ConsumableItem>(nc, 4);
+    EXPECT_EQ("consumable", consItem->getName());
+    EXPECT_EQ(4, consItem->getAmount());
+    myHero->addItem(std::move(consItem));
+    initSize=myHero->getItemSize();//adesso vale 2
+    myHero->accumulateThisConsumableItem(nc, amount);
+    EXPECT_EQ(initSize, myHero->getItemSize());//per far vedere che non aggiunge ulteriori oggetti
+
+
+    myHero->destroyAllItem();
+    EXPECT_EQ(myHero->getItemSize(), 0);
+    EXPECT_TRUE(myHero->itemIsEmpty());
+
+    string a="a", b="b", c="c", d="d";
+    unique_ptr<NormItem> aItem = make_unique<NormItem>(a);
+    unique_ptr<NormItem> bItem = make_unique<NormItem>(b);
+    unique_ptr<NormItem> cItem = make_unique<NormItem>(c);
+    unique_ptr<NormItem> dItem = make_unique<NormItem>(d);
+    //Li inserisco "mescolati"
+    myHero->addItem(std::move(aItem));
+    myHero->addItem(std::move(bItem));
+    myHero->addItem(std::move(cItem));
+    myHero->addItem(std::move(dItem));
+    myHero->openItem();
+    unsigned int targetPosition=2;
+    auto const& ref=myHero->getItemFromThisPosition(targetPosition);//contando l'ordine di inserimento, l'elemento in pos 2 dovrebbe essere c
+    EXPECT_EQ(ref->getName(), "c");
+    myHero->deleteItemFromThisPosition(++targetPosition);//dovrebbe essere d per lo stesso ragionamento
+    EXPECT_EQ(myHero->getItemSize(), 3);
+    EXPECT_FALSE(myHero->isThereSearchedItem("d"));
 }
 
 TEST_F(HeroTest, TestGoOffScene){
     int danger = 4;
-    h->goOffScene(danger, 3);
-    EXPECT_FALSE(h->isOutScene());
-    h->goOffScene(danger, 5);//si è superato il pericolo
-    EXPECT_TRUE(h->isOutScene());
+    myHero->goOffScene(danger, 3);
+    EXPECT_FALSE(myHero->isOutScene());
+    myHero->goOffScene(danger, 5);//si è superato il pericolo
+    EXPECT_TRUE(myHero->isOutScene());
+}
+
+TEST_F(HeroTest, TestExtractAndRisk){
+    EXPECT_FALSE(myHero->isAdrenaline());
+    myHero->setBag(6, 7);
+    myHero->extract(2, 6, false);//estraggo 2, senza pericolo
+    EXPECT_EQ(myHero->getWhiteExtractedFromBag()+myHero->getBlackExtractedFromBag(), 2);
+    unsigned int remain = 5-myHero->getWhiteExtractedFromBag()-myHero->getBlackExtractedFromBag();//I token rimanenti per l'estrazione del rischio
+    myHero->risk(remain);
+    EXPECT_EQ(myHero->getWhiteExtractedFromBag()+myHero->getBlackExtractedFromBag(), 5);
+
+
+    myHero->resetBag();
+
+    myHero->setAdrenaline(true);
+    myHero->setBag(6, 7);
+    myHero->extract(2, 6, false);
+    EXPECT_EQ(myHero->getWhiteExtractedFromBag()+myHero->getBlackExtractedFromBag(), 4);//Con adrenalina si estrae comunque 4
+    remain = 5-myHero->getWhiteExtractedFromBag()-myHero->getBlackExtractedFromBag();//I token rimanenti per l'estrazione del rischio
+    myHero->risk(remain);
+    EXPECT_EQ(myHero->getWhiteExtractedFromBag()+myHero->getBlackExtractedFromBag(), 5);
 
 }
 
-TEST_F(HeroTest, TestBlackPartition){//testato nel caso del fuori scena
-    int exBlack=5;
-    h->setBlackExtracted(exBlack);
-    h->setOutScene(true);
-    h->blackTokenPartition(m, h->isOutScene());
-    EXPECT_EQ(m.getUsableBlack(), exBlack);
+TEST_F(HeroTest, TestBlackTokenPartition){//si tratta di ripetere 4 volte la procedura, ogni volta con un input diverso
+    string choice;
 
-    /*h->setOutScene(false);//problema per via dell'interazione con l'utente
-    h->setBlackExtracted(exBlack);
-    h->blackTokenPartition(m, h->isOutScene());
-    int preBlackTokenMaster=m.getUsableBlack();
-    EXPECT_LE(m.getUsableBlack(), preBlackTokenMaster+exBlack-3);//al massimo 2 neri non andranno al master
-    EXPECT_EQ(h->getBlackExtractedFromBag(), 0);*/
+    EXPECT_EQ(m.getUsableBlack(), 0);
+    myHero->setBag(0, 4);
+    EXPECT_FALSE(myHero->isConfusion());
+    EXPECT_FALSE(myHero->isAdrenaline());
+    myHero->extract(4, 6, false);//un'estrazione senza pericolo e senza adrenalina o confusione
+    choice="m";//comando per darli tutti al master
+    myHero->blackTokenPartition(m, choice);
+    EXPECT_EQ(m.getUsableBlack(),4);
+
+    myHero->resetBag();
+    //Le condizioni saranno le stesse, eccetto per il fatto che il master adesso ha 4 token
+    myHero->setBag(0, 4);
+    EXPECT_FALSE(myHero->isConfusion());
+    EXPECT_FALSE(myHero->isAdrenaline());
+    myHero->extract(4, 6, false);
+    choice="a";//comando per darli tutti al master
+    myHero->blackTokenPartition(m, choice);
+    EXPECT_TRUE(myHero->isAdrenaline());
+    EXPECT_EQ(m.getUsableBlack(),4+3);
+
+    myHero->resetBag();
+    myHero->setAdrenaline(false);
+
+    myHero->setBag(0, 4);
+    EXPECT_FALSE(myHero->isConfusion());
+    EXPECT_FALSE(myHero->isAdrenaline());
+    myHero->extract(4, 6, false);
+    choice="c";//comando per darli tutti al master
+    myHero->blackTokenPartition(m, choice);
+    EXPECT_TRUE(myHero->isConfusion());
+    EXPECT_EQ(m.getUsableBlack(),4+3+3);
+
+    myHero->resetBag();
+    myHero->setConfusion(false);
+
+    myHero->setBag(0, 4);
+    EXPECT_FALSE(myHero->isConfusion());
+    EXPECT_FALSE(myHero->isAdrenaline());
+    myHero->extract(4, 6, false);
+    choice="ac";//comando per darli tutti al master
+    myHero->blackTokenPartition(m, choice);
+    EXPECT_TRUE(myHero->isConfusion());
+    EXPECT_TRUE(myHero->isAdrenaline());
+    EXPECT_EQ(m.getUsableBlack(),4+3+3+2);
+}
+
+TEST_F(HeroTest, Test){//Per verificare il ritorno o meno farò due estrazioni distinte: una sicuramente di successo, l'altra di sicuro fallimento. extract() è già stata testata
+    myHero->setOutScene(true);
+    myHero->returnBack(1, 1, 2);//1 bianco, 1 nero, 2 estratti: impossibile fallire
+    EXPECT_FALSE(myHero->isAdrenaline());
+    EXPECT_FALSE(myHero->isConfusion());
+    EXPECT_FALSE(myHero->isOutScene());
+
+    myHero->resetBag();
+
+    myHero->setOutScene(true);
+    myHero->returnBack(0, 3, 2);//nessun bianco: fallimento assicurato
+    EXPECT_TRUE(myHero->isOutScene());
+
+    myHero->resetBag();
 }

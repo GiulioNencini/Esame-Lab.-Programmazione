@@ -9,14 +9,9 @@ include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
 
 set(TEST_SOURCE_FILES
         mainRunTest.cpp
-        BagTest.cpp
-        NormItemTest.cpp
+        ItemTest.cpp
         MasterTest.cpp
-        NumberAnswerFunctionsTest.cpp
-        PlayerTest.cpp
-        MainFunctionsTest.cpp
         HeroTest.cpp
 )
-add_executable(nteTest ${TEST_SOURCE_FILES})
-target_link_libraries(nteTest gtest gtest_main ${CMAKE_PROJECT_NAME}_lib)
-
+add_executable(mainRunTest ${TEST_SOURCE_FILES})
+target_link_libraries(mainRunTest gtest gtest_main core)

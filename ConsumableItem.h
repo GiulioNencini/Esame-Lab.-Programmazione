@@ -1,7 +1,3 @@
-//
-// Created by Giulio Nencini on 21/01/2025.
-//
-
 #ifndef SISTEMA_DI_GIOCO_NOT_THE_END_CONSUMABLEITEM_H
 #define SISTEMA_DI_GIOCO_NOT_THE_END_CONSUMABLEITEM_H
 

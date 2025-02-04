@@ -1,12 +1,12 @@
-cmake_minimum_required(VERSION 3.23)
+cmake_minimum_required(VERSION 3.23)#todo chiedere spiegazione codice
 
 project(Sistema_di_gioco_Not_The_End)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(Sistema_di_gioco_Not_The_End main.cpp
-        NumberAnswerFunctions.h
-        MainFunctions.h
+add_subdirectory(test)
+
+set(SOURCE_FILES
         Player.cpp
         Master.cpp
         Hero.cpp
@@ -14,5 +14,13 @@ add_executable(Sistema_di_gioco_Not_The_End main.cpp
         ConsumableItem.cpp
         NumberAnswerFunction.cpp
 )
-#add_library(${CMAKE_Sistema_di_gioco_Not_The_End}_lib ${SOURCE_FILES})
-#target_link_libraries(${CMAKE_Sistema_di_gioco_Not_The_End} ${CMAKE_Sistema_di_gioco_Not_The_End}_lib)
+
+add_library(core ${SOURCE_FILES})
+
+add_executable(Sistema_di_gioco_Not_The_End main.cpp
+        NumberAnswerFunctions.h
+        MainFunctions.h
+        ${SOURCE_FILES}
+)
+
+target_link_libraries(Sistema_di_gioco_Not_The_End core)

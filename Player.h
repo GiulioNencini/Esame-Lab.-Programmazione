@@ -1,7 +1,3 @@
-//
-// Created by Giulio Nencini on 16/01/2025.
-//
-
 #ifndef SISTEMA_DI_GIOCO_NOT_THE_END_PLAYER_H
 #define SISTEMA_DI_GIOCO_NOT_THE_END_PLAYER_H
 
@@ -28,6 +24,8 @@ public:
     virtual void extract(unsigned int e);
 
     void resetBag();
+
+    void printExtracted() const;
 
     virtual void setBag( unsigned int numW, unsigned int numB) = 0;
 
