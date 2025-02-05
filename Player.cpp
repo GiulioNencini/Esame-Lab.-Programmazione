@@ -1,13 +1,15 @@
 #include "Player.h"
 
-void Player::extract(unsigned const int e) {
+void Player::extract(const int e) {//fixme eccezione per exvec
 
-    unsigned int w=getWhiteFromBag();
-    unsigned int b=getBlackFromBag();
+    int w=getWhiteFromBag();
+    int b=getBlackFromBag();
     bag.extractionVector.clear();
 
     bag.extractionVector.insert(bag.extractionVector.end(), w, 1);//per w volte inserisce 1
     bag.extractionVector.insert(bag.extractionVector.end(), b, 0);
+
+    vectorZeroOne(bag.extractionVector);//controlla che ci siano tutti 0 e 1
 
     std::random_device s;
     std::mt19937 g(s());
@@ -15,12 +17,12 @@ void Player::extract(unsigned const int e) {
 
     for (int i = 0; i < e; ++i) {
         if (bag.extractionVector.empty()) {
-            std::cerr << "Estrazione terminata: non ci sono abbastanza token per estrarre.\n"<<endl;
+            cerr << "Estrazione terminata: non ci sono abbastanza token per estrarre.\n"<<endl;
             break;
         }
 
-        unsigned int x = getRandom(bag.extractionVector.size());
-        unsigned int temp = bag.extractionVector[x];
+        int x = getRandom(bag.extractionVector.size());
+        int temp = bag.extractionVector[x];
         bag.extractionVector.erase(bag.extractionVector.begin() + x);
 
         if (temp == 1) {//tener traccia degli estratti è utile per funzioni future
@@ -31,11 +33,19 @@ void Player::extract(unsigned const int e) {
             setBlackExtracted(getBlackExtractedFromBag() + 1);
         }
     }
-    //printExtracted();
+    if(!bag.extractionVector.empty())
+        vectorZeroOne(bag.extractionVector);
 }
 
 void Player::printExtracted() const{
     cout<<"Estratti: \n"<<getWhiteExtractedFromBag()<<" bianchi\n"<<getBlackExtractedFromBag()<<" neri\n"<<endl;
+}
+
+bool Player::bagIsEmpty() const{
+    if(!(bag.extractionVector.size()))
+        return true;
+    else
+        return false;
 }
 
 void Player::resetBag(){

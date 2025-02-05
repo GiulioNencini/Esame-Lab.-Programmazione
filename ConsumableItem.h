@@ -4,18 +4,18 @@
 #include "NormItem.h"
 
 class ConsumableItem : public NormItem{
-    unsigned int amount;
+    int amount;
 
 public:
 
-    ConsumableItem(string &name, unsigned int amount);
+    ConsumableItem(string &name, int amount);
     ~ConsumableItem() override = default;
 
-    unsigned int getAmount() const override{
+    int getAmount() const override{
         return amount;
     }
 
-    void setAmount(unsigned int const a) override{
+    void setAmount(int const a) override{
         amount=a;
     }
 

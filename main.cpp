@@ -1,7 +1,6 @@
 #include "MainFunctions.h"
 #include "Master.h"
 //todo Rivedere inoltre le invarianti dei setter e il corretto assegnamento di const. Capire come impostare un eventuale blocco try per la preservazione delle invarianze
-//todo una volta rivista anche l'interfaccia di interazione rivedere lo ut
 int main() {
     string startGame;
     do {
@@ -15,7 +14,7 @@ int main() {
 
         Master theMaster;
         vector<unique_ptr<Hero>> playerVector;
-        unsigned int numPlayer = 0;
+        int numPlayer = 0;
         bool loading = false;
 
         setPartyIdentity(playerVector, numPlayer, loading);
@@ -43,7 +42,7 @@ int main() {
 
         Master theMaster;
         vector<unique_ptr<Hero>> playerVector;
-        unsigned int numPlayer = 0;
+        int numPlayer = 0;
         bool loading = true;
 
 
@@ -86,10 +85,9 @@ int main() {
 
             printPartyIdentity(playerVector);
 
-            unsigned int usableBlack;//ripristino del master
-            bool e;
+            int usableBlack;//ripristino del master
             cout << "Quanti token aveva il master?" << endl;
-            insertNumber(usableBlack, e);
+            insertPositiveIntNumber(usableBlack);
             theMaster.addUsableBlack(usableBlack);
             cout<<"Il master ha ricevuto "<<usableBlack<<" token"<<endl;
 

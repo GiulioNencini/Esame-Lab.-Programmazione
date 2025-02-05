@@ -1,6 +1,6 @@
 #include "Hero.h"
 
-Hero::Hero(string nameCharacter, string namePlayer, string myRisk, unsigned int numberPlayer)  : nameCharacter(std::move(nameCharacter)), namePlayer(std::move(namePlayer)), myRisk(std::move(myRisk)), numberPlayer(numberPlayer) {
+Hero::Hero(string nameCharacter, string namePlayer, string myRisk, int numberPlayer)  : nameCharacter(std::move(nameCharacter)), namePlayer(std::move(namePlayer)), myRisk(std::move(myRisk)), numberPlayer(numberPlayer) {
     cout<<"L'eroe "<<this->nameCharacter<<" si e' unito al party"<<endl;
 }
 
@@ -41,11 +41,16 @@ bool Hero::isThereSearchedItem(const string &used) {//utile nello unit testing
     return false;
 }
 
-void Hero::accumulateThisConsumableItem(const string &inputItem, unsigned int const amount){
+void Hero::accumulateThisConsumableItem(const string &inputItem, int const amount){
     ConsumableItem* tempCItem;
     for(auto const &it: item){
-        if( (tempCItem = dynamic_cast<ConsumableItem*>(it.get())) && (tempCItem->getName()==inputItem)){
-            tempCItem->setAmount(tempCItem->getAmount()+amount);
+        if((tempCItem = dynamic_cast<ConsumableItem*>(it.get())) && (tempCItem->getName()==inputItem)){
+            try{
+                addNotOverLimit(tempCItem->getAmount(), amount);
+            }catch (std::exception &e){
+                cerr<<e.what()<<endl;
+                tempCItem->setAmount(std::numeric_limits<int>::max());//la variabile verrebbe quindi riempita fino all'orlo
+            }
         }
     }
 }
@@ -64,13 +69,13 @@ bool Hero::itemIsEmpty(){
 
 
 //OPERAZIONI E MECCANICHE PER LE ESTRAZIONI
-void Hero::setBag(unsigned const int numW, unsigned const int numB) {
+void Hero::setBag(const int numW, const int numB) {
     if(!confusion){//differentemente a quello del master, il settaggio del sacchetto di un eroe può essere condizionato dell'attributo confusion
         setWhite(numW);
         setBlack(numB);
     }
     else{
-        unsigned int nW=0, nB=0;
+        int nW=0, nB=0;
         setUnknown(numW);
         for(int i=0;i<getUnknownFromBag();i++){
             int x = getRandomWB();//Tanti random quanti sono gli sconosciuti. Questa funzione genera 0 e 1
@@ -85,7 +90,7 @@ void Hero::setBag(unsigned const int numW, unsigned const int numB) {
     }
 }
 
-void Hero::extract(unsigned int const exVal, unsigned int const danger, const bool &isDangerous) {
+void Hero::extract(int const exVal, int const danger, const bool &isDangerous) {
     //Meccanica dell'adrenalina
     if (!adrenaline) {
         Player::extract(exVal);//differentemente al master, l'eroe deve passare tutti questi altri controlli quando estrae
@@ -102,12 +107,12 @@ void Hero::extract(unsigned int const exVal, unsigned int const danger, const bo
     }
 }
 
-void Hero::risk(unsigned const int remain) {
+void Hero::risk(const int remain) {
         Player::extract(remain);
         printExtracted();
 }
 
-void Hero::goOffScene(unsigned const int danger, unsigned const int eb) {
+void Hero::goOffScene( const int danger,  const int eb) {
     if(eb>=danger)
         setOutScene(true);
 }
@@ -117,24 +122,24 @@ void Hero::blackTokenPartition(Master &theMaster, const string &choice) {//La fu
         if (choice == "m")
             theMaster.addUsableBlack(getBlackExtractedFromBag());
 
-        else if (choice == "a"){
+        else if (choice == "a" && getBlackExtractedFromBag()>=1){
             adrenaline = true;
             theMaster.addUsableBlack(getBlackExtractedFromBag()-1);
         }
 
-        else if (choice == "c"){
+        else if (choice == "c" && getBlackExtractedFromBag()>=1){
             confusion = true;
             theMaster.addUsableBlack(getBlackExtractedFromBag()-1);
         }
 
-        else if(choice =="ac"){
+        else if(choice =="ac" && getBlackExtractedFromBag()>=2){
             adrenaline=true;
             confusion=true;
             theMaster.addUsableBlack(getBlackExtractedFromBag()-2);
         }
 }
 
-void Hero::returnBack(unsigned const int numW,  const unsigned int numB,  const unsigned int numEx) {
+void Hero::returnBack( const int numW,  const  int numB,  const  int numEx) {
 
     setBag(numW, numB);//Settaggio del sacchetto con conseguente estrazione per provare a tornare in scena. Non sono presenti tutti i normali controlli per l'eroe
     Player::extract(numEx);

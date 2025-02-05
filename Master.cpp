@@ -1,15 +1,15 @@
 #include "Master.h"
 
-void Master::setBag( const unsigned int numW, const unsigned  int numB) {
+void Master::setBag( const int numW, const int numB) {
     setWhite(numW);
     setBlack(numB);
 }
 
-void Master::useBlack(const unsigned int n) {
+void Master::useBlack(const int n) {
     if(usableBlack>=n)
         usableBlack -= n;
 }
 
-void Master::addUsableBlack(const unsigned int value) {
+void Master::addUsableBlack(const int value) {
         usableBlack+=value;
 }

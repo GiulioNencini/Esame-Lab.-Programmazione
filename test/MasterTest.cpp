@@ -24,7 +24,7 @@ TEST_F(MasterTest, TestBlackToken){
     EXPECT_EQ(m.getUsableBlack(), 2);
     m.useBlack(3);//non può perché ne sono rimasti solo 2
     EXPECT_EQ(m.getUsableBlack(), 2);
-    unsigned int lastNum=m.getUsableBlack();
+    int lastNum=m.getUsableBlack();
     m.addUsableBlack(10);
     EXPECT_EQ(m.getUsableBlack(), lastNum+10);
 }
@@ -42,13 +42,22 @@ TEST_F(MasterTest, TestDeleteExtractedToken){
     m.extract(3);
     EXPECT_EQ(preSize-3, m.getSizeExVec());//verifica che l'elemento estratto sia stato cancellato dal vettore
     EXPECT_EQ(5-m.getWhiteExtractedFromBag(), m.getWhiteFromBag());//verifica che i bianchi estratti non siano più estraibili
-    EXPECT_EQ(6-m.getBlackExtractedFromBag(), m.getBlackFromBag());;//verifica che i neri estratti non siano più estraibili
+    EXPECT_EQ(6-m.getBlackExtractedFromBag(), m.getBlackFromBag());//verifica che i neri estratti non siano più estraibili
 }
 
 TEST_F(MasterTest, TestExtract) {
     m.setBag(6, 7);
+    Ex
     m.extract(3);
     EXPECT_EQ(m.getWhiteExtractedFromBag() + m.getBlackExtractedFromBag(), 3);
+}
+
+TEST_F(MasterTest, TestBagIsEmpty){
+    m.setBag(1,2);
+    m.extract(2);
+    EXPECT_FALSE(m.bagIsEmpty());
+    m.extract(1);
+    EXPECT_TRUE(m.bagIsEmpty());
 }
 
 TEST_F(MasterTest, TestSetAndResetBag) {

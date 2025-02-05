@@ -4,7 +4,7 @@
 #include "Player.h"
 
 class Master : public Player{
-    unsigned int usableBlack=0;
+    int usableBlack=0;
 
 public:
     Master()=default;
@@ -12,13 +12,13 @@ public:
 
     //il master per l'estrazione utilizza la funzione della classe player
 
-    void setBag( unsigned int numW, unsigned int numB) override;
+    void setBag(int numW, int numB) override;
 
-    void useBlack(unsigned int n);
+    void useBlack(int n);
 
-    void addUsableBlack(unsigned int value);
+    void addUsableBlack(int value);
 
-    unsigned int getUsableBlack() const{
+    int getUsableBlack() const{
         return usableBlack;
     }
 };

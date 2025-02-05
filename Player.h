@@ -6,12 +6,12 @@
 #include "NumberAnswerFunctions.h"
 
 struct Bag{
-    unsigned int nWhite=0;
-    unsigned int nBlack=0;
-    unsigned int nUnknown=0;
-    unsigned int blackExtracted=0;
-    unsigned int whiteExtracted=0;
-    vector<unsigned int> extractionVector;
+    int nWhite=0;
+    int nBlack=0;
+    int nUnknown=0;
+    int blackExtracted=0;
+    int whiteExtracted=0;
+    vector<int> extractionVector;
 };
 
 class Player{
@@ -21,31 +21,33 @@ public:
     Player()=default;
     virtual ~Player()=default;
 
-    virtual void extract(unsigned int e);
+    virtual void extract(int e);
 
     void resetBag();
 
     void printExtracted() const;
 
-    virtual void setBag( unsigned int numW, unsigned int numB) = 0;
+    bool bagIsEmpty() const;
 
-    void setWhite(const unsigned int nw){
+    virtual void setBag(int numW, int numB) = 0;
+
+    void setWhite(const int nw){
         bag.nWhite=nw;
     };
 
-    void setBlack(const unsigned int nb){
+    void setBlack(const int nb){
         bag.nBlack=nb;
     };
 
-    void setUnknown(const unsigned int nu){
+    void setUnknown(const int nu){
         bag.nUnknown=nu;
     };
 
-    void setWhiteExtracted(const unsigned int nwe){
+    void setWhiteExtracted(const int nwe){
         bag.whiteExtracted=nwe;
     };
 
-    void setBlackExtracted(const unsigned int nbe){
+    void setBlackExtracted(const int nbe){
         bag.blackExtracted=nbe;
     };
 
@@ -54,23 +56,23 @@ public:
         return bag.extractionVector.size();
     }
 
-    unsigned int getWhiteFromBag() const{
+    int getWhiteFromBag() const{
         return bag.nWhite;
     }
 
-    unsigned int getBlackFromBag() const{
+    int getBlackFromBag() const{
         return bag.nBlack;
     }
 
-    unsigned int getUnknownFromBag() const{
+    int getUnknownFromBag() const{
         return bag.nUnknown;
     }
 
-    unsigned int getWhiteExtractedFromBag() const{
+    int getWhiteExtractedFromBag() const{
         return bag.whiteExtracted;
     }
 
-    unsigned int getBlackExtractedFromBag() const{
+    int getBlackExtractedFromBag() const{
         return bag.blackExtracted;
     }
 };

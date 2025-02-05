@@ -21,6 +21,7 @@ add_executable(Sistema_di_gioco_Not_The_End main.cpp
         NumberAnswerFunctions.h
         MainFunctions.h
         ${SOURCE_FILES}
+        ExeptionsFile.h
 )
 
 target_link_libraries(Sistema_di_gioco_Not_The_End core)

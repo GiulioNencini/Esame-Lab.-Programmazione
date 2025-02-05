@@ -1,3 +1,3 @@
 #include "ConsumableItem.h"
 
-ConsumableItem::ConsumableItem(std::string &name, unsigned int amount) : NormItem(name), amount(amount){}
+ConsumableItem::ConsumableItem(std::string &name, int amount) : NormItem(name), amount(amount){}

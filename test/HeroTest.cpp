@@ -105,7 +105,7 @@ TEST_F(HeroTest, TestRemoveAndAddHeroCharacteristics) {
 }
 
 TEST_F(HeroTest, TestAddingAndDeletingItem){//Sia normale che consumable. Dovrebbero verificare, anche se "a pezzi" anche la funzione insertItem, dalle main function
-    unsigned int initSize=myHero->getItemSize();
+    int initSize=myHero->getItemSize();
     EXPECT_EQ(initSize, 0);
     string name="item";
     unique_ptr<NormItem> item = make_unique<NormItem>(name);
@@ -143,7 +143,7 @@ TEST_F(HeroTest, TestAddingAndDeletingItem){//Sia normale che consumable. Dovreb
     myHero->addItem(std::move(cItem));
     myHero->addItem(std::move(dItem));
     myHero->openItem();
-    unsigned int targetPosition=2;
+    int targetPosition=2;
     auto const& ref=myHero->getItemFromThisPosition(targetPosition);//contando l'ordine di inserimento, l'elemento in pos 2 dovrebbe essere c
     EXPECT_EQ(ref->getName(), "c");
     myHero->deleteItemFromThisPosition(++targetPosition);//dovrebbe essere d per lo stesso ragionamento
@@ -164,7 +164,7 @@ TEST_F(HeroTest, TestExtractAndRisk){
     myHero->setBag(6, 7);
     myHero->extract(2, 6, false);//estraggo 2, senza pericolo
     EXPECT_EQ(myHero->getWhiteExtractedFromBag()+myHero->getBlackExtractedFromBag(), 2);
-    unsigned int remain = 5-myHero->getWhiteExtractedFromBag()-myHero->getBlackExtractedFromBag();//I token rimanenti per l'estrazione del rischio
+    int remain = 5-myHero->getWhiteExtractedFromBag()-myHero->getBlackExtractedFromBag();//I token rimanenti per l'estrazione del rischio
     myHero->risk(remain);
     EXPECT_EQ(myHero->getWhiteExtractedFromBag()+myHero->getBlackExtractedFromBag(), 5);
 

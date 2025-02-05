@@ -1,17 +1,25 @@
 #ifndef SISTEMA_DI_GIOCO_NOT_THE_END_NUMBERANSWERFUNCTIONS_H
 #define SISTEMA_DI_GIOCO_NOT_THE_END_NUMBERANSWERFUNCTIONS_H
 
-#include <iostream>
+#include "ExeptionsFile.h"
 #include <random>
 #include <limits>
 #include <vector>
 using namespace std;
 
-void verifyNumber(bool &error);
+void verifyNumber(int value);
 
-void insertNumber(unsigned int &value, bool &error);
+void insertPositiveIntNumber(int &value);
 
-unsigned int howExtract();
+void insertPositiveIntNumberInInterval(int &value, int min, int max);
+
+void decrementNotOverZero(int actualQuantity, int &decrementQuantity);
+
+void addNotOverLimit(int actualQuantity, int addingQuantity);
+
+int howExtract();
+
+void vectorZeroOne(const vector<int> &v);
 
 int getRandomWB();
 

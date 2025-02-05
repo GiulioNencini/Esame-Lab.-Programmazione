@@ -11,7 +11,7 @@ class Hero : public Player {
     string namePlayer;
     string nameCharacter;
     string myRisk;
-    unsigned int numberPlayer;
+    int numberPlayer;
     bool adrenaline = false;
     bool confusion = false;
     bool outScene = false;
@@ -21,7 +21,7 @@ class Hero : public Player {
     vector<unique_ptr<NormItem>> item;
 
 public:
-    explicit Hero(string nameCharacter, string namePlayer, string myRisk, unsigned int numberPlayer);
+    explicit Hero(string nameCharacter, string namePlayer, string myRisk, int numberPlayer);
     ~Hero() override{
         cout<<"L'eroe "<<this->nameCharacter<<" ha lasciato il party"<<endl;
     };
@@ -36,21 +36,21 @@ public:
 
     bool itemIsEmpty();
 
-    void accumulateThisConsumableItem(const string &inputItem, unsigned int amount);
+    void accumulateThisConsumableItem(const string &inputItem, int amount);
 
     void sortItem();
 
-    void setBag(unsigned int numW, unsigned int numB) override;//settaggio della difficoltà, viene fatta a parte prima di qualsiasi altra estrazione/controllo
+    void setBag(int numW, int numB) override;//settaggio della difficoltà, viene fatta a parte prima di qualsiasi altra estrazione/controllo
 
-    void extract(unsigned int exVal, unsigned int danger, const bool &isDangerous);//sovraccaricato
+    void extract(int exVal, int danger, const bool &isDangerous);//sovraccaricato
 
-    void goOffScene(unsigned int danger, unsigned int eb);
+    void goOffScene(int danger, int eb);
 
-    void risk(unsigned int remain);
+    void risk(int remain);
 
     void blackTokenPartition(Master &theMaster, const string& choice);
 
-    void returnBack(unsigned int numW, unsigned int numB, unsigned int numEx);
+    void returnBack( int numW, int numB, int numEx);
 
     void printIdentity() const;
 
@@ -102,7 +102,7 @@ public:
         numberPlayer=num;
     }
 
-    unsigned int getNumberPlayer() const{
+    int getNumberPlayer() const{
         return numberPlayer;
     }
 
@@ -144,23 +144,23 @@ public:
         }
     }
 
-    unsigned int getNumQualities() const{
+    int getNumQualities() const{
         return qualities.size();
     }
 
-    unsigned int getNumAbilities() const{
+    int getNumAbilities() const{
         return abilities.size();
     }
 
-    unsigned int getItemSize(){
+    int getItemSize(){
         return item.size();
     }
 
-    auto const &getItemFromThisPosition(unsigned int const pos) const{
+    auto const &getItemFromThisPosition(int const pos) const{
         return item[pos];
     }
 
-    void deleteItemFromThisPosition(const unsigned int pos){
+    void deleteItemFromThisPosition(const int pos){
         item.erase(item.begin() + pos);
     }
 

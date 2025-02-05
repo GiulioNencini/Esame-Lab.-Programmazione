@@ -2,6 +2,7 @@
 #define SISTEMA_DI_GIOCO_NOT_THE_END_NORMITEM_H
 
 #include <iostream>
+#include "NumberAnswerFunctions.h"
 using namespace std;
 
 class NormItem{
@@ -24,11 +25,11 @@ public:
         return false;
     }
 
-    virtual unsigned int getAmount() const{//NOTA: questi metodi qui non si usano per questa classe. Sono utili solo in Consumable. Tuttavia non posso farli virtuali perché questa non è una classe astratta
+    virtual int getAmount() const{//NOTA: questi metodi qui non si usano per questa classe. Sono utili solo in Consumable. Tuttavia non posso farli virtuali perché questa non è una classe astratta
         return 1;//todo capire se è è possibile fare diversamente
     }
 
-    virtual void setAmount(unsigned int const a){}
+    virtual void setAmount(int const a){}
     //Altrimenti nella sezione di utilizzo oggetti mi dà problemi con il riferimento iteItem
 };
 
