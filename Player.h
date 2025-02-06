@@ -32,23 +32,38 @@ public:
     virtual void setBag(int numW, int numB) = 0;
 
     void setWhite(const int nw){
-        bag.nWhite=nw;
+        if (nw >= 0)
+            bag.nWhite = nw;
+        else
+            throw runtime_error("Valore inatteso in setWhite");
     };
 
     void setBlack(const int nb){
-        bag.nBlack=nb;
+        if (nb >= 0)
+            bag.nBlack = nb;
+        else
+            throw runtime_error("Valore inatteso in setBlack");
     };
 
     void setUnknown(const int nu){
-        bag.nUnknown=nu;
+        if (nu >= 0)
+            bag.nUnknown = nu;
+        else
+            throw runtime_error("Valore inatteso in setUnknown");
     };
 
     void setWhiteExtracted(const int nwe){
-        bag.whiteExtracted=nwe;
+        if (nwe >= 0)
+            bag.whiteExtracted = nwe;
+        else
+            throw runtime_error("Valore inatteso in setWhiteExtracted");
     };
 
     void setBlackExtracted(const int nbe){
-        bag.blackExtracted=nbe;
+        if (nbe >= 0)
+            bag.blackExtracted = nbe;
+        else
+            throw runtime_error("Valore inatteso in setBlackExtracted");
     };
 
 

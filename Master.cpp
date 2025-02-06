@@ -11,5 +11,11 @@ void Master::useBlack(const int n) {
 }
 
 void Master::addUsableBlack(const int value) {
+    try {
+        overflowPrevention(usableBlack, value);
         usableBlack+=value;
+    } catch (std::exception &e) {
+        cerr << e.what() << endl;
+        usableBlack = std::numeric_limits<int>::max();
+    }
 }

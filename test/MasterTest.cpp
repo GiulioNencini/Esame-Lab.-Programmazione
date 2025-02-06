@@ -16,7 +16,7 @@ protected:
     }
 };
 
-TEST_F(MasterTest, TestBlackToken){
+TEST_F(MasterTest, TestAddAndUseBlackToken) {
     EXPECT_EQ(m.getUsableBlack(), 5);//perché all'inizio ne ho messi 5 e il master parte sempre con 0 token
     m.addUsableBlack(1);
     EXPECT_EQ(m.getUsableBlack(), 6);
@@ -27,6 +27,8 @@ TEST_F(MasterTest, TestBlackToken){
     int lastNum=m.getUsableBlack();
     m.addUsableBlack(10);
     EXPECT_EQ(m.getUsableBlack(), lastNum+10);
+    m.addUsableBlack(0);
+    EXPECT_EQ(m.getUsableBlack(), lastNum + 10);
 }
 
 TEST_F(MasterTest, TestSetBag){
@@ -47,9 +49,19 @@ TEST_F(MasterTest, TestDeleteExtractedToken){
 
 TEST_F(MasterTest, TestExtract) {
     m.setBag(6, 7);
-    Ex
     m.extract(3);
     EXPECT_EQ(m.getWhiteExtractedFromBag() + m.getBlackExtractedFromBag(), 3);
+    EXPECT_EQ(m.getSizeExVec(), 10);
+
+    m.resetBag();
+
+    //Il messaggio di errore si riferisce al fatto che ci fossero solo 2 token estraibili contro i 3 richiesti
+    m.setBag(1, 1);
+    m.extract(3);
+    EXPECT_EQ(m.getWhiteExtractedFromBag() + m.getBlackExtractedFromBag(), 2);
+    EXPECT_EQ(m.getSizeExVec(), 0);
+
+    //m.extract(-5);//per l'eccezione
 }
 
 TEST_F(MasterTest, TestBagIsEmpty){

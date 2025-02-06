@@ -1,6 +1,9 @@
 #include "Player.h"
 
-void Player::extract(const int e) {//fixme eccezione per exvec
+void Player::extract(const int e) {
+
+    if (e < 0)
+        throw runtime_error("Valore inatteso in extract");
 
     int w=getWhiteFromBag();
     int b=getBlackFromBag();
@@ -9,7 +12,7 @@ void Player::extract(const int e) {//fixme eccezione per exvec
     bag.extractionVector.insert(bag.extractionVector.end(), w, 1);//per w volte inserisce 1
     bag.extractionVector.insert(bag.extractionVector.end(), b, 0);
 
-    vectorZeroOne(bag.extractionVector);//controlla che ci siano tutti 0 e 1
+    vectorZeroOne(bag.extractionVector);//controlla mediante eccezione che ci siano tutti 0 e 1
 
     std::random_device s;
     std::mt19937 g(s());

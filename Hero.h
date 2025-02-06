@@ -54,7 +54,37 @@ public:
 
     void printIdentity() const;
 
-    const string &getNameCharacter() const{
+    void removeQuality(const string &deletedQuality);
+
+    void removeAbility(const string &deletedAbility);
+
+    void printQualities() const;
+
+    void printAbilities() const;
+
+    void deleteItemFromThisPosition(int pos);
+
+    unique_ptr<NormItem> const &getItemFromThisPosition(int pos) const;
+
+    void insertQuality(const string &quality);
+
+    void deleteAllQualities();
+
+    void deleteAllAbilities();
+
+    void insertAbility(const string &ability);
+
+    bool isThereThisQuality(const string &q);
+
+    bool isThereThisAbility(const string &a);
+
+
+//getter e setter
+    const string &getNamePlayer() const {
+        return namePlayer;
+    }
+
+    const string &getNameCharacter() const {
         return nameCharacter;
     }
 
@@ -99,15 +129,17 @@ public:
     }
 
     void setNumberPlayer(int num){
-        numberPlayer=num;
+        if (num > 0)
+            numberPlayer = num;
+        else
+            throw runtime_error("Valore inatteso in setNumberPlayer");
+
     }
 
     int getNumberPlayer() const{
         return numberPlayer;
     }
 
-
-    //get e set dei tratti
     const string &getArchetype() const{
         return archetype;
     }
@@ -116,33 +148,6 @@ public:
         archetype=std::move(a);
     }
 
-    void removeQuality(string &deletedQuality){
-        qualities.erase(deletedQuality);
-    }
-
-    void printQualities() const{//fixme problema per cui taglia le prime lettere
-        int i=0;
-        for(const auto &it : qualities){
-            if(++i<getNumQualities())
-                cout<<it<<", ";
-            else
-                cout<<it<<endl;
-        }
-    }
-
-    void removeAbility(string &deletedAbility){
-        abilities.erase(deletedAbility);
-    }
-
-    void printAbilities() const{
-        int i=0;
-        for(const auto &it : abilities){
-            if(++i<getNumAbilities())
-                cout<<it<<", ";
-            else
-                cout<<it<<endl;
-        }
-    }
 
     int getNumQualities() const{
         return qualities.size();
@@ -156,39 +161,7 @@ public:
         return item.size();
     }
 
-    auto const &getItemFromThisPosition(int const pos) const{
-        return item[pos];
-    }
 
-    void deleteItemFromThisPosition(const int pos){
-        item.erase(item.begin() + pos);
-    }
-
-    const string& getNamePlayer() const{
-        return namePlayer;
-    }
-
-    void insertQuality(const string &quality){
-        qualities.insert(quality);
-    }
-
-    void insertAbility(const string &ability){
-        abilities.insert(ability);
-    }
-
-    bool isThereThisQuality(const string &q){
-        auto it = qualities.find(q);
-        if(it != qualities.end())
-            return true;
-        else return false;
-    }
-
-    bool isThereThisAbility(const string &a){
-        auto it = abilities.find(a);
-        if(it != abilities.end())
-            return true;
-        else return false;
-    }
 
 };
 

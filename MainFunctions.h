@@ -106,13 +106,14 @@ void setCharacterIdentity(int const i, vector<unique_ptr<Hero>> &playerVector, b
 
     string answer;
     string arc;
-    set<string> sQ;
-    set<string> sA;
+
     do{
         cout << player->getNameCharacter() << ", qual e' il tuo archetipo?" << endl;
         cin.ignore();
         getline(cin, arc);
         player->setArchetype(arc);
+        player->deleteAllQualities();
+        player->deleteAllAbilities();
 
         int num = 0;
 
@@ -130,9 +131,9 @@ void setCharacterIdentity(int const i, vector<unique_ptr<Hero>> &playerVector, b
         }while(error);
 
         cout << "Quali sono?" << endl;
-        for (int j = 0; j < num; j++) {//fixme sia qui che sotto c'è un problema per cui il primo carattere, a partire dal secondo elemento del set, non viene considerato
+        for (int j = 0; j < num; j++) {
             cout<<"Qualita' numero "<<j+1<<": ";
-            cin.ignore();//fixme il problema forse sta qui?
+            cin.ignore();
             getline(cin, answer);
             player->insertQuality(answer);
         }
@@ -158,22 +159,16 @@ void setCharacterIdentity(int const i, vector<unique_ptr<Hero>> &playerVector, b
             getline(cin, answer);
             player->insertAbility(answer);
         }
-//fixme correggere qui in seguito alla modifica apportata
-        cout<<"ARCHETIPO: "<<arc<<endl;
+
+        cout << "ARCHETIPO: " << player->getArchetype() << endl;
         cout<<"QUALITA':"<<endl;
-        for(auto const &it1:sQ)
-            cout<<it1<<endl;
+        player->printQualities();
         cout<<"ABILITA'':"<<endl;
-        for(auto const &it2:sA)
-            cout<<it2<<endl;
+        player->printAbilities();
 
         cout<<"Confermi le tue scelte? y/n"<<endl;
         yesOrNot(answer);
 
-        if(answer=="n") {
-            sQ.clear();
-            sA.clear();
-        }
     }while (answer!="y");
 
     playerVector.push_back(std::move(player));
@@ -273,7 +268,7 @@ void modifyCharacter(const vector<unique_ptr<Hero>> &playerVector, int const num
 
             cout<<"Vuoi modificare i tratti? ATTENZIONE:Saranno completamente cancellati e dovranno essere riscritti da capo. y/n"<<endl;
             yesOrNot(answer);
-//fixme correggere anche qui per lo stesso motivo dalle modifiche apportate
+
             if(answer=="y"){
                 string localAnswer;
                 string arc;
@@ -300,9 +295,9 @@ void modifyCharacter(const vector<unique_ptr<Hero>> &playerVector, int const num
                     }while(error);
 
                     cout << "Quali sono?" << endl;
-                    for (int j = 0; j < value; j++) {//fixme sia qui che sotto c'è un problema per cui il primo carattere, a partire dal secondo elemento del set, non viene considerato
+                    for (int j = 0; j < value; j++) {
                         cout<<"Qualita' numero "<<j+1<<": ";
-                        cin.ignore();//fixme il problema forse sta qui?
+                        cin.ignore();
                         getline(cin, localAnswer);
                         it->insertQuality(localAnswer);
                     }
@@ -370,7 +365,6 @@ void removingCharacteristic(const unique_ptr<Hero> &playerModified, const string
         cout<<"QUALITA' ATTUALI:"<<endl;
         playerModified->printQualities();
         cout<<"Quale qualita' vuoi rimuovere?"<<endl;
-        cin.ignore();
         getline(cin,localAnswer);
         playerModified->removeQuality(localAnswer);
         if(actualQuality==playerModified->getNumQualities()){//se accidentalmente non dovesse essere rimossa
@@ -383,7 +377,6 @@ void removingCharacteristic(const unique_ptr<Hero> &playerModified, const string
         cout<<"ABILITA' ATTUALI:"<<endl;
         playerModified->printAbilities();
         cout<<"Quale abilita' vuoi rimuovere??"<<endl;
-        cin.ignore();
         getline(cin,localAnswer);
         playerModified->removeAbility(localAnswer);
         if(actualAbility==playerModified->getNumAbilities()){//se accidentalmente non dovesse essere rimossa
@@ -439,7 +432,6 @@ void addingCharacteristic(const unique_ptr<Hero> &playerModified, const string &
             cout<<"Operazione annullata"<<endl;
     }
 }
-
 
 
 void game(Master &theMaster, vector<unique_ptr<Hero>> &playerVector, int &numPlayer){//gioco effettivo
@@ -498,14 +490,29 @@ void game(Master &theMaster, vector<unique_ptr<Hero>> &playerVector, int &numPla
 
 
                         if(action=="t"){
-                            int w = 0, b = 0;
+                            int w, b;
                             cout << "Inserire i token per l'estrazione" << endl;
-                            cout << "Bianchi:"<<endl;
-                            insertPositiveIntNumber(w);
 
-                            cout << "\nNeri:"<<endl;
-                            insertPositiveIntNumber(b);
-                            it->setBag(w, b);
+                            do {
+                                error = false;
+                                w = 0, b = 0;
+                                cout << "Bianchi:" << endl;
+                                try {
+                                    insertPositiveIntNumber(w);
+
+                                    cout << "\nNeri:" << endl;
+                                    insertPositiveIntNumber(b);
+
+                                    overflowPrevention(w,
+                                                       b);//LOGICA: benché la funzione insertPositiveNumber già garantisca che non sia inserito un numero oltre il limite, Quando confusione è attiva potrebbe capitare che tutti i token bianchi diventino neri. La loro somma perciò deve stare sotto la soglia
+                                } catch (std::exception &e) {
+                                    cerr << e.what() << endl;
+                                    cerr << "Reinserire valori idonei" << endl;
+                                    error = true;
+                                }
+                            } while (error);
+
+                            it->setBag(w, b);//eccezione
 
                             bool isDangerous=false;
                             int danger=6;//impossibile da raggiungere
@@ -542,13 +549,13 @@ void game(Master &theMaster, vector<unique_ptr<Hero>> &playerVector, int &numPla
                                 if(answer=="y"){
                                     if(!it->isAdrenaline()){//se adrenalina non era attivo gli rimarranno (5 - numeroTokenGiàEstratti) da estrarre
 
-                                        if(!it->bagIsEmpty())
+                                        if (!it->getSizeExVec())
                                             it->risk(5 - exVal);//Rischio, il valore è pari ai token rimanenti. Vedi la terza funzione dopo questa
                                         if (isDangerous)
                                             it->goOffScene(danger, it->getBlackExtractedFromBag());//verifica del fuori-scena post rischio
                                     }
                                     else{
-                                        if(!it->bagIsEmpty())
+                                        if (!it->getSizeExVec())
                                             it->risk(1);//se adrenalina era attivo gli rimarrà un solo token estraibile
                                         if (isDangerous)
                                             it->goOffScene(danger, it->getBlackExtractedFromBag());
@@ -620,7 +627,7 @@ void game(Master &theMaster, vector<unique_ptr<Hero>> &playerVector, int &numPla
                                 string used;
                                 do {
                                     used="";
-                                    cout<<"Il tuo Inventario: "<<endl;//fixme bug per cui se sbagli una volta a scrivere non ne esci più
+                                    cout << "Il tuo Inventario: " << endl;
                                     it->openItem();
                                     cin.ignore();
                                     cout << "Quale oggetto vuoi usare? Scrivi close per chiudere lo zaino" << endl;
@@ -656,12 +663,14 @@ void game(Master &theMaster, vector<unique_ptr<Hero>> &playerVector, int &numPla
                                                     iteItem->printInfo();
                                                     cout << endl;
 
-                                                    int numUsed = 0;
+                                                    int numUsed;
 
                                                     do{
+                                                        numUsed = 0;
                                                         error=false;
                                                         try{
                                                             cout << "Quanti " << iteItem->getName() << " vuoi usare?" << endl;
+                                                            insertPositiveIntNumber(numUsed);
                                                             decrementNotOverZero(iteItem->getAmount(), numUsed);
                                                         }catch (std::exception &e){
                                                             cerr<<e.what()<<endl;
@@ -713,16 +722,16 @@ void game(Master &theMaster, vector<unique_ptr<Hero>> &playerVector, int &numPla
                             else if(answer=="remove"){
                                 cout<<"Vuoi rimuovere una qualita' o un'abilita'? q/a   Scrivere cancel per annullare"<<endl;
                                 do{
-                                    cin>>answer;
-                                }while(answer!="q" && answer!="a" && answer!="cancel");
-
-                                do{
-                                    error=false;
-                                    try{
+                                    error = false;
+                                    try {
+                                        do {
+                                            cin >> answer;
+                                        } while (answer != "q" && answer != "a" && answer != "cancel");
                                         removingCharacteristic(it, answer, stopped);
                                     }catch (std::exception &e){
                                         cerr<<e.what()<<endl;
                                         error=true;
+                                        answer = "";
                                     }
                                 }while(error);
                             }
@@ -822,9 +831,11 @@ void game(Master &theMaster, vector<unique_ptr<Hero>> &playerVector, int &numPla
                         int used;
                         bool error;
                         do{
+                            used = 0;
                             error=false;
                             try{
                                 cout<<"Quanti token utilizzare..."<<endl;
+                                insertPositiveIntNumber(used);
                                 decrementNotOverZero(theMaster.getUsableBlack(), used);
                             }catch (std::exception &e){
                                 cerr<<e.what()<<endl;
@@ -844,7 +855,8 @@ void game(Master &theMaster, vector<unique_ptr<Hero>> &playerVector, int &numPla
                     cout<<"Neri:"<<endl;
                     insertPositiveIntNumber(b);
 
-                    theMaster.setBag(w,b);
+                    theMaster.setBag(w,
+                                     b);//QUI non importa l'eccezione perché il master non è soggetto alla Confusione, quindi basta il controllo di insertPositiveIntNumber
                     theMaster.extract(howExtract());
                     theMaster.printExtracted();
                     theMaster.resetBag();

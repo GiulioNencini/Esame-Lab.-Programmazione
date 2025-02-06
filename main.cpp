@@ -1,6 +1,5 @@
 #include "MainFunctions.h"
 #include "Master.h"
-//todo Rivedere inoltre le invarianti dei setter e il corretto assegnamento di const. Capire come impostare un eventuale blocco try per la preservazione delle invarianze
 int main() {
     string startGame;
     do {

@@ -10,7 +10,7 @@ protected:
     string name;
 public:
 
-    explicit NormItem(string &name);
+    explicit NormItem(string name);
     virtual ~NormItem() = default;
 
     virtual const string &getName() const {
@@ -25,12 +25,14 @@ public:
         return false;
     }
 
-    virtual int getAmount() const{//NOTA: questi metodi qui non si usano per questa classe. Sono utili solo in Consumable. Tuttavia non posso farli virtuali perché questa non è una classe astratta
-        return 1;//todo capire se è è possibile fare diversamente
+    virtual int
+    getAmount() const {//NOTA: questi ultimi due metodi non si usano per questa classe. Sono utili solo in Consumable. Tuttavia non posso farli virtuali perché questa non può essere una classe astratta
+        return 1;
     }
 
-    virtual void setAmount(int const a){}
-    //Altrimenti nella sezione di utilizzo oggetti mi dà problemi con il riferimento iteItem
+    virtual void setAmount(
+            int const a) {}//Altrimenti nella sezione di utilizzo oggetti (circa riga 630 di mainFunctions) mi dà problemi con il riferimento iteItem.
+
 };
 
 #endif //SISTEMA_DI_GIOCO_NOT_THE_END_NORMITEM_H

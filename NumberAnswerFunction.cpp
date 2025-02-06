@@ -11,7 +11,7 @@ void verifyNumber(int const value) {//funzione per l'inserimento sicuro di un nu
     else if(value < 0)
         throw NegativeNumberException();
 }
-//fixme numero attaccato a stringa bugga es:1qw
+
 void insertPositiveIntNumber(int &value){//Per l'inserimento di un numero è questa che viene chiamata. Così risparmia la riscrittura continua del ciclo in essa contenuto. Basta solo dichiarare un flag fuori dalla funzione
     bool error;
     do {
@@ -32,13 +32,12 @@ void insertPositiveIntNumberInInterval(int &value, int const min, int const max)
         throw OutOfRangeException();
 }
 
-void decrementNotOverZero(int const actualQuantity, int &decrementQuantity){
-    insertPositiveIntNumber(decrementQuantity);
+void decrementNotOverZero(int const actualQuantity, int const decrementQuantity) {
     if(decrementQuantity>actualQuantity)
         throw NotEnoughQuantity();
 }
 
-void addNotOverLimit(int const actualQuantity, int  const addingQuantity){
+void overflowPrevention(int const actualQuantity, int const addingQuantity) {
     if((std::numeric_limits<int>::max()-actualQuantity)<addingQuantity)
         throw OverflowDanger();
 }

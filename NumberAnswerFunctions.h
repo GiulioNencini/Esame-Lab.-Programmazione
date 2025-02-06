@@ -1,7 +1,7 @@
 #ifndef SISTEMA_DI_GIOCO_NOT_THE_END_NUMBERANSWERFUNCTIONS_H
 #define SISTEMA_DI_GIOCO_NOT_THE_END_NUMBERANSWERFUNCTIONS_H
 
-#include "ExeptionsFile.h"
+#include "ExceptionsFile.h"
 #include <random>
 #include <limits>
 #include <vector>
@@ -13,9 +13,9 @@ void insertPositiveIntNumber(int &value);
 
 void insertPositiveIntNumberInInterval(int &value, int min, int max);
 
-void decrementNotOverZero(int actualQuantity, int &decrementQuantity);
+void decrementNotOverZero(int actualQuantity, int decrementQuantity);
 
-void addNotOverLimit(int actualQuantity, int addingQuantity);
+void overflowPrevention(int actualQuantity, int addingQuantity);
 
 int howExtract();
 

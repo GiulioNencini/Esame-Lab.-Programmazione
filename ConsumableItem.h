@@ -16,7 +16,10 @@ public:
     }
 
     void setAmount(int const a) override{
-        amount=a;
+        if (a >= 0)
+            amount = a;
+        else
+            throw runtime_error("Valore inatteso in setAmount");
     }
 
     void printInfo() const override{

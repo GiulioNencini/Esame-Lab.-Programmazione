@@ -1,5 +1,5 @@
-#ifndef SISTEMA_DI_GIOCO_NOT_THE_END_EXEPTIONSFILE_H
-#define SISTEMA_DI_GIOCO_NOT_THE_END_EXEPTIONSFILE_H
+#ifndef SISTEMA_DI_GIOCO_NOT_THE_END_EXCEPTIONSFILE_H
+#define SISTEMA_DI_GIOCO_NOT_THE_END_EXCEPTIONSFILE_H
 
 #include <iostream>
 
@@ -34,7 +34,7 @@ public:
 class OverflowDanger : public std::exception{
 public:
     const char* what() const noexcept override {
-        return "Errore: Il valore inserito se aggiunto alla quantità gia' presente causerebbe un overflow della variabile";
+        return "Errore: Il valore inserito se aggiunto alla quantita' gia' presente causerebbe un overflow della variabile";
     }
 };
 
@@ -46,4 +46,4 @@ public:
 };
 
 
-#endif //SISTEMA_DI_GIOCO_NOT_THE_END_EXEPTIONSFILE_H
+#endif //SISTEMA_DI_GIOCO_NOT_THE_END_EXCEPTIONSFILE_H
