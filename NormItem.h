@@ -26,12 +26,15 @@ public:
     }
 
     virtual int
-    getAmount() const {//NOTA: questi ultimi due metodi non si usano per questa classe. Sono utili solo in Consumable. Tuttavia non posso farli virtuali perché questa non può essere una classe astratta
+    getAmount() const {//NOTA: questi ultimi tre metodi non si usano per questa classe. Sono utili solo in Consumable. Tuttavia non posso farli virtuali perché questa non può essere una classe astratta
         return 1;
     }
 
     virtual void setAmount(
-            int const a) {}//Altrimenti nella sezione di utilizzo oggetti (circa riga 630 di mainFunctions) mi dà problemi con il riferimento iteItem.
+            int a) {}//Altrimenti nella sezione di utilizzo oggetti (circa riga 630 di mainFunctions) mi dà problemi con il riferimento iteItem.
+
+    virtual void accumulateAmount(
+            int amount) {}//come per setAmount, altrimenti non potrei utilizzarlo in accumulateThisConsumableItem()
 
 };
 

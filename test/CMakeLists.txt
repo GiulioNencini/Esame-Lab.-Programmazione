@@ -13,6 +13,7 @@ set(TEST_SOURCE_FILES
         ItemTest.cpp
         MasterTest.cpp
         HeroTest.cpp
+        ExceptionsByNumberFunctionsTest.cpp
 )
 
 add_executable(mainRunTest ${TEST_SOURCE_FILES})

@@ -1,6 +1,6 @@
 #include "Player.h"
 
-void Player::extract(const int e) {
+void Player::extract(int e) {
 
     if (e < 0)
         throw runtime_error("Valore inatteso in extract");
@@ -19,10 +19,8 @@ void Player::extract(const int e) {
     std::shuffle(bag.extractionVector.begin(), bag.extractionVector.end(),g);//mescolamento del sacchetto
 
     for (int i = 0; i < e; ++i) {
-        if (bag.extractionVector.empty()) {
-            cerr << "Estrazione terminata: non ci sono abbastanza token per estrarre.\n"<<endl;
+        if (bag.extractionVector.empty())//cerr << "Estrazione terminata: non ci sono abbastanza token per estrarre.\n"<<endl;
             break;
-        }
 
         int x = getRandom(bag.extractionVector.size());
         int temp = bag.extractionVector[x];
@@ -45,7 +43,7 @@ void Player::printExtracted() const{
 }
 
 bool Player::bagIsEmpty() const{
-    if(!(bag.extractionVector.size()))
+    if (bag.extractionVector.empty())
         return true;
     else
         return false;

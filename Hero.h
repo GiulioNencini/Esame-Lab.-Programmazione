@@ -32,17 +32,17 @@ public:
 
     void destroyAllItem();
 
-    bool isThereSearchedItem(const string &used);
+    bool isThereSearchedItem(const string &used) const;
 
-    bool itemIsEmpty();
+    bool itemIsEmpty() const;
 
-    void accumulateThisConsumableItem(const string &inputItem, int amount);
+    void accumulateThisConsumableItem(const string &inputItem, int amount) const;
 
     void sortItem();
 
     void setBag(int numW, int numB) override;//settaggio della difficoltà, viene fatta a parte prima di qualsiasi altra estrazione/controllo
 
-    void extract(int exVal, int danger, const bool &isDangerous);//sovraccaricato
+    void extract(int exVal, int danger, bool isDangerous);//sovraccaricato
 
     void goOffScene(int danger, int eb);
 
@@ -50,7 +50,7 @@ public:
 
     void blackTokenPartition(Master &theMaster, const string& choice);
 
-    void returnBack( int numW, int numB, int numEx);
+    void returnBack(int numW, int numB, int numEx);
 
     void printIdentity() const;
 
@@ -74,9 +74,9 @@ public:
 
     void insertAbility(const string &ability);
 
-    bool isThereThisQuality(const string &q);
+    bool isThereThisQuality(const string &q) const;
 
-    bool isThereThisAbility(const string &a);
+    bool isThereThisAbility(const string &a) const;
 
 
 //getter e setter
@@ -88,6 +88,42 @@ public:
         return nameCharacter;
     }
 
+    const string &getRisk() const {
+        return myRisk;
+    }
+
+    bool isAdrenaline() const {
+        return adrenaline;
+    }
+
+    bool isConfusion() const {
+        return confusion;
+    }
+
+    bool isOutScene() const {
+        return outScene;
+    }
+
+    int getNumberPlayer() const {
+        return numberPlayer;
+    }
+
+    const string &getArchetype() const {
+        return archetype;
+    }
+
+    int getNumQualities() const {
+        return qualities.size();
+    }
+
+    int getNumAbilities() const {
+        return abilities.size();
+    }
+
+    int getItemSize() const {
+        return item.size();
+    }
+
     void setNameCharacter(string &n) {
         nameCharacter = std::move(n);
     }
@@ -96,32 +132,17 @@ public:
         namePlayer = std::move(np);
     }
 
-    const string &getRisk() const{
-        return myRisk;
-    }
 
     void setRisk(string &r){
         myRisk=std::move(r);
-    }
-
-    bool isAdrenaline() const {
-        return adrenaline;
     }
 
     void setAdrenaline(bool a) {
         adrenaline = a;
     }
 
-    bool isConfusion() const {
-        return confusion;
-    }
-
     void setConfusion(bool c) {
         confusion = c;
-    }
-
-    bool isOutScene() const {
-        return outScene;
     }
 
     void setOutScene(bool o) {
@@ -133,37 +154,12 @@ public:
             numberPlayer = num;
         else
             throw runtime_error("Valore inatteso in setNumberPlayer");
-
-    }
-
-    int getNumberPlayer() const{
-        return numberPlayer;
-    }
-
-    const string &getArchetype() const{
-        return archetype;
     }
 
     void setArchetype(string &a){
         archetype=std::move(a);
     }
 
-
-    int getNumQualities() const{
-        return qualities.size();
-    }
-
-    int getNumAbilities() const{
-        return abilities.size();
-    }
-
-    int getItemSize(){
-        return item.size();
-    }
-
-
-
 };
-
 
 #endif //SISTEMA_DI_GIOCO_NOT_THE_END_HERO_H

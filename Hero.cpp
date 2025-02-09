@@ -22,14 +22,14 @@ void Hero::insertQuality(const string &quality) {
     qualities.insert(quality);
 }
 
-bool Hero::isThereThisAbility(const string &a) {
+bool Hero::isThereThisAbility(const string &a) const {
     auto it = abilities.find(a);
     if (it != abilities.end())
         return true;
     else return false;
 }
 
-bool Hero::isThereThisQuality(const string &q) {
+bool Hero::isThereThisQuality(const string &q) const {
     auto it = qualities.find(q);
     if (it != qualities.end())
         return true;
@@ -66,7 +66,7 @@ void Hero::printQualities() const {
     }
 }
 
-void Hero::removeAbility(const std::string &deletedAbility) {
+void Hero::removeAbility(const string &deletedAbility) {
     abilities.erase(deletedAbility);
 }
 
@@ -77,19 +77,11 @@ void Hero::removeQuality(const string &deletedQuality) {
 
 //METODI PER ITEM
 
-void Hero::accumulateThisConsumableItem(const string &inputItem, int const amount) {
+void Hero::accumulateThisConsumableItem(const string &inputItem, int amount) const {
     ConsumableItem *tempCItem;
     for (auto const &it: item) {
-        if ((tempCItem = dynamic_cast<ConsumableItem *>(it.get())) && (tempCItem->getName() == inputItem)) {
-            try {
-                overflowPrevention(tempCItem->getAmount(), amount);
-                it->setAmount(it->getAmount() + amount);
-            } catch (std::exception &e) {
-                cerr << e.what() << endl;
-                tempCItem->setAmount(
-                        std::numeric_limits<int>::max());//la variabile verrebbe quindi riempita fino all'orlo
-            }
-        }
+        if ((tempCItem = dynamic_cast<ConsumableItem *>(it.get())) && (tempCItem->getName() == inputItem))
+            it->accumulateAmount(amount);
     }
 }
 
@@ -97,7 +89,7 @@ void Hero::addItem(unique_ptr<NormItem> newItem){
     item.push_back(std::move(newItem));
 }
 
-void Hero::deleteItemFromThisPosition(const int pos) {
+void Hero::deleteItemFromThisPosition(int pos) {
     if (pos < item.size() && pos > 0)
         item.erase(item.begin() + pos);
     else
@@ -108,14 +100,14 @@ void Hero::destroyAllItem(){
     item.clear();
 }
 
-unique_ptr<NormItem> const &Hero::getItemFromThisPosition(int const pos) const {
-    if (pos < item.size() && pos > 0)
+unique_ptr<NormItem> const &Hero::getItemFromThisPosition(int pos) const {
+    if (pos < item.size() && pos >= 0)
         return item[pos];
     else
         throw runtime_error("ATTENZIONE: accesso ad una zona indesiderata");
 }
 
-bool Hero::isThereSearchedItem(const string &used) {//utile nello unit testing
+bool Hero::isThereSearchedItem(const string &used) const {//utile nello unit testing
     for(const auto &it : item){
         if(it->getName()==used){
             return true;
@@ -124,7 +116,7 @@ bool Hero::isThereSearchedItem(const string &used) {//utile nello unit testing
     return false;
 }
 
-bool Hero::itemIsEmpty(){
+bool Hero::itemIsEmpty() const {
     if(item.empty())
         return true;
     else
@@ -164,7 +156,7 @@ void Hero::blackTokenPartition(Master &theMaster,
     }
 }
 
-void Hero::extract(int const exVal, int const danger, const bool &isDangerous) {
+void Hero::extract(int exVal, int danger, bool isDangerous) {
     //Meccanica dell'adrenalina
     if (!adrenaline) {
         Player::extract(exVal);//differentemente al master, l'eroe deve passare tutti questi altri controlli quando estrae
@@ -181,15 +173,15 @@ void Hero::extract(int const exVal, int const danger, const bool &isDangerous) {
     }
 }
 
-void Hero::goOffScene( const int danger,  const int eb) {
+void Hero::goOffScene(int danger, int eb) {
     if (danger < 0 || eb < 0)
         throw runtime_error("Valori inattesi in goOffScene");
     if(eb>=danger)
         setOutScene(true);
 }
 
-void Hero::returnBack(const int numW, const int numB,
-                      const int numEx) {//NOTA: neanche qui è necessaria l'eccezione relativa alla confusione per extract
+void Hero::returnBack(int numW, int numB,
+                      int numEx) {//NOTA: neanche qui è necessaria l'eccezione relativa alla confusione per extract
     setBag(numW, numB);//Settaggio del sacchetto con conseguente estrazione per provare a tornare in scena. Non sono presenti tutti i normali controlli per l'eroe
     Player::extract(numEx);
     printExtracted();
@@ -201,12 +193,12 @@ void Hero::returnBack(const int numW, const int numB,
     }
 }
 
-void Hero::risk(const int remain) {
+void Hero::risk(int remain) {
     Player::extract(remain);
     printExtracted();
 }
 
-void Hero::setBag(const int numW, const int numB) {
+void Hero::setBag(int numW, int numB) {
 
     if (numW < 0 || numB < 0)
         throw runtime_error("Valori inattesi in setBag");

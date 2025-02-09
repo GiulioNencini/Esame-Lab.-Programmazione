@@ -1,16 +1,16 @@
 #include "Master.h"
 
-void Master::setBag( const int numW, const int numB) {
+void Master::setBag(int numW, int numB) {
     setWhite(numW);
     setBlack(numB);
 }
 
-void Master::useBlack(const int n) {
+void Master::useBlack(int n) {
     if(usableBlack>=n)
         usableBlack -= n;
 }
 
-void Master::addUsableBlack(const int value) {
+void Master::addUsableBlack(int value) {
     try {
         overflowPrevention(usableBlack, value);
         usableBlack+=value;

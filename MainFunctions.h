@@ -7,7 +7,7 @@
 void insertItem(const unique_ptr<Hero> &it, bool isAddingItemDuringGame=false) {//Questa è la funzione che genera gli oggetti. Già distinguendoli come consumabili o meno
     string answer;
     if(!isAddingItemDuringGame){
-        cout << "Ha oggetti nell'inventario? y/n" << endl;
+        cout << it->getNameCharacter() << " ha oggetti nell'inventario? y/n" << endl;
         yesOrNot(answer);
     }
     else
@@ -41,6 +41,7 @@ void insertItem(const unique_ptr<Hero> &it, bool isAddingItemDuringGame=false) {
                     error=false;
                     try{
                         cout << "Inserire la quantita' di " << inputItem << endl;
+                        insertPositiveIntNumber(amount);
                         insertPositiveIntNumberInInterval(amount, 1, std::numeric_limits<int>::max());
                     }catch(std::exception &e){
                         cerr<<e.what()<<endl;
@@ -79,7 +80,8 @@ void setInitialItem(const vector<unique_ptr<Hero>> &playerVector) {
     }
 }
 
-void setInitialItemAddedCharacter(const vector<unique_ptr<Hero>> &playerVector, int const lastPlayer){//Questa invece è la funzione specifica per quando si aggiunge un personaggio nel bel mezzo della sessione
+void setInitialItemAddedCharacter(const vector<unique_ptr<Hero>> &playerVector,
+                                  int lastPlayer) {//Questa invece è la funzione specifica per quando si aggiunge un personaggio nel bel mezzo della sessione
     for (auto &it: playerVector) {
         if(it->getNumberPlayer()==lastPlayer)
             insertItem(it);
@@ -88,7 +90,8 @@ void setInitialItemAddedCharacter(const vector<unique_ptr<Hero>> &playerVector, 
 
 
 //GESTIONE DEI PERSONAGGI
-void setCharacterIdentity(int const i, vector<unique_ptr<Hero>> &playerVector, bool initialSetting=true){//funzione usata all'inizio per dare identità agli eroi, vedi funzione setPartyIdentity
+void setCharacterIdentity(int i, vector<unique_ptr<Hero>> &playerVector,
+                          bool initialSetting = true) {//funzione usata all'inizio per dare identità agli eroi, vedi funzione setPartyIdentity
 
     cout<<"Creazione del personaggio "<<i<<endl;//C'era un problema per cui dal secondo personaggio in poi saltava la richiesta del nome del giocatore, risolto con cin.ignore(), ma bisogna premer invio quando si imposta per la prima volta, che sia il primo giocatore o che sia la funzione di aggiunta di un personaggio. !initialSetting serve per far comparire la scritta quando si aggiunge un personaggio
     if(i==1 || !initialSetting)
@@ -122,6 +125,7 @@ void setCharacterIdentity(int const i, vector<unique_ptr<Hero>> &playerVector, b
             error=false;
             try{
                 cout << "Quante sono le tue qualita'? Max 6" << endl;
+                insertPositiveIntNumber(num);
                 insertPositiveIntNumberInInterval(num, 1, 6);
             }catch(std::exception &e){
                 cerr<<e.what()<<endl;
@@ -134,6 +138,7 @@ void setCharacterIdentity(int const i, vector<unique_ptr<Hero>> &playerVector, b
         for (int j = 0; j < num; j++) {
             cout<<"Qualita' numero "<<j+1<<": ";
             cin.ignore();
+            cout << " " << endl;
             getline(cin, answer);
             player->insertQuality(answer);
         }
@@ -144,6 +149,7 @@ void setCharacterIdentity(int const i, vector<unique_ptr<Hero>> &playerVector, b
             error=false;
             try{
                 cout << "Quante sono le tue abilita'? Max 12" << endl;
+                insertPositiveIntNumber(num);
                 insertPositiveIntNumberInInterval(num, 1, 12);
             }catch(std::exception &e){
                 cerr<<e.what()<<endl;
@@ -185,7 +191,7 @@ void printPartyIdentity(const vector<unique_ptr<Hero>> &playerVector){
     }
 }
 
-void setPartyIdentity(vector<unique_ptr<Hero>> &playerVector, int &numPlayer, const bool loading){
+void setPartyIdentity(vector<unique_ptr<Hero>> &playerVector, int &numPlayer, bool loading) {
 
     bool error;
     do{
@@ -193,6 +199,7 @@ void setPartyIdentity(vector<unique_ptr<Hero>> &playerVector, int &numPlayer, co
 
         try{
             cout << "Inserire il numero dei giocatori, massimo 5" << endl;
+            insertPositiveIntNumber(numPlayer);
             insertPositiveIntNumberInInterval(numPlayer,1,5);
         }catch(std::exception &e){
             cerr<<e.what()<<endl;
@@ -229,7 +236,7 @@ void getFinalPartyIdentity(const vector<unique_ptr<Hero>> &playerVector){
     }
 }
 
-void modifyCharacter(const vector<unique_ptr<Hero>> &playerVector, int const numPlayer){
+void modifyCharacter(const vector<unique_ptr<Hero>> &playerVector, int numPlayer) {
 
     int num=0;
     bool error;
@@ -238,6 +245,7 @@ void modifyCharacter(const vector<unique_ptr<Hero>> &playerVector, int const num
         error=false;
         try{
             cout << "Quale personaggio vuoi modificare?" << endl;
+            insertPositiveIntNumber(num);
             insertPositiveIntNumberInInterval(num,1, numPlayer);
         }catch (std::exception &e){
             cerr<<e.what()<<endl;
@@ -286,6 +294,7 @@ void modifyCharacter(const vector<unique_ptr<Hero>> &playerVector, int const num
                         error=false;
                         try{
                             cout << "Quante sono le tue qualita'? Max 6" << endl;
+                            insertPositiveIntNumber(value);
                             insertPositiveIntNumberInInterval(value,1,6);
                         }catch(std::exception &e){
                             cerr<<e.what()<<endl;
@@ -308,6 +317,7 @@ void modifyCharacter(const vector<unique_ptr<Hero>> &playerVector, int const num
                         error=false;
                         try{
                             cout << "Quante sono le tue abilita'? Max 12" << endl;
+                            insertPositiveIntNumber(value);
                             insertPositiveIntNumberInInterval(value,1,12);
                         }catch(std::exception &e){
                             cerr<<e.what()<<endl;
@@ -461,6 +471,7 @@ void game(Master &theMaster, vector<unique_ptr<Hero>> &playerVector, int &numPla
             do{
                 error=false;
                 try{
+                    insertPositiveIntNumber(playingCharacter);
                     insertPositiveIntNumberInInterval(playingCharacter,1,numPlayer);
                 }catch (std::exception &e){
                     cerr<<e.what()<<endl;
@@ -527,6 +538,7 @@ void game(Master &theMaster, vector<unique_ptr<Hero>> &playerVector, int &numPla
 
                                     try{
                                         cout << "Quanto e' pericoloso?"<<endl;
+                                        insertPositiveIntNumber(danger);
                                         insertPositiveIntNumberInInterval(danger,1,5);
                                     }catch (std::exception &e){
                                         cerr<<e.what()<<endl;
@@ -543,19 +555,18 @@ void game(Master &theMaster, vector<unique_ptr<Hero>> &playerVector, int &numPla
 
                             it->extract(exVal, danger, isDangerous);
 
-                            if (!it->isOutScene()) {//se non è andato fuori scena può decidere di rischiare
+                            if (!it->isOutScene() &&
+                                it->getSizeExVec()) {//se non è andato fuori scena può decidere di rischiare
                                 cout << "Vuoi rischiare? y/n" << endl;
                                 yesOrNot(answer);
                                 if(answer=="y"){
                                     if(!it->isAdrenaline()){//se adrenalina non era attivo gli rimarranno (5 - numeroTokenGiàEstratti) da estrarre
 
-                                        if (!it->getSizeExVec())
                                             it->risk(5 - exVal);//Rischio, il valore è pari ai token rimanenti. Vedi la terza funzione dopo questa
                                         if (isDangerous)
                                             it->goOffScene(danger, it->getBlackExtractedFromBag());//verifica del fuori-scena post rischio
                                     }
                                     else{
-                                        if (!it->getSizeExVec())
                                             it->risk(1);//se adrenalina era attivo gli rimarrà un solo token estraibile
                                         if (isDangerous)
                                             it->goOffScene(danger, it->getBlackExtractedFromBag());
@@ -635,7 +646,7 @@ void game(Master &theMaster, vector<unique_ptr<Hero>> &playerVector, int &numPla
 
                                     if (used != "close") {
                                         // Usa un ciclo tradizionale con indice per evitare problemi di invalidazione
-                                        for (int i = 0; i < it->getItemSize(); ++i) {
+                                        for (int i = 0; i < it->getItemSize(); i++) {
                                             auto &iteItem = it->getItemFromThisPosition(i); // Riferimento all'elemento corrente
 
                                             if (iteItem->getName() == used) {
@@ -901,6 +912,7 @@ void game(Master &theMaster, vector<unique_ptr<Hero>> &playerVector, int &numPla
                 error=false;
                 try{
                     cout<<"Quale personaggio lascia il party? (Inserire il suo numero)"<<endl;
+                    insertPositiveIntNumber(leaving);
                     insertPositiveIntNumberInInterval(leaving,1,numPlayer);
                 }catch (std::exception &e){
                     cerr<<e.what()<<endl;

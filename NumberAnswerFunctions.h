@@ -11,7 +11,7 @@ void verifyNumber(int value);
 
 void insertPositiveIntNumber(int &value);
 
-void insertPositiveIntNumberInInterval(int &value, int min, int max);
+void insertPositiveIntNumberInInterval(int value, int min, int max);
 
 void decrementNotOverZero(int actualQuantity, int decrementQuantity);
 

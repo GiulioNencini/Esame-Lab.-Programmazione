@@ -1,8 +1,3 @@
-//
-// Created by Giulio Nencini on 28/01/2025.
-//
-
-
 #include "../Master.h"
 #include <gtest/gtest.h>
 
@@ -55,13 +50,10 @@ TEST_F(MasterTest, TestExtract) {
 
     m.resetBag();
 
-    //Il messaggio di errore si riferisce al fatto che ci fossero solo 2 token estraibili contro i 3 richiesti
     m.setBag(1, 1);
     m.extract(3);
     EXPECT_EQ(m.getWhiteExtractedFromBag() + m.getBlackExtractedFromBag(), 2);
     EXPECT_EQ(m.getSizeExVec(), 0);
-
-    //m.extract(-5);//per l'eccezione
 }
 
 TEST_F(MasterTest, TestBagIsEmpty){
@@ -80,4 +72,26 @@ TEST_F(MasterTest, TestSetAndResetBag) {
     EXPECT_EQ(m.getWhiteExtractedFromBag(), 0);
     EXPECT_EQ(m.getBlackExtractedFromBag(), 0);
     EXPECT_EQ(m.getSizeExVec(), 0);
+}
+
+//eccezioni
+
+TEST_F(MasterTest, SetWhite_InvalidValue) {
+    ASSERT_THROW(m.setWhite(-1), std::runtime_error);
+}
+
+TEST_F(MasterTest, SetBlack_InvalidValue) {
+    ASSERT_THROW(m.setBlack(-1), std::runtime_error);
+}
+
+TEST_F(MasterTest, SetUnknown_InvalidValue) {
+    ASSERT_THROW(m.setUnknown(-1), std::runtime_error);
+}
+
+TEST_F(MasterTest, SetWhiteExtracted_InvalidValue) {
+    ASSERT_THROW(m.setWhiteExtracted(-1), std::runtime_error);
+}
+
+TEST_F(MasterTest, SetBlackExtracted_InvalidValue) {
+    ASSERT_THROW(m.setBlackExtracted(-1), std::runtime_error);
 }

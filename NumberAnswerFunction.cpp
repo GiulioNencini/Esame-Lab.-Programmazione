@@ -1,6 +1,7 @@
 #include "NumberAnswerFunctions.h"
 
-void verifyNumber(int const value) {//funzione per l'inserimento sicuro di un numero positivo, usata nella successiva insertPositiveIntNumber.
+void verifyNumber(
+        int value) {//funzione per l'inserimento sicuro di un numero positivo, usata nella successiva insertPositiveIntNumber.
 
     if (cin.fail()) // Se l'inserimento fallisce (non è un numero), resetta il flag di errore
     {
@@ -26,18 +27,17 @@ void insertPositiveIntNumber(int &value){//Per l'inserimento di un numero è que
     }while(error);//fin quando il flag error non è dichiarato negativo da verifyNumber, sarà richiesto nuovamente di inserire un numero
 }
 
-void insertPositiveIntNumberInInterval(int &value, int const min, int const max){
-    insertPositiveIntNumber(value);
+void insertPositiveIntNumberInInterval(int value, int min, int max) {
     if(value<min || value>max)
         throw OutOfRangeException();
 }
 
-void decrementNotOverZero(int const actualQuantity, int const decrementQuantity) {
+void decrementNotOverZero(int actualQuantity, int decrementQuantity) {
     if(decrementQuantity>actualQuantity)
         throw NotEnoughQuantity();
 }
 
-void overflowPrevention(int const actualQuantity, int const addingQuantity) {
+void overflowPrevention(int actualQuantity, int addingQuantity) {
     if((std::numeric_limits<int>::max()-actualQuantity)<addingQuantity)
         throw OverflowDanger();
 }
@@ -49,6 +49,7 @@ int howExtract() {
         error=false;
             cout << "Quanto vuoi estrarre?" << endl;
             try{
+                insertPositiveIntNumber(ex);
                 insertPositiveIntNumberInInterval(ex, 1, 4);
             }
             catch (std::exception &e){
@@ -60,8 +61,8 @@ int howExtract() {
 }
 
 void vectorZeroOne(const vector<int> &v){
-    for (int i : v){
-        if (v[i] != 0 && v[i] != 1)
+    for (int i: v) {//qui mi serve un for che renda l'indice per la posizione, non per il
+        if (i != 0 && i != 1)
             throw runtime_error("ATTENZIONE: valori inattesi nel vettore estrazione");
     }
 }
@@ -76,7 +77,7 @@ int getRandomWB(){
     return distribuzione(gen);
 }
 
-int getRandom(const int maxValue){
+int getRandom(int maxValue) {
     std::random_device rd;
     std::mt19937 gen(rd());
 

@@ -8,14 +8,14 @@ class ConsumableItem : public NormItem{
 
 public:
 
-    ConsumableItem(string &name, int amount);
+    ConsumableItem(string name, int amount);
     ~ConsumableItem() override = default;
 
     int getAmount() const override{
         return amount;
     }
 
-    void setAmount(int const a) override{
+    void setAmount(int a) override {
         if (a >= 0)
             amount = a;
         else
@@ -29,6 +29,8 @@ public:
     bool isConsumable() const override{
         return true;
     }
+
+    void accumulateAmount(int adding) override;
 };
 
 #endif //SISTEMA_DI_GIOCO_NOT_THE_END_CONSUMABLEITEM_H

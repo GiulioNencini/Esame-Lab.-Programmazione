@@ -1,6 +1,3 @@
-//
-// Created by Giulio Nencini on 28/01/2025.
-//
 #include <gtest/gtest.h>
 #include "../Hero.h"
 
@@ -137,10 +134,6 @@ TEST_F(HeroTest, TestGetAndDeleteFromThisPosition) {//ne ho inseriti due e due p
     myHero->deleteItemFromThisPosition(++targetPosition);//dovrebbe essere d per lo stesso ragionamento
     EXPECT_EQ(myHero->getItemSize(), 3);
     EXPECT_FALSE(myHero->isThereSearchedItem("d"));
-
-    //testiamo il lancio di runtime_error
-    //myHero->deleteItemFromThisPosition(54); //ha funzionato
-    //unique_ptr<NormItem> const& refEx=myHero->getItemFromThisPosition(54); //ha funzionato
 }
 
 TEST_F(HeroTest, TestAddingAndDeletingItem){//Sia normale che consumable. Dovrebbero verificare, anche se "a pezzi" anche la funzione insertItem, dalle main function
@@ -168,7 +161,7 @@ TEST_F(HeroTest, TestAddingAndDeletingItem){//Sia normale che consumable. Dovreb
     EXPECT_EQ(initSize, myHero->getItemSize());//per far vedere che non aggiunge ulteriori oggetti
     unique_ptr<NormItem> const &insCons = myHero->getItemFromThisPosition(1);
     EXPECT_EQ(insCons->getAmount(), 7);
-    myHero->accumulateThisConsumableItem("consumable", std::numeric_limits<int>::max());
+    myHero->accumulateThisConsumableItem("consumable", std::numeric_limits<int>::max());//Qui lancia un'eccezione
     EXPECT_EQ(insCons->getAmount(), std::numeric_limits<int>::max());
     myHero->accumulateThisConsumableItem("consumableNotReal",
                                          5);//Se passo un oggetto che non esiste non accade nulla. Anche se nel programma ci sono controlli preliminari che impediscono questa cosa
@@ -196,7 +189,6 @@ TEST_F(HeroTest, TestExtractAndRisk){
     myHero->risk(remain);
     EXPECT_EQ(myHero->getWhiteExtractedFromBag()+myHero->getBlackExtractedFromBag(), 5);
 
-
     myHero->resetBag();
 
     myHero->setAdrenaline(true);
@@ -206,7 +198,6 @@ TEST_F(HeroTest, TestExtractAndRisk){
     remain = 5-myHero->getWhiteExtractedFromBag()-myHero->getBlackExtractedFromBag();//I token rimanenti per l'estrazione del rischio
     myHero->risk(remain);
     EXPECT_EQ(myHero->getWhiteExtractedFromBag()+myHero->getBlackExtractedFromBag(), 5);
-
 }
 
 TEST_F(HeroTest, TestBlackTokenPartition){//si tratta di ripetere 4 volte la procedura, ogni volta con un input diverso
@@ -278,4 +269,36 @@ TEST_F(HeroTest,
     EXPECT_TRUE(myHero->isOutScene());
 
     myHero->resetBag();
+}
+
+//eccezioni
+
+TEST_F(HeroTest, SetNumberPlayer_InvalidValue) {
+    ASSERT_THROW(myHero->setNumberPlayer(-1), std::runtime_error);
+    ASSERT_THROW(myHero->setNumberPlayer(0), std::runtime_error);
+}
+
+TEST_F(HeroTest, DeleteItemFromThisPosition_InvalidPosition) {
+    ASSERT_THROW(myHero->deleteItemFromThisPosition(1), std::runtime_error);
+    unique_ptr<NormItem> newItem = make_unique<NormItem>("item");
+    myHero->addItem(std::move(newItem));
+    ASSERT_THROW(myHero->deleteItemFromThisPosition(5), std::runtime_error);
+}
+
+TEST_F(HeroTest, GetItemFromThisPosition_InvalidPosition) {
+    EXPECT_EQ(myHero->getItemSize(), 0);
+    ASSERT_THROW(myHero->getItemFromThisPosition(1), std::runtime_error);
+    unique_ptr<NormItem> newItem = make_unique<NormItem>("item");
+    myHero->addItem(std::move(newItem));
+    ASSERT_THROW(myHero->getItemFromThisPosition(5), std::runtime_error);
+}
+
+TEST_F(HeroTest, GoOffScene_InvalidValues) {
+    ASSERT_THROW(myHero->goOffScene(-1, 1), std::runtime_error);
+    ASSERT_THROW(myHero->goOffScene(1, -1), std::runtime_error);
+}
+
+TEST_F(HeroTest, SetBag_InvalidValues) {
+    ASSERT_THROW(myHero->setBag(-1, 1), std::runtime_error);
+    ASSERT_THROW(myHero->setBag(1, -1), std::runtime_error);
 }

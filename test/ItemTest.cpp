@@ -1,6 +1,3 @@
-//
-// Created by Giulio Nencini on 28/01/2025.
-//
 #include "../ConsumableItem.h"
 #include <gtest/gtest.h>
 
@@ -22,5 +19,11 @@ TEST(ConsumableItem, ConsumableItem){
     c->setAmount(76);
     EXPECT_EQ(c->getAmount(), 76);
 
+    c->accumulateAmount(1000);
+    EXPECT_EQ(c->getAmount(), 1076);
+
     EXPECT_TRUE(c->isConsumable());
+    ASSERT_THROW(c->setAmount(-1), std::runtime_error);
+
+
 }
